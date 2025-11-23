@@ -1,0 +1,22 @@
+
+> nook-tunes@0.0.0 dev
+> npm-run-all --parallel dev:css dev:vite
+
+
+> nook-tunes@0.0.0 dev:css
+> tailwindcss -i ./src/input.css -o ./src/output.css --watch
+
+
+> nook-tunes@0.0.0 dev:vite
+> vite
+
+≈ tailwindcss v4.1.14
+
+Port 5173 is in use, trying another one...
+Port 5174 is in use, trying another one...
+
+  VITE v7.1.10  ready in 109 ms
+
+  ➜  Local:   http://localhost:5175/
+  ➜  Network: use --host to expose
+Done in 88ms

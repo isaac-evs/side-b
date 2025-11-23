@@ -43,6 +43,7 @@ class UserSettings(BaseModel):
 class User(MongoBaseModel):
     username: str
     email: EmailStr
+    password: str  # Hashed password
     name: str
     profilePhoto: Optional[str] = None
     settings: UserSettings
@@ -52,6 +53,7 @@ class User(MongoBaseModel):
 class CreateUser(BaseModel):
     username: str
     email: EmailStr
+    password: str  # Plain password, will be hashed
     name: str
     profilePhoto: Optional[str] = None
     settings: Optional[UserSettings] = None
@@ -136,3 +138,34 @@ class CreateFile(BaseModel):
     fileType: str
     mood: str
     metadata: FileMetadata
+
+# --- Authentication Models ---
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+class UserRegister(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+    name: str
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
+    email: EmailStr
+    name: str
+    profilePhoto: Optional[str] = None
+    settings: UserSettings
+    createdAt: datetime
+    
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse
+
