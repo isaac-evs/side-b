@@ -89,7 +89,7 @@ const useAppStore = create((set, get) => ({
   // Add file to entry (local state, would need API call to persist)
   addFileToEntry: (entryId, file) => set((state) => ({
     entries: state.entries.map((entry) =>
-      entry.id === entryId
+      (entry.id === entryId || entry._id === entryId)
         ? { ...entry, files: [...(entry.files || []), file] }
         : entry
     ),

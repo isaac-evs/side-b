@@ -53,6 +53,18 @@ const DiaryExplorer = () => {
       });
     }
     
+    // Add uploaded files from the entry
+    if (selectedEntry.files && Array.isArray(selectedEntry.files)) {
+      selectedEntry.files.forEach(file => {
+        if (isFileVisible(file.mood || selectedEntry.mood)) {
+          files.push({
+            ...file,
+            mood: file.mood || selectedEntry.mood
+          });
+        }
+      });
+    }
+    
     return files;
   };
 
@@ -215,7 +227,7 @@ const DiaryExplorer = () => {
                 <>
                   {getVisibleFiles().map((file, index) => (
                     <FileIcon
-                      key={file.type}
+                      key={`${file.type}-${index}`}
                       icon={
                         file.type === 'feelings' ? (
                           <FileText className="w-8 h-8 text-blue-500" />

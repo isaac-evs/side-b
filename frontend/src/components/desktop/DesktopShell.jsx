@@ -18,10 +18,11 @@ import {
   Sun
 } from 'lucide-react';
 import useAppStore from '../../store/appStore';
+import { filesAPI, entriesAPI } from '../../services/api';
 
 const DesktopShell = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { openWindow, windows, minimizeWindow, closeWindow } = useDesktop();
   const { theme, toggleTheme, entries } = useAppStore();
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -56,10 +57,52 @@ const DesktopShell = () => {
     navigate('/');
   };
 
-  const handleAddFile = (file) => {
+  const handleAddFile = async (file) => {
     console.log('File added:', file);
-    // This would be handled by the backend in a real app
-    // For now, just log it
+    
+    // Get today's entry automatically
+    const { entries, addFileToEntry, fetchEntries } = useAppStore.getState();
+    
+    // Find today's entry
+    const today = new Date().toISOString().split('T')[0];
+    const todayEntry = entries.find(entry => {
+      const entryDate = new Date(entry.date).toISOString().split('T')[0];
+      return entryDate === today;
+    });
+    
+    if (todayEntry) {
+      try {
+        // Use _id field from MongoDB
+        const entryId = todayEntry._id || todayEntry.id;
+        
+        // Create file in the database
+        const createdFile = await filesAPI.createFile({
+          entryId: entryId,
+          fileName: file.name,
+          fileType: file.type,
+          mood: todayEntry.mood,
+          metadata: file.metadata || {}
+        });
+        
+        // Add file reference to entry
+        await entriesAPI.addFileToEntry(entryId, createdFile._id || createdFile.id);
+        
+        // Update local state
+        addFileToEntry(entryId, file);
+        
+        // Refresh entries to get the updated data from backend
+        if (user?._id) {
+          await fetchEntries(user._id);
+        }
+        
+        alert('File added successfully!');
+      } catch (error) {
+        console.error('Error adding file:', error);
+        alert('Failed to add file. Please try again.');
+      }
+    } else {
+      alert('No entry found for today. Please create a diary entry first before adding files.');
+    }
   };
 
   const apps = [

@@ -101,6 +101,11 @@ export const entriesAPI = {
     return response.data;
   },
   
+  addFileToEntry: async (entryId, fileId) => {
+    const response = await api.patch(`/entries/${entryId}/add-file`, { fileId });
+    return response.data;
+  },
+  
   getEntriesByMood: async (mood) => {
     const response = await api.get(`/entries/mood/${mood}`);
     return response.data;

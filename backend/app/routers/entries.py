@@ -4,7 +4,7 @@ from bson import ObjectId
 from datetime import datetime
 
 from app.models import Entry, CreateEntry
-from app.database import entry_collection
+from app.database import entry_collection, file_collection
 
 router = APIRouter()
 
@@ -37,12 +37,47 @@ async def create_entry(entry: CreateEntry = Body(...)):
     created_entry = await entry_collection.find_one({"_id": new_entry.inserted_id})
     return created_entry
 
+@router.patch("/{id}/add-file", response_description="Add file to entry", response_model=Entry)
+async def add_file_to_entry(id: str, fileId: str = Body(..., embed=True)):
+    # Validate entry exists
+    entry = await entry_collection.find_one({"_id": ObjectId(id)})
+    if not entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    
+    # Add file ID to files array
+    result = await entry_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$push": {"files": ObjectId(fileId)}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=500, detail="Failed to add file to entry")
+    
+    # Return updated entry
+    updated_entry = await entry_collection.find_one({"_id": ObjectId(id)})
+    return updated_entry
+
 @router.get("/", response_description="List all entries", response_model=List[Entry])
 async def list_entries(userId: str = None):
+    # Build aggregation pipeline to populate files
+    pipeline = []
+    
+    # Match stage - filter by userId if provided
     if userId:
-        entries = await entry_collection.find({"userId": ObjectId(userId)}).to_list(1000)
-    else:
-        entries = await entry_collection.find().to_list(1000)
+        pipeline.append({"$match": {"userId": ObjectId(userId)}})
+    
+    # Lookup stage - populate files from file_collection
+    pipeline.append({
+        "$lookup": {
+            "from": "files",
+            "localField": "files",
+            "foreignField": "_id",
+            "as": "files"
+        }
+    })
+    
+    # Execute aggregation
+    entries = await entry_collection.aggregate(pipeline).to_list(1000)
     return entries
 
 @router.get("/counts", response_description="Get weekly and monthly entry counts")
