@@ -10,6 +10,24 @@ router = APIRouter()
 
 @router.post("/", response_description="Add new entry", response_model=Entry)
 async def create_entry(entry: CreateEntry = Body(...)):
+    # Check if user already has an entry for today
+    today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    today_end = today_start.replace(hour=23, minute=59, second=59, microsecond=999999)
+    
+    existing_entry = await entry_collection.find_one({
+        "userId": ObjectId(entry.userId),
+        "date": {
+            "$gte": today_start,
+            "$lte": today_end
+        }
+    })
+    
+    if existing_entry:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You have already created an entry today. Only one entry per day is allowed."
+        )
+    
     entry_dict = entry.model_dump()
     entry_dict["userId"] = ObjectId(entry_dict["userId"])
     # Handle song and files conversion if needed, but Pydantic might handle it if defined correctly

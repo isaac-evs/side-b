@@ -52,14 +52,14 @@ const useAppStore = create((set, get) => ({
         text: entry.text,
         mood: entry.mood,
         song: entry.song ? {
-          _id: entry.song.id,
+          _id: entry.song.id || entry.song._id,
           title: entry.song.title,
           artist: entry.song.artist,
-          album: entry.song.album,
+          album: entry.song.album || '',
           mood: entry.song.mood,
-          albumArt: entry.song.albumArt,
-          duration: entry.song.duration,
-          createdAt: entry.song.createdAt,
+          albumArt: entry.song.albumArt || '',
+          duration: entry.song.duration || 180, // Default 3 minutes if not provided
+          createdAt: entry.song.createdAt || new Date().toISOString(),
         } : null,
         files: [],
       };

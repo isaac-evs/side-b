@@ -77,7 +77,7 @@ export const usersAPI = {
 // Entries API
 export const entriesAPI = {
   getAllEntries: async (userId) => {
-    const response = await api.get(`/entries/user/${userId}`);
+    const response = await api.get(`/entries/?userId=${userId}`);
     return response.data;
   },
   

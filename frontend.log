@@ -12,11 +12,9 @@
 
 ≈ tailwindcss v4.1.14
 
-Port 5173 is in use, trying another one...
-Port 5174 is in use, trying another one...
 
-  VITE v7.1.10  ready in 109 ms
+  VITE v7.1.10  ready in 108 ms
 
-  ➜  Local:   http://localhost:5175/
+  ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-Done in 88ms
+Done in 92ms

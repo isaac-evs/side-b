@@ -77,7 +77,7 @@ class Song(MongoBaseModel):
     createdAt: datetime = Field(default_factory=datetime.utcnow)
 
 class EmbeddedSong(BaseModel):
-    id: PyObjectId = Field(alias="_id")
+    id: int = Field(alias="_id")  # Changed to int to match mock song IDs
     title: str
     artist: str
     album: Optional[str] = None

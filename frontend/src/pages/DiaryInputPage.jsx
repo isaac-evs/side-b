@@ -1,16 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
 import { MoodButton } from '../components/shared';
 import { moodOptions } from '../data/mockData';
 
 const DiaryInputPage = () => {
   const navigate = useNavigate();
-  const { setEntryText, setEntryMood, currentEntry } = useAppStore();
+  const { isAuthenticated, user } = useAuth();
+  const { setEntryText, setEntryMood, currentEntry, entries, fetchEntries } = useAppStore();
   const [text, setText] = useState(currentEntry.text || '');
   const [selectedMood, setSelectedMood] = useState(currentEntry.mood || null);
+  const [checking, setChecking] = useState(true);
 
   const MAX_CHARS = 500;
+
+  // Check if user already has an entry today
+  useEffect(() => {
+    const checkTodayEntry = async () => {
+      if (isAuthenticated && user) {
+        // Ensure entries are loaded
+        if (entries.length === 0) {
+          await fetchEntries(user.id);
+        }
+        
+        // Check if there's an entry from today
+        const today = new Date().toISOString().split('T')[0];
+        const todayEntry = entries.find(entry => {
+          const entryDate = new Date(entry.date).toISOString().split('T')[0];
+          return entryDate === today;
+        });
+
+        if (todayEntry) {
+          // User already created an entry today, redirect to desktop
+          alert('You have already created an entry today! Check it out in the desktop.');
+          navigate('/desktop');
+          return;
+        }
+      }
+      setChecking(false);
+    };
+
+    checkTodayEntry();
+  }, [isAuthenticated, user, entries, fetchEntries, navigate]);
 
   const handleSubmit = () => {
     if (!text.trim() || !selectedMood) {
@@ -18,8 +50,11 @@ const DiaryInputPage = () => {
       return;
     }
 
+    // Save the entry to state
     setEntryText(text);
     setEntryMood(selectedMood);
+    
+    // Navigate to song selector regardless of auth status
     navigate('/song-selector');
   };
 
@@ -37,6 +72,15 @@ const DiaryInputPage = () => {
     const options = { month: 'long', day: 'numeric', year: 'numeric' };
     return new Date().toLocaleDateString('en-US', options);
   };
+
+  // Show loading while checking for today's entry
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500 p-8">

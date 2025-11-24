@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import { useDesktop } from '../../contexts/DesktopContext';
 import SearchModal from './SearchModal';
 import AddFileModal from './AddFileModal';
@@ -18,8 +20,10 @@ import {
 import useAppStore from '../../store/appStore';
 
 const DesktopShell = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const { openWindow, windows, minimizeWindow, closeWindow } = useDesktop();
-  const { theme, toggleTheme, user, updateUser, entries } = useAppStore();
+  const { theme, toggleTheme, entries } = useAppStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [appleMenuOpen, setAppleMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
@@ -47,8 +51,9 @@ const DesktopShell = () => {
   };
 
   const handleShutdown = () => {
-    // Navigate to landing page
-    window.location.href = '/';
+    // Logout and navigate to landing page
+    logout();
+    navigate('/');
   };
 
   const handleAddFile = (file) => {

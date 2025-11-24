@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import useAppStore from '../store/appStore';
 
 const AuthPage = () => {
   const navigate = useNavigate();
   const { login, register } = useAuth();
+  const { currentEntry, addEntry, resetCurrentEntry } = useAppStore();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,7 +32,20 @@ const AuthPage = () => {
     setLoading(false);
 
     if (result.success) {
-      navigate('/diary-input');
+      // Check if there's a pending entry to save
+      if (currentEntry.text && currentEntry.mood && currentEntry.song) {
+        try {
+          await addEntry(currentEntry, result.user.id);
+          resetCurrentEntry();
+          navigate('/desktop');
+        } catch (error) {
+          console.error('Error saving entry after login:', error);
+          navigate('/desktop');
+        }
+      } else {
+        // No pending entry, go to desktop
+        navigate('/desktop');
+      }
     } else {
       setError(result.error);
     }
@@ -39,13 +54,26 @@ const AuthPage = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(false);
+    setLoading(true);
 
     const result = await register(registerData);
     setLoading(false);
 
     if (result.success) {
-      navigate('/diary-input');
+      // Check if there's a pending entry to save
+      if (currentEntry.text && currentEntry.mood && currentEntry.song) {
+        try {
+          await addEntry(currentEntry, result.user.id);
+          resetCurrentEntry();
+          navigate('/desktop');
+        } catch (error) {
+          console.error('Error saving entry after registration:', error);
+          navigate('/desktop');
+        }
+      } else {
+        // No pending entry, go to desktop
+        navigate('/desktop');
+      }
     } else {
       setError(result.error);
     }

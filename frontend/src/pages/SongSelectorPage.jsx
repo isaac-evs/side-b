@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
 import { getSongsByMood } from '../data/mockData';
 
@@ -48,7 +49,8 @@ const ShuffleIcon = ({ className = "w-5 h-5" }) => (
 
 const SongSelectorPage = () => {
   const navigate = useNavigate();
-  const { currentEntry, setEntrySong, addEntry, resetCurrentEntry } = useAppStore();
+  const { isAuthenticated, user } = useAuth();
+  const { currentEntry, setEntrySong, addEntry, resetCurrentEntry, entries, fetchEntries } = useAppStore();
   const [songs, setSongs] = useState([]);
   const [currentSongIndex, setCurrentSongIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -56,6 +58,33 @@ const SongSelectorPage = () => {
   const [selectedSong, setSelectedSong] = useState(null);
 
   const audioRef = useRef(new Audio());
+
+  // Check if user already has an entry today
+  useEffect(() => {
+    const checkTodayEntry = async () => {
+      if (isAuthenticated && user) {
+        // Ensure entries are loaded
+        if (entries.length === 0) {
+          await fetchEntries(user.id);
+        }
+        
+        // Check if there's an entry from today
+        const today = new Date().toISOString().split('T')[0];
+        const todayEntry = entries.find(entry => {
+          const entryDate = new Date(entry.date).toISOString().split('T')[0];
+          return entryDate === today;
+        });
+
+        if (todayEntry) {
+          // User already created an entry today, redirect to desktop
+          alert('You have already created an entry today! Check it out in the desktop.');
+          navigate('/desktop');
+        }
+      }
+    };
+
+    checkTodayEntry();
+  }, [isAuthenticated, user, entries, fetchEntries, navigate]);
 
   useEffect(() => {
     if (!currentEntry.mood) {
@@ -156,7 +185,17 @@ const SongSelectorPage = () => {
       setIsPlaying(false);
       setCurrentSongIndex(null);
 
-      // Create the entry with all required data
+      // Save the selected song to the current entry
+      setEntrySong(selectedSong);
+
+      // Check if user is authenticated
+      if (!isAuthenticated) {
+        // If not authenticated, redirect to auth page (entry is saved in state)
+        navigate('/auth');
+        return;
+      }
+
+      // If authenticated, create the entry
       const entryData = {
         text: currentEntry.text,
         mood: currentEntry.mood,
@@ -165,8 +204,8 @@ const SongSelectorPage = () => {
 
       console.log('Creating entry:', entryData); // Debug log
 
-      // Add entry to store
-      addEntry(entryData);
+      // Add entry to store (will call API)
+      await addEntry(entryData, user.id);
       
       // Navigate to desktop FIRST, then reset
       navigate('/desktop', { replace: true });
@@ -178,7 +217,14 @@ const SongSelectorPage = () => {
 
     } catch (error) {
       console.error('Error creating entry:', error);
-      alert('There was an error creating your entry. Please try again.');
+      
+      // Check if it's a duplicate entry error
+      if (error.response?.status === 400 && error.response?.data?.detail?.includes('already created an entry')) {
+        alert('You have already created an entry today! Redirecting to desktop...');
+        navigate('/desktop');
+      } else {
+        alert('There was an error creating your entry. Please try again.');
+      }
     }
   };
 

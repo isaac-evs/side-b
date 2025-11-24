@@ -1,16 +1,13 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [1132417] using StatReload
-INFO:     Started server process [1132419]
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [1514686] using StatReload
+INFO:     Started server process [1514705]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:37952 - "POST /auth/register HTTP/1.1" 422 Unprocessable Entity
-(trapped) error reading bcrypt version
-Traceback (most recent call last):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
-    version = _bcrypt.__about__.__version__
-AttributeError: module 'bcrypt' has no attribute '__about__'
-INFO:     127.0.0.1:53494 - "POST /auth/register HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:32780 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:32790 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:43002 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:43002 - "POST /entries/ HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
 Traceback (most recent call last):
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
@@ -25,7 +22,9 @@ Traceback (most recent call last):
     raise exc
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
     await self.app(scope, receive, _send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 85, in __call__
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 144, in simple_response
     await self.app(scope, receive, send)
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
@@ -49,49 +48,16 @@ Traceback (most recent call last):
     await app(scope, receive, sender)
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 111, in app
     response = await f(request)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 391, in app
-    raw_response = await run_endpoint_function(
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 290, in run_endpoint_function
-    return await dependant.call(**values)
-  File "/home/isaac/Documents/code/side-b/backend/app/routers/auth.py", line 65, in register
-    hashed_password = get_password_hash(user_data.password)
-  File "/home/isaac/Documents/code/side-b/backend/app/auth.py", line 30, in get_password_hash
-    return pwd_context.hash(password_truncated)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/context.py", line 2258, in hash
-    return record.hash(secret, **kwds)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 779, in hash
-    self.checksum = self._calc_checksum(secret)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
-    self._stub_requires_backend()
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
-    cls.set_backend()
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
-    return owner.set_backend(name, dryrun=dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
-    return cls.set_backend(name, dryrun=dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
-    cls._set_backend(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
-    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
-    ok = loader(**kwds)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
-    return mixin_cls._finalize_backend_mixin(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
-    if detect_wrap_bug(IDENT_2A):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
-    if verify(secret, bug_hash):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 792, in verify
-    return consteq(self._calc_checksum(secret), chk)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
-    hash = _bcrypt.hashpw(secret, config)
-ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
-(trapped) error reading bcrypt version
-Traceback (most recent call last):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
-    version = _bcrypt.__about__.__version__
-AttributeError: module 'bcrypt' has no attribute '__about__'
-INFO:     127.0.0.1:59494 - "POST /auth/register HTTP/1.1" 500 Internal Server Error
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 413, in app
+    content = await serialize_response(
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 254, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 2 validation errors:
+  {'type': 'is_instance_of', 'loc': ('response', 'song', '_id', 'is-instance[ObjectId]'), 'msg': 'Input should be an instance of ObjectId', 'input': 10, 'ctx': {'class': 'ObjectId'}}
+  {'type': 'string_type', 'loc': ('response', 'song', '_id', 'chain[str,function-plain[ObjectId()]]'), 'msg': 'Input should be a valid string', 'input': 10}
+
+INFO:     127.0.0.1:43004 - "OPTIONS /entries/?userId=6923a20c3485fc40eb463667 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43004 - "GET /entries/?userId=6923a20c3485fc40eb463667 HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
 Traceback (most recent call last):
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
@@ -106,7 +72,9 @@ Traceback (most recent call last):
     raise exc
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
     await self.app(scope, receive, _send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 85, in __call__
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 144, in simple_response
     await self.app(scope, receive, send)
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
@@ -130,61 +98,31 @@ Traceback (most recent call last):
     await app(scope, receive, sender)
   File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 111, in app
     response = await f(request)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 391, in app
-    raw_response = await run_endpoint_function(
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 290, in run_endpoint_function
-    return await dependant.call(**values)
-  File "/home/isaac/Documents/code/side-b/backend/app/routers/auth.py", line 65, in register
-    hashed_password = get_password_hash(user_data.password)
-  File "/home/isaac/Documents/code/side-b/backend/app/auth.py", line 30, in get_password_hash
-    return pwd_context.hash(password_truncated)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/context.py", line 2258, in hash
-    return record.hash(secret, **kwds)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 779, in hash
-    self.checksum = self._calc_checksum(secret)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
-    self._stub_requires_backend()
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
-    cls.set_backend()
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
-    return owner.set_backend(name, dryrun=dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
-    return cls.set_backend(name, dryrun=dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
-    cls._set_backend(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
-    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
-    ok = loader(**kwds)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
-    return mixin_cls._finalize_backend_mixin(name, dryrun)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
-    if detect_wrap_bug(IDENT_2A):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
-    if verify(secret, bug_hash):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/utils/handlers.py", line 792, in verify
-    return consteq(self._calc_checksum(secret), chk)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
-    hash = _bcrypt.hashpw(secret, config)
-ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
-WARNING:  StatReload detected changes in 'app/auth.py'. Reloading...
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 413, in app
+    content = await serialize_response(
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 254, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 2 validation errors:
+  {'type': 'is_instance_of', 'loc': ('response', 0, 'song', '_id', 'is-instance[ObjectId]'), 'msg': 'Input should be an instance of ObjectId', 'input': 10, 'ctx': {'class': 'ObjectId'}}
+  {'type': 'string_type', 'loc': ('response', 0, 'song', '_id', 'chain[str,function-plain[ObjectId()]]'), 'msg': 'Input should be a valid string', 'input': 10}
+
+WARNING:  StatReload detected changes in 'app/models.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [1132419]
-INFO:     Started server process [1133009]
+INFO:     Finished server process [1514705]
+INFO:     Started server process [1515439]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'app/auth.py'. Reloading...
+WARNING:  StatReload detected changes in 'app/models.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [1133009]
-INFO:     Started server process [1133044]
+INFO:     Finished server process [1515439]
+INFO:     Started server process [1515666]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     127.0.0.1:40544 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:37148 - "GET / HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60430 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:60430 - "OPTIONS /entries/user/6922ad14f4cbfb9b446caad9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34330 - "GET /entries/user/6922ad14f4cbfb9b446caad9 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50426 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50432 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50432 - "GET /entries/?userId=6923a20c3485fc40eb463667 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50432 - "GET /entries/?userId=6923a20c3485fc40eb463667 HTTP/1.1" 200 OK

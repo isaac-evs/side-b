@@ -57,7 +57,7 @@ fi
 
 # Start backend in background
 echo "Starting FastAPI server..."
-uvicorn app.main:app --reload > ../backend.log 2>&1 &
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 > ../backend.log 2>&1 &
 BACKEND_PID=$!
 echo $BACKEND_PID > ../backend.pid
 echo -e "${GREEN}✓ Backend started (PID: $BACKEND_PID)${NC}"
