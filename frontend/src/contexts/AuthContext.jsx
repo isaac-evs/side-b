@@ -26,9 +26,13 @@ export const AuthProvider = ({ children }) => {
         try {
           // Verify token is still valid
           const currentUser = await authAPI.getCurrentUser();
+          console.log('Current user from API:', currentUser);
           setUser(currentUser);
           setIsAuthenticated(true);
+          // Update localStorage with fresh user data
+          localStorage.setItem('user', JSON.stringify(currentUser));
         } catch (error) {
+          console.error('Token validation error:', error);
           // Token invalid, clear storage
           localStorage.removeItem('token');
           localStorage.removeItem('user');

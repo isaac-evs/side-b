@@ -6,6 +6,15 @@ from datetime import datetime
 from app.models import Entry, CreateEntry
 from app.database import entry_collection, file_collection
 
+def serialize_mongo_obj(obj):
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    if isinstance(obj, list):
+        return [serialize_mongo_obj(item) for item in obj]
+    if isinstance(obj, dict):
+        return {k: serialize_mongo_obj(v) for k, v in obj.items()}
+    return obj
+
 router = APIRouter()
 
 @router.post("/", response_description="Add new entry", response_model=Entry)
@@ -57,14 +66,20 @@ async def add_file_to_entry(id: str, fileId: str = Body(..., embed=True)):
     updated_entry = await entry_collection.find_one({"_id": ObjectId(id)})
     return updated_entry
 
-@router.get("/", response_description="List all entries", response_model=List[Entry])
+@router.get("/", response_description="List all entries")
 async def list_entries(userId: str = None):
     # Build aggregation pipeline to populate files
     pipeline = []
     
     # Match stage - filter by userId if provided
     if userId:
-        pipeline.append({"$match": {"userId": ObjectId(userId)}})
+        try:
+            pipeline.append({"$match": {"userId": ObjectId(userId)}})
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid userId format: {userId}"
+            )
     
     # Lookup stage - populate files from file_collection
     pipeline.append({
@@ -72,13 +87,21 @@ async def list_entries(userId: str = None):
             "from": "files",
             "localField": "files",
             "foreignField": "_id",
-            "as": "files"
+            "as": "populatedFiles"
         }
     })
     
     # Execute aggregation
     entries = await entry_collection.aggregate(pipeline).to_list(1000)
-    return entries
+    
+    # Serialize and map populatedFiles to files
+    serialized_entries = serialize_mongo_obj(entries)
+    for entry in serialized_entries:
+        if "populatedFiles" in entry:
+            entry["files"] = entry["populatedFiles"]
+            del entry["populatedFiles"]
+            
+    return serialized_entries
 
 @router.get("/counts", response_description="Get weekly and monthly entry counts")
 async def get_entry_counts(userId: str):
@@ -176,7 +199,7 @@ async def get_top_songs():
     ]
     
     result = await entry_collection.aggregate(pipeline).to_list(100)
-    return result
+    return serialize_mongo_obj(result)
 
 @router.get("/{id}", response_description="Get a single entry", response_model=Entry)
 async def show_entry(id: str):

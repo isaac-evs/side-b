@@ -6,8 +6,14 @@ from app.routers import users, entries, files, songs, auth
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Startup: Initialize database indexes
     await create_indexes()
+    print("✓ Database initialized")
+    
     yield
+    
+    # Shutdown: Clean up resources
+    print("✓ Application shutdown")
 
 app = FastAPI(lifespan=lifespan)
 
@@ -23,6 +29,14 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "Welcome to Side-B Backend"}
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint."""
+    return {
+        "status": "healthy",
+        "message": "Backend is running"
+    }
 
 app.include_router(auth.router, prefix="/auth", tags=["authentication"])
 app.include_router(users.router, prefix="/users", tags=["users"])

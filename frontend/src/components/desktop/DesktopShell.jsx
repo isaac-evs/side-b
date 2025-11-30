@@ -63,12 +63,28 @@ const DesktopShell = () => {
     // Get today's entry automatically
     const { entries, addFileToEntry, fetchEntries } = useAppStore.getState();
     
-    // Find today's entry
-    const today = new Date().toISOString().split('T')[0];
-    const todayEntry = entries.find(entry => {
-      const entryDate = new Date(entry.date).toISOString().split('T')[0];
-      return entryDate === today;
+    // Refresh entries first to ensure we have the latest data
+    const userId = user?.id || user?._id; // Backend returns 'id', not '_id'
+    if (userId) {
+      await fetchEntries(userId);
+    }
+    
+    // Get updated entries after fetch
+    const updatedEntries = useAppStore.getState().entries;
+    
+    // Find today's entry - be more lenient with date comparison
+    const today = new Date();
+    const todayEntry = updatedEntries.find(entry => {
+      const entryDate = new Date(entry.date);
+      // Compare year, month, and day only (ignore time)
+      return entryDate.getFullYear() === today.getFullYear() &&
+             entryDate.getMonth() === today.getMonth() &&
+             entryDate.getDate() === today.getDate();
     });
+    
+    console.log('Today\'s entry:', todayEntry);
+    console.log('All entries:', updatedEntries);
+    console.log('User ID:', userId);
     
     if (todayEntry) {
       try {
@@ -78,10 +94,19 @@ const DesktopShell = () => {
         // Create file in the database
         const createdFile = await filesAPI.createFile({
           entryId: entryId,
-          fileName: file.name,
+          fileName: file.fileName || file.name,
           fileType: file.type,
           mood: todayEntry.mood,
-          metadata: file.metadata || {}
+          metadata: {
+            imageUrl: file.imageUrl || file.metadata?.imageUrl || '',
+            extension: file.extension || file.metadata?.extension || '',
+            author: file.author || file.metadata?.author || '',
+            bookUrl: file.bookUrl || file.metadata?.bookUrl || '',
+            coverUrl: file.coverUrl || file.metadata?.coverUrl || '',
+            videoUrl: file.videoUrl || file.metadata?.videoUrl || '',
+            websiteUrl: file.websiteUrl || file.metadata?.websiteUrl || '',
+            content: file.content || file.metadata?.content || ''
+          }
         });
         
         // Add file reference to entry
@@ -91,8 +116,8 @@ const DesktopShell = () => {
         addFileToEntry(entryId, file);
         
         // Refresh entries to get the updated data from backend
-        if (user?._id) {
-          await fetchEntries(user._id);
+        if (userId) {
+          await fetchEntries(userId);
         }
         
         alert('File added successfully!');

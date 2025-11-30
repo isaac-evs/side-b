@@ -40,9 +40,12 @@ function AppContent() {
 
   // Fetch entries when user logs in
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (isAuthenticated && user?.id) {
+      console.log('Fetching entries for user:', user.id);
       const { fetchEntries } = useAppStore.getState();
       fetchEntries(user.id);
+    } else if (isAuthenticated && !user?.id) {
+      console.error('User is authenticated but user.id is missing:', user);
     }
   }, [isAuthenticated, user]);
 
