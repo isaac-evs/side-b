@@ -96,7 +96,7 @@ const DesktopShell = () => {
           entryId: entryId,
           fileName: file.fileName || file.name,
           fileType: file.type,
-          mood: todayEntry.mood,
+          mood: file.mood || todayEntry.mood,
           metadata: {
             imageUrl: file.imageUrl || file.metadata?.imageUrl || '',
             extension: file.extension || file.metadata?.extension || '',

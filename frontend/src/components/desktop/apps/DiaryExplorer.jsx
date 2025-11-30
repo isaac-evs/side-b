@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useAppStore from '../../../store/appStore';
 import FileIcon from '../FileIcon';
-import { FolderOpen, FileText, Music, Calendar } from 'lucide-react';
+import { FolderOpen, FileText, Music, Calendar, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
 
 const DiaryExplorer = () => {
   const { entries } = useAppStore();
@@ -59,6 +59,8 @@ const DiaryExplorer = () => {
         if (isFileVisible(file.mood || selectedEntry.mood)) {
           files.push({
             ...file,
+            name: file.fileName || file.name,
+            type: file.fileType || file.type,
             mood: file.mood || selectedEntry.mood
           });
         }
@@ -66,6 +68,27 @@ const DiaryExplorer = () => {
     }
     
     return files;
+  };
+
+  const getFileIcon = (type) => {
+    switch (type) {
+      case 'feelings': return <FileText className="w-8 h-8 text-blue-500" />;
+      case 'song': return <Music className="w-8 h-8 text-pink-500" />;
+      case 'image': 
+      case 'gif': return <ImageIcon className="w-8 h-8 text-purple-500" />;
+      case 'book': return <BookOpen className="w-8 h-8 text-amber-600" />;
+      case 'movie': return <Film className="w-8 h-8 text-red-500" />;
+      case 'video': return <Youtube className="w-8 h-8 text-red-600" />;
+      default: return <FileText className="w-8 h-8 text-gray-500" />;
+    }
+  };
+
+  const getFileSubtitle = (file) => {
+    if (file.type === 'feelings') return `${selectedEntry.text.length} chars`;
+    if (file.type === 'song') return selectedEntry.song.artist;
+    if (file.type === 'book') return file.metadata?.author || 'Book';
+    if (file.type === 'image' || file.type === 'gif') return file.metadata?.extension || 'Image';
+    return file.type;
   };
 
   return (
@@ -228,22 +251,12 @@ const DiaryExplorer = () => {
                   {getVisibleFiles().map((file, index) => (
                     <FileIcon
                       key={`${file.type}-${index}`}
-                      icon={
-                        file.type === 'feelings' ? (
-                          <FileText className="w-8 h-8 text-blue-500" />
-                        ) : (
-                          <Music className="w-8 h-8 text-pink-500" />
-                        )
-                      }
+                      icon={getFileIcon(file.type)}
                       title={file.name}
-                      subtitle={
-                        file.type === 'feelings' 
-                          ? `${selectedEntry.text.length} chars`
-                          : selectedEntry.song.artist
-                      }
+                      subtitle={getFileSubtitle(file)}
                       position={{ x: 20 + (index * 140), y: 20 }}
                       moodColor={moods[file.mood]?.color}
-                      onDoubleClick={() => setViewingFile(file.type)}
+                      onDoubleClick={() => setViewingFile(file.type === 'feelings' || file.type === 'song' ? file.type : file)}
                     />
                   ))}
                 </>

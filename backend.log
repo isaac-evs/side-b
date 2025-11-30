@@ -1,62 +1,27 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [143774] using StatReload
-INFO:     Started server process [143793]
+INFO:     Started reloader process [150463] using StatReload
+INFO:     Started server process [150482]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ✓ Database initialized
-INFO:     127.0.0.1:39468 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39470 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39468 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:39470 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:35732 - "OPTIONS /auth/register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35732 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:35732 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35750 - "OPTIONS /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35748 - "POST /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35750 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35750 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35748 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35748 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46774 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46778 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46778 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46774 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35066 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35066 - "OPTIONS /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35078 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35078 - "OPTIONS /entries/692c8efca81d1e3b2486400f/add-file HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35094 - "PATCH /entries/692c8efca81d1e3b2486400f/add-file HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35094 - "GET /entries/?userId=692c8efca81d1e3b2486400e HTTP/1.1" 200 OK
-WARNING:  StatReload detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [143793]
-INFO:     Started server process [145083]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [145083]
-INFO:     Started server process [145124]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'app/databases/chromadb.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [145124]
-INFO:     Started server process [145159]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'app/databases/cassandra.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [145159]
-INFO:     Started server process [145195]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
+INFO:     127.0.0.1:34392 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34398 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34392 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34398 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34156 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34156 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:34156 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34168 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34168 - "OPTIONS /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34170 - "GET /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34976 - "GET /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34976 - "OPTIONS /files/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34990 - "POST /files/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34990 - "OPTIONS /entries/692c9319f1e8c890b936275e/add-file HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35004 - "PATCH /entries/692c9319f1e8c890b936275e/add-file HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35004 - "GET /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41156 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41164 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41164 - "GET /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41164 - "GET /entries/?userId=692c9319f1e8c890b936275d HTTP/1.1" 200 OK
