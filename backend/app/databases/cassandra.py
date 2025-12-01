@@ -22,31 +22,53 @@ class CassandraClient:
 
     # CONNECTION
     async def connect(self):
-        loop = asyncio.get_event_loop()
+        try:
+            loop = asyncio.get_event_loop()
 
-        self.cluster = Cluster(["127.0.0.1"])
-        # connect() is blocking → run in thread
-        self.session = await asyncio.to_thread(self.cluster.connect)
+            self.cluster = Cluster(["127.0.0.1"])
+            # connect() is blocking → run in thread
+            self.session = await asyncio.to_thread(self.cluster.connect)
 
-        # Create keyspace
-        await asyncio.to_thread(
-            self.session.execute,
-            """
-            CREATE KEYSPACE IF NOT EXISTS sideb
-            WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1}
-            """
-        )
+            # Create keyspace
+            await asyncio.to_thread(
+                self.session.execute,
+                """
+                CREATE KEYSPACE IF NOT EXISTS sideb
+                WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1}
+                """
+            )
 
-        self.session.set_keyspace(self.keyspace)
+            self.session.set_keyspace(self.keyspace)
 
-        # Create tables
-        await self._create_schema()
+            # Create tables
+            await self._create_schema()
+            print("✓ Connected to Cassandra")
+        except Exception as e:
+            print(f"✗ Failed to connect to Cassandra: {e}")
+            self.session = None
+            self.cluster = None
 
     async def disconnect(self):
         if self.cluster:
             await asyncio.to_thread(self.cluster.shutdown)
 
+    async def initialize(self):
+        # Schema is created in connect(), so this is a placeholder for manager compatibility
+        pass
+
+    async def health_check(self):
+        if self.session:
+            try:
+                await asyncio.to_thread(self.session.execute, "SELECT now() FROM system.local")
+                return True
+            except:
+                return False
+        return False
+
     async def _create_schema(self):
+        if not self.session:
+            return
+
         stmts = [
             """
             CREATE TABLE IF NOT EXISTS song_selections_by_user (
@@ -106,6 +128,9 @@ class CassandraClient:
 
     # WRITE OPERATIONS
     async def log_song_selection(self, user_id, entry_id, song_id, mood):
+        if not self.session:
+            return
+
         now = datetime.utcnow()
         ym = self._year_month()
 
@@ -161,6 +186,9 @@ class CassandraClient:
         )
 
     async def log_media_attachment(self, user_id, entry_id, file_id, file_type):
+        if not self.session:
+            return
+
         ym = self._year_month()
 
         await asyncio.to_thread(
@@ -184,6 +212,9 @@ class CassandraClient:
         )
 
     async def increment_entry_count(self, user_id):
+        if not self.session:
+            return
+
         ym = self._year_month()
 
         await asyncio.to_thread(
@@ -198,6 +229,9 @@ class CassandraClient:
 
     # READ OPERATIONS
     async def get_recent_song_selections(self, user_id, limit=10):
+        if not self.session:
+            return []
+
         rows = await asyncio.to_thread(
             self.session.execute,
             "SELECT * FROM song_selections_by_user WHERE user_id = %s LIMIT %s",
@@ -206,6 +240,9 @@ class CassandraClient:
         return [dict(r._asdict()) for r in rows]
 
     async def get_attachments_for_entry(self, user_id, entry_id):
+        if not self.session:
+            return []
+
         rows = await asyncio.to_thread(
             self.session.execute,
             "SELECT * FROM media_attachments_log WHERE user_id = %s AND entry_id = %s",
@@ -214,6 +251,13 @@ class CassandraClient:
         return [dict(r._asdict()) for r in rows]
 
     async def get_monthly_stats(self, user_id, year_month=None):
+        if not self.session:
+            return {
+                "entries_count": 0,
+                "songs_selected_count": 0,
+                "media_attached_count": 0
+            }
+
         ym = year_month or self._year_month()
 
         row = await asyncio.to_thread(
@@ -229,6 +273,13 @@ class CassandraClient:
         }
 
     async def get_song_frequency(self, user_id, song_id):
+        if not self.session:
+            return {
+                "selection_count": 0,
+                "first_selected": None,
+                "last_selected": None
+            }
+
         freq = await asyncio.to_thread(
             self.session.execute,
             "SELECT selection_count FROM song_selection_frequency WHERE user_id = %s AND song_id = %s",

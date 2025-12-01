@@ -3,26 +3,42 @@ from typing import List
 from bson import ObjectId
 
 from app.models import FileModel, CreateFile
-from app.database import file_collection
+from app.database import file_collection, entry_collection
 from app.databases.cassandra import cassandra_client
 
 router = APIRouter()
 
 @router.post("/", response_description="Add new file", response_model=FileModel)
 async def create_file(file: CreateFile = Body(...)):
+    # Validate entry exists and get userId
+    entry = await entry_collection.find_one({"_id": ObjectId(file.entryId)})
+    if not entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+        
+    user_id = str(entry["userId"])
+
     file_dict = file.model_dump()
     file_dict["entryId"] = ObjectId(file_dict["entryId"])
     
     new_file = await file_collection.insert_one(file_dict)
     created_file = await file_collection.find_one({"_id": new_file.inserted_id})
     
-    #cassandra
-    await cassandra_client.log_media_attachment(
-        user_id=file.userId,
-        entry_id=file.entryId,
-        file_id=str(created_file["_id"]),
-        file_type=file.fileType,
+    # Link file to entry
+    await entry_collection.update_one(
+        {"_id": ObjectId(file.entryId)},
+        {"$push": {"files": new_file.inserted_id}}
     )
+    
+    # Cassandra logging (resilient)
+    try:
+        await cassandra_client.log_media_attachment(
+            user_id=user_id,
+            entry_id=file.entryId,
+            file_id=str(created_file["_id"]),
+            file_type=file.fileType,
+        )
+    except Exception as e:
+        print(f"Warning: Failed to log media attachment to Cassandra: {e}")
     
     return created_file
 

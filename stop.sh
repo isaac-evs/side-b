@@ -25,15 +25,19 @@ echo "Stopping Frontend..."
 pkill -f "vite" && echo -e "${GREEN}✓ Frontend stopped${NC}" || echo "Frontend process not found"
 [ -f "frontend.pid" ] && rm frontend.pid
 
-# Stop MongoDB (optional - commented out by default to preserve data)
-# Uncomment the following lines if you want to stop MongoDB as well
-# echo "Stopping MongoDB..."
-# docker stop side-b-mongodb
-# echo -e "${GREEN}✓ MongoDB stopped${NC}"
+# Stop Databases (optional - commented out by default to preserve data)
+# Uncomment the following lines if you want to stop the databases as well
+# echo "Stopping Databases..."
+# if docker compose version >/dev/null 2>&1; then
+#     docker compose stop
+# else
+#     docker-compose stop
+# fi
+# echo -e "${GREEN}✓ Databases stopped${NC}"
 
 echo ""
 echo -e "${GREEN}✨ Side-B has been stopped${NC}"
 echo ""
-echo "💡 MongoDB is still running to preserve your data."
-echo "   To stop MongoDB: docker stop side-b-mongodb"
+echo "💡 Databases are still running to preserve your data."
+echo "   To stop them: docker compose stop (or docker-compose stop)"
 echo ""

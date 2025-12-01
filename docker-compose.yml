@@ -10,6 +10,27 @@ services:
       - mongodb_data:/data/db
     environment:
       - MONGO_INITDB_DATABASE=side_b_db
+
+  dgraph:
+    image: dgraph/standalone:latest
+    container_name: side-b-dgraph
+    ports:
+      - "8080:8080"
+      - "9080:9080"
+    volumes:
+      - dgraph_data:/dgraph
+
+  cassandra:
+    image: cassandra:latest
+    container_name: side-b-cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=SideBCluster
   
 volumes:
   mongodb_data:
+  dgraph_data:
+  cassandra_data:

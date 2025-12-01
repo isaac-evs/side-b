@@ -17,23 +17,46 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-# Start MongoDB
-echo -e "${BLUE}📦 Starting MongoDB...${NC}"
-if docker ps | grep -q side-b-mongodb; then
-    echo -e "${GREEN}✓ MongoDB is already running${NC}"
-else
-    if docker ps -a | grep -q side-b-mongodb; then
-        echo "Starting existing MongoDB container..."
-        docker start side-b-mongodb
-    else
-        echo "Creating and starting new MongoDB container..."
-        docker run -d --name side-b-mongodb -p 27017:27017 -e MONGO_INITDB_DATABASE=side_b_db mongo:latest
-    fi
-    echo -e "${GREEN}✓ MongoDB started${NC}"
+# Start Databases using Docker Compose
+echo -e "${BLUE}📦 Starting Databases (MongoDB, Dgraph, Cassandra)...${NC}"
+
+# Check for potential port conflicts from non-compose containers
+if docker ps --format '{{.Names}}' | grep -q "^cassandra$"; then
+    echo -e "${YELLOW}Stopping conflicting container 'cassandra'...${NC}"
+    docker stop cassandra
+fi
+if docker ps --format '{{.Names}}' | grep -q "^dgraph$"; then
+    echo -e "${YELLOW}Stopping conflicting container 'dgraph'...${NC}"
+    docker stop dgraph
 fi
 
-# Wait a moment for MongoDB to be ready
-sleep 2
+# Try using 'docker compose' (plugin) first, fall back to 'docker-compose' (standalone)
+# NOTE: We are forcing 'docker compose' (v2) if available because 'docker-compose' (v1)
+# has issues with newer python requests/urllib3 libraries ("http+docker" scheme error).
+if docker compose version >/dev/null 2>&1; then
+    DOCKER_COMPOSE_CMD="docker compose"
+elif docker-compose --version >/dev/null 2>&1; then
+    # If only v1 is available, we might still fail, but we have no choice.
+    # The user might need to install docker-compose-plugin.
+    DOCKER_COMPOSE_CMD="docker-compose"
+else
+    echo -e "${YELLOW}Neither 'docker compose' nor 'docker-compose' found.${NC}"
+    echo "Please install Docker Compose v2 (plugin) or v1."
+    exit 1
+fi
+
+echo "Using: $DOCKER_COMPOSE_CMD"
+$DOCKER_COMPOSE_CMD up -d
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✓ Databases started${NC}"
+else
+    echo -e "${YELLOW}⚠️  Docker Compose reported an issue. Please check if ports are available.${NC}"
+    exit 1
+fi
+
+# Wait a moment for databases to be ready
+sleep 5
 
 # Start Backend
 echo -e "${BLUE}🐍 Starting Backend...${NC}"
@@ -88,8 +111,10 @@ echo ""
 echo -e "${GREEN}✨ Side-B is now running!${NC}"
 echo ""
 echo "📝 Services:"
-echo "  • MongoDB:  running on port 27017"
-echo "  • Backend:  http://127.0.0.1:8000"
+echo "  • MongoDB:   running on port 27017"
+echo "  • Dgraph:    running on ports 8080, 9080"
+echo "  • Cassandra: running on port 9042"
+echo "  • Backend:   http://127.0.0.1:8000"
 echo "  • API Docs: http://127.0.0.1:8000/docs"
 echo "  • Frontend: http://localhost:5173"
 echo ""

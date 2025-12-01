@@ -45,20 +45,26 @@ async def create_entry(entry: CreateEntry = Body(...)):
     
     new_entry = await entry_collection.insert_one(entry_dict)
     created_entry = await entry_collection.find_one({"_id": new_entry.inserted_id})
-    from app.databases.dgraph import dgraph_client
-    await dgraph_client.create_entry_from_mongo(created_entry)
     
+    # Dgraph logging (resilient)
+    try:
+        from app.databases.dgraph import dgraph_client
+        await dgraph_client.create_entry_from_mongo(created_entry)
+    except Exception as e:
+        print(f"Warning: Failed to sync entry to Dgraph: {e}")
     
-    
-    #cassandra
-    await cassandra_client.increment_entry_count(entry.userId)
-    if entry_dict.get("song") and entry_dict["song"].get("_id"):
-        await cassandra_client.log_song_selection(
-            user_id = entry.userId,
-            entry_id = str(created_entry["_id"]),
-            song_id = entry_dict["song"]["_id"],
-            mood = entry_dict["song"].get("mood", "unknown")
-        )
+    # Cassandra logging (resilient)
+    try:
+        await cassandra_client.increment_entry_count(entry.userId)
+        if entry_dict.get("song") and entry_dict["song"].get("_id"):
+            await cassandra_client.log_song_selection(
+                user_id = entry.userId,
+                entry_id = str(created_entry["_id"]),
+                song_id = entry_dict["song"]["_id"],
+                mood = entry_dict["song"].get("mood", "unknown")
+            )
+    except Exception as e:
+        print(f"Warning: Failed to log stats to Cassandra: {e}")
         
     return created_entry
 
