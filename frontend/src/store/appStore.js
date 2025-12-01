@@ -57,7 +57,8 @@ const useAppStore = create((set, get) => ({
           artist: entry.song.artist,
           album: entry.song.album || '',
           mood: entry.song.mood,
-          albumArt: entry.song.albumArt || '',
+          coverUrl: entry.song.coverUrl || entry.song.albumArt || '',
+          spotifyUri: entry.song.spotifyUri || '',
           duration: entry.song.duration || 180, // Default 3 minutes if not provided
           createdAt: entry.song.createdAt || new Date().toISOString(),
         } : null,

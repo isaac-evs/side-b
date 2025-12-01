@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Music, List, Grid } from 'lucide-react';
-import { songs } from '../../../data/mockData';
+import { songsAPI } from '../../../services/api';
 
 const MusicLibrary = () => {
+  const [songs, setSongs] = useState([]);
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'grid'
   const [selectedMood, setSelectedMood] = useState('all');
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const data = await songsAPI.getSongs();
+        setSongs(data);
+      } catch (error) {
+        console.error("Failed to fetch songs:", error);
+      }
+    };
+    fetchSongs();
+  }, []);
 
   const moods = {
     all: { name: 'All Songs', color: '#666' },
@@ -121,25 +134,45 @@ const MusicLibrary = () => {
             <div className="space-y-1">
               {filteredSongs.map((song, index) => (
                 <div
-                  key={song.id}
+                  key={song.id || song._id}
                   className="flex items-center p-2 rounded hover:bg-white/60 transition-colors cursor-pointer group"
                 >
                   <div className="w-8 text-xs text-center" style={{ color: '#999' }}>
                     {index + 1}
                   </div>
                   <div 
-                    className="w-10 h-10 rounded flex items-center justify-center mr-3 text-white text-lg"
+                    className="w-10 h-10 rounded flex items-center justify-center mr-3 text-white text-lg overflow-hidden relative"
                     style={{
-                      background: `linear-gradient(135deg, ${song.mood === 'joy' ? '#F6DD73' : 
-                                                             song.mood === 'calm' ? '#6EC9B1' : 
-                                                             song.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
-                                                             ${song.mood === 'joy' ? '#f5c842' : 
-                                                               song.mood === 'calm' ? '#4db89a' : 
-                                                               song.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`,
                       boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
                     }}
                   >
-                    ♪
+                    {/* Gradient Background */}
+                    <div 
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(135deg, ${song.mood === 'joy' ? '#F6DD73' : 
+                                                               song.mood === 'calm' ? '#6EC9B1' : 
+                                                               song.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
+                                                               ${song.mood === 'joy' ? '#f5c842' : 
+                                                                 song.mood === 'calm' ? '#4db89a' : 
+                                                                 song.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`
+                      }}
+                    />
+                    
+                    {/* Icon if no image */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                        {!song.coverUrl && '♪'}
+                    </div>
+
+                    {/* Image */}
+                    {song.coverUrl && (
+                        <img 
+                            src={song.coverUrl} 
+                            className="absolute inset-0 w-full h-full object-cover z-20" 
+                            onError={(e) => e.target.style.display = 'none'}
+                            alt={song.title}
+                        />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p 
@@ -171,22 +204,42 @@ const MusicLibrary = () => {
             <div className="grid grid-cols-3 gap-4">
               {filteredSongs.map((song) => (
                 <div
-                  key={song.id}
+                  key={song.id || song._id}
                   className="cursor-pointer group"
                 >
                   <div 
-                    className="w-full aspect-square rounded-lg mb-2 flex items-center justify-center text-white text-4xl transition-transform group-hover:scale-105"
+                    className="w-full aspect-square rounded-lg mb-2 flex items-center justify-center text-white text-4xl transition-transform group-hover:scale-105 overflow-hidden relative"
                     style={{
-                      background: `linear-gradient(135deg, ${song.mood === 'joy' ? '#F6DD73' : 
-                                                             song.mood === 'calm' ? '#6EC9B1' : 
-                                                             song.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
-                                                             ${song.mood === 'joy' ? '#f5c842' : 
-                                                               song.mood === 'calm' ? '#4db89a' : 
-                                                               song.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`,
                       boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
                     }}
                   >
-                    ♪
+                    {/* Gradient Background */}
+                    <div 
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(135deg, ${song.mood === 'joy' ? '#F6DD73' : 
+                                                               song.mood === 'calm' ? '#6EC9B1' : 
+                                                               song.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
+                                                               ${song.mood === 'joy' ? '#f5c842' : 
+                                                                 song.mood === 'calm' ? '#4db89a' : 
+                                                                 song.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`
+                      }}
+                    />
+                    
+                    {/* Icon if no image */}
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                        {!song.coverUrl && '♪'}
+                    </div>
+
+                    {/* Image */}
+                    {song.coverUrl && (
+                        <img 
+                            src={song.coverUrl} 
+                            className="absolute inset-0 w-full h-full object-cover z-20" 
+                            onError={(e) => e.target.style.display = 'none'}
+                            alt={song.title}
+                        />
+                    )}
                   </div>
                   <p 
                     className="text-sm font-medium truncate"

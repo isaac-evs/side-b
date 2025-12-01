@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
-import { getSongsByMood } from '../data/mockData';
+import { songsAPI } from '../services/api';
 
 // Icon Components
 const QuaverIcon = ({ className = "w-10 h-10" }) => (
@@ -92,9 +92,19 @@ const SongSelectorPage = () => {
       return;
     }
 
-    // Get all songs based on the selected mood
-    const moodSongs = getSongsByMood(currentEntry.mood);
-    setSongs(moodSongs);
+    const fetchSongs = async () => {
+      try {
+        // Fetch songs filtered by mood from the API
+        console.log("Fetching songs for mood:", currentEntry.mood);
+        const moodSongs = await songsAPI.getSongsByMood(currentEntry.mood);
+        console.log("Fetched songs:", moodSongs);
+        setSongs(moodSongs);
+      } catch (error) {
+        console.error("Failed to fetch songs:", error);
+      }
+    };
+
+    fetchSongs();
   }, [currentEntry.mood, navigate]);
 
   const handleShuffle = () => {
@@ -136,16 +146,28 @@ const SongSelectorPage = () => {
     const song = songs[index];
     if (!song) return;
     
-    // Since we don't have actual audio URLs, we'll just simulate playback
-    // In a real app, you would load the actual audio file here
     setCurrentSongIndex(index);
     setIsPlaying(true);
-    
-    // Don't actually try to load audio since we don't have real audio files
-    // audioRef.current.src = song.albumArt; // This was causing the error
+
+    if (song.previewUrl) {
+      audioRef.current.src = song.previewUrl;
+      
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.error("Playback failed:", error);
+        });
+      }
+    } else {
+      console.log("No preview URL available for", song.title);
+      alert("Sorry, no preview available for this song.");
+    }
   };
 
-  const pauseSong = () => setIsPlaying(false);
+  const pauseSong = () => {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  };
 
   const playNextSong = () => {
     if (songs.length === 0) return;
@@ -293,10 +315,14 @@ const SongSelectorPage = () => {
 
       {/* Main content - song grid */}
       <div className="flex items-center justify-center w-full min-h-screen pt-24 pb-24">
+        {/* Debug info */}
+        <div className="fixed top-20 left-6 bg-black/50 text-white p-2 rounded text-xs z-50">
+          Songs loaded: {songs.length} | Mood: {currentEntry.mood}
+        </div>
         <main className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full max-w-5xl">
           {songs.map((song, index) => (
             <div
-              key={song.id}
+              key={song.id || song._id}
               onClick={() => handleSelectSong(song, index)}
               className="relative w-full aspect-square cursor-pointer group"
             >
@@ -304,19 +330,38 @@ const SongSelectorPage = () => {
                 className={`relative w-full h-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 transform group-hover:scale-105 ${
                   currentSongIndex === index && isPlaying 
                     ? "ring-4 ring-yellow-400 shadow-lg shadow-yellow-400/50 scale-105" 
-                    : selectedSong?.id === song.id
+                    : (selectedSong?.id || selectedSong?._id) === (song.id || song._id)
                     ? "ring-4 ring-green-500"
                     : ""
                 }`}
               >
-                <img
-                  src={song.albumArt}
-                  alt={song.title}
-                  className="w-full h-full object-cover"
-                />
+                {/* Gradient Fallback / Placeholder */}
+                <div 
+                  className="absolute inset-0 flex items-center justify-center text-white text-4xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${song.mood === 'joy' ? '#F6DD73' : 
+                                                           song.mood === 'calm' ? '#6EC9B1' : 
+                                                           song.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
+                                                           ${song.mood === 'joy' ? '#f5c842' : 
+                                                             song.mood === 'calm' ? '#4db89a' : 
+                                                             song.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`
+                  }}
+                >
+                  ♪
+                </div>
+
+                {/* Image Overlay */}
+                {song.coverUrl && (
+                  <img
+                    src={song.coverUrl}
+                    alt={song.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => e.target.style.display = 'none'}
+                  />
+                )}
                 
                 {/* Selected indicator */}
-                {selectedSong?.id === song.id && (
+                {(selectedSong?.id || selectedSong?._id) === (song.id || song._id) && (
                   <div className="absolute top-2 right-2 bg-green-500 rounded-full p-1">
                     <CheckIcon className="w-5 h-5 text-white" />
                   </div>

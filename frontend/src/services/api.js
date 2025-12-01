@@ -156,6 +156,18 @@ export const songsAPI = {
     const response = await api.post('/songs/', songData);
     return response.data;
   },
+
+  getSongs: async () => {
+    const response = await api.get('/songs/');
+    return response.data;
+  },
+};
+
+export const spotifyAPI = {
+  getToken: async (code) => {
+    const response = await api.post('/spotify/token', { code });
+    return response.data;
+  }
 };
 
 export default api;

@@ -66,6 +66,34 @@ class UpdateUser(BaseModel):
 
 # --- Song Models ---
 
+class SongModel(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")
+    title: str
+    artist: str
+    album: Optional[str] = ""
+    
+    # Music Provider Integration (Deezer/Spotify)
+    spotifyUri: Optional[str] = None # Kept for backward compatibility
+    deezerLink: Optional[str] = None
+    coverUrl: str
+    previewUrl: Optional[str] = None
+    description: Optional[str] = "No description provided."
+    mood: str
+    duration: Optional[int] = 0
+
+    class Config:
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "title": "Midnight City",
+                "artist": "M83",
+                "deezerLink": "https://www.deezer.com/track/...",
+                "coverUrl": "https://cdn-images.dzcdn.net/...",
+                "description": "Perfect for late night coding.",
+                "mood": "energetic"
+            }
+        }
+
 class Song(MongoBaseModel):
     title: str
     artist: str

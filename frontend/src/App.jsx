@@ -9,6 +9,7 @@ import AuthPage from './pages/AuthPage';
 import DiaryInputPage from './pages/DiaryInputPage';
 import SongSelectorPage from './pages/SongSelectorPage';
 import Desktop from './pages/Desktop';
+import SpotifyCallback from './pages/SpotifyCallback';
 
 // Protected Route Component - only for Desktop
 const ProtectedRoute = ({ children }) => {
@@ -57,6 +58,7 @@ function AppContent() {
         <Route path="/diary-input" element={<DiaryInputPage />} />
         <Route path="/song-selector" element={<SongSelectorPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/callback" element={<SpotifyCallback />} />
         
         {/* Protected route - requires authentication */}
         <Route 
