@@ -4,6 +4,7 @@ from bson import ObjectId
 
 from app.models import FileModel, CreateFile
 from app.database import file_collection
+from app.databases.cassandra import cassandra_client
 
 router = APIRouter()
 
@@ -14,6 +15,15 @@ async def create_file(file: CreateFile = Body(...)):
     
     new_file = await file_collection.insert_one(file_dict)
     created_file = await file_collection.find_one({"_id": new_file.inserted_id})
+    
+    #cassandra
+    await cassandra_client.log_media_attachment(
+        user_id=file.userId,
+        entry_id=file.entryId,
+        file_id=str(created_file["_id"]),
+        file_type=file.fileType,
+    )
+    
     return created_file
 
 @router.get("/", response_description="List files", response_model=List[FileModel])
