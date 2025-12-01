@@ -23,7 +23,7 @@ class DatabaseManager:
         }
         
         # Track which databases are active
-        self.active_databases = ["mongodb", "cassandra"]  # Only MongoDB is active initially
+        self.active_databases = ["mongodb", "cassandra", "dgraph"]  # Only MongoDB is active initially
     
     async def connect_all(self) -> None:
         """Connect to all active databases."""
@@ -51,6 +51,10 @@ class DatabaseManager:
         """Initialize all active databases (create indexes, schemas, etc.)."""
         for db_name in self.active_databases:
             db_client = self.databases.get(db_name)
+
+            if db_name == "dgraph":
+                await dgraph_client.apply_schema()
+
             if db_client:
                 try:
                     await db_client.initialize()

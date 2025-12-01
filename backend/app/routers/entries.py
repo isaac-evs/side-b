@@ -45,6 +45,10 @@ async def create_entry(entry: CreateEntry = Body(...)):
     
     new_entry = await entry_collection.insert_one(entry_dict)
     created_entry = await entry_collection.find_one({"_id": new_entry.inserted_id})
+    from app.databases.dgraph import dgraph_client
+    await dgraph_client.create_entry_from_mongo(created_entry)
+    
+    
     
     #cassandra
     await cassandra_client.increment_entry_count(entry.userId)
