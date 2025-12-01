@@ -13,7 +13,14 @@ def serialize_mongo_obj(obj):
     if isinstance(obj, list):
         return [serialize_mongo_obj(item) for item in obj]
     if isinstance(obj, dict):
-        return {k: serialize_mongo_obj(v) for k, v in obj.items()}
+        new_obj = {}
+        for k, v in obj.items():
+            if k == "_id":
+                new_obj["id"] = str(v)
+                new_obj["_id"] = str(v)
+            else:
+                new_obj[k] = serialize_mongo_obj(v)
+        return new_obj
     return obj
 
 router = APIRouter()

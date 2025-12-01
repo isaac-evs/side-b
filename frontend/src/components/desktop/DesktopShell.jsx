@@ -91,7 +91,7 @@ const DesktopShell = () => {
         // Use _id field from MongoDB
         const entryId = todayEntry._id || todayEntry.id;
         
-        // Create file in the database
+        // Create file in the database (Backend now automatically links it to the entry)
         const createdFile = await filesAPI.createFile({
           entryId: entryId,
           fileName: file.fileName || file.name,
@@ -108,9 +108,6 @@ const DesktopShell = () => {
             content: file.content || file.metadata?.content || ''
           }
         });
-        
-        // Add file reference to entry
-        await entriesAPI.addFileToEntry(entryId, createdFile._id || createdFile.id);
         
         // Update local state
         addFileToEntry(entryId, file);

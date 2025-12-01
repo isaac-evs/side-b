@@ -1,7 +1,7 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [91047] using WatchFiles
-INFO:     Started server process [91068]
+INFO:     Started reloader process [102260] using WatchFiles
+INFO:     Started server process [102276]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ✓ Connected to mongodb
@@ -14,21 +14,18 @@ INFO:     Application startup complete.
 ✓ Initialized cassandra
 ✓ Initialized dgraph
 ✓ Cassandra tables initialized
-INFO:     127.0.0.1:35090 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:35100 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:58682 - "OPTIONS /auth/register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58682 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:58692 - "OPTIONS /entries/?userId=692dfce82013ced96ab6cb12 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58692 - "GET /entries/?userId=692dfce82013ced96ab6cb12 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44746 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44760 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44746 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:44760 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:57556 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57556 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:57556 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57572 - "OPTIONS /entries/?userId=692e0062db67f5b566542cf5 HTTP/1.1" 200 OK
 Warning: Failed to log stats to Cassandra: Error from server: code=2200 [Invalid query] message="Invalid INTEGER constant (2) for "song_id" of type text"
-INFO:     127.0.0.1:58682 - "POST /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36966 - "GET /entries/?userId=692dfce82013ced96ab6cb12 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36966 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36966 - "OPTIONS /entries/692dfce82013ced96ab6cb13/add-file HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36966 - "PATCH /entries/692dfce82013ced96ab6cb13/add-file HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36966 - "GET /entries/?userId=692dfce82013ced96ab6cb12 HTTP/1.1" 200 OK
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [91068]
-INFO:     Stopping reloader process [91047]
+INFO:     127.0.0.1:57556 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57572 - "GET /entries/?userId=692e0062db67f5b566542cf5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55806 - "GET /entries/?userId=692e0062db67f5b566542cf5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55806 - "OPTIONS /files/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55806 - "POST /files/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55806 - "GET /entries/?userId=692e0062db67f5b566542cf5 HTTP/1.1" 200 OK
