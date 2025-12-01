@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import create_indexes
+from app.databases.manager import db_manager
 from app.routers import users, entries, files, songs, auth
 
 @asynccontextmanager
@@ -9,6 +10,9 @@ async def lifespan(app: FastAPI):
     # Startup: Initialize database indexes
     await create_indexes()
     print("✓ Database initialized")
+    # Initialize cassandra tables
+    await db_manager.initialize_all()
+    print("✓ Cassandra tables initialized")
     
     yield
     

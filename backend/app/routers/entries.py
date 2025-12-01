@@ -5,6 +5,7 @@ from datetime import datetime
 
 from app.models import Entry, CreateEntry
 from app.database import entry_collection, file_collection
+from app.databases.cassandra import cassandra_client
 
 def serialize_mongo_obj(obj):
     if isinstance(obj, ObjectId):
@@ -44,6 +45,17 @@ async def create_entry(entry: CreateEntry = Body(...)):
     
     new_entry = await entry_collection.insert_one(entry_dict)
     created_entry = await entry_collection.find_one({"_id": new_entry.inserted_id})
+    
+    #cassandra
+    await cassandra_client.increment_entry_count(entry.userId)
+    if entry_dict.get("song") and entry_dict["song"].get("_id"):
+        await cassandra_client.log_song_selection(
+            user_id = entry.userId,
+            entry_id = str(created_entry["_id"]),
+            song_id = entry_dict["song"]["_id"],
+            mood = entry_dict["song"].get("mood", "unknown")
+        )
+        
     return created_entry
 
 @router.patch("/{id}/add-file", response_description="Add file to entry", response_model=Entry)
