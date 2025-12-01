@@ -23,7 +23,7 @@ class DatabaseManager:
         }
         
         # Track which databases are active
-        self.active_databases = ["mongodb", "dgraph"]  # Only MongoDB is active initially
+        self.active_databases = ["mongodb", "cassandra", "dgraph"]  # Only MongoDB is active initially
     
     async def connect_all(self) -> None:
         """Connect to all active databases."""

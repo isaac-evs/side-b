@@ -16,3 +16,6 @@ passlib[bcrypt]
 python-jose
 bcrypt
 dnspython
+chromadb
+transformers
+sentence-transformers
