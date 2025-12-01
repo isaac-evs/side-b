@@ -3,15 +3,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import create_indexes
 from app.routers import users, entries, files, songs, auth
+from app.databases.manager import db_manager
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Initialize database indexes
+    await db_manager.connect_all()
     await create_indexes()
     print("✓ Database initialized")
     
     yield
-    
+    await db_manager.disconnect_all()
     # Shutdown: Clean up resources
     print("✓ Application shutdown")
 
