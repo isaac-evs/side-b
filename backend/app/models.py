@@ -72,8 +72,7 @@ class SongModel(BaseModel):
     artist: str
     album: Optional[str] = ""
     
-    # Music Provider Integration (Deezer/Spotify)
-    spotifyUri: Optional[str] = None # Kept for backward compatibility
+    # Music Provider Integration (Deezer)
     deezerLink: Optional[str] = None
     coverUrl: str
     previewUrl: Optional[str] = None

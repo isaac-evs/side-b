@@ -53,7 +53,6 @@ SCHEMA = """
 <song_id>: string @index(hash) .
 <song_mood>: string @index(hash, term) .
 <songs>: [uid] @reverse .
-<spotify_id>: string .
 <strength>: float .
 <tag_name>: string @index(term) .
 <tagged_with>: [uid] @reverse .
@@ -130,7 +129,7 @@ class DgraphClient:
 
     async def upsert_song(self, song_payload: Dict[str, Any]) -> Dict[str, Any]:
         song_node = {"uid": f"_:{song_payload.get('song_id')}", "song_id": song_payload.get("song_id")}
-        for k in ("title", "artist", "song_mood", "album", "album_art", "total_plays", "popularity_score", "spotify_id"):
+        for k in ("title", "artist", "song_mood", "album", "album_art", "total_plays", "popularity_score"):
             if song_payload.get(k) is not None:
                 song_node[k] = song_payload[k]
         if song_payload.get("similar_songs"):

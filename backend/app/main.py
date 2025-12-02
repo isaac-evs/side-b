@@ -3,8 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import create_indexes
 from app.databases.manager import db_manager
-from app.routers import users, entries, files, songs, auth, spotify
-from app.databases.manager import db_manager
+from app.routers import users, entries, files, songs, auth
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -49,4 +48,3 @@ app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(entries.router, prefix="/entries", tags=["entries"])
 app.include_router(files.router, prefix="/files", tags=["files"])
 app.include_router(songs.router, prefix="/songs", tags=["songs"])
-app.include_router(spotify.router, prefix="/spotify", tags=["spotify"])

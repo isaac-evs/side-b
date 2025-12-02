@@ -1,89 +1,402 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [254913] using WatchFiles
+INFO:     Started reloader process [31478] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [254929]
+INFO:     Started server process [31500]
 INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
 INFO:     Application startup complete.
 ✓ Connected to mongodb
-✓ Connected to Cassandra
 ✓ Connected to cassandra
 ✓ Connected to Dgraph
 ✓ Connected to dgraph
 ✓ Database initialized
 ✓ Initialized mongodb
-✓ Initialized cassandra
+✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
 ✓ Initialized dgraph
 ✓ Cassandra tables initialized
-INFO:     127.0.0.1:50510 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50520 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55476 - "OPTIONS /auth/register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55476 - "POST /auth/register HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:55490 - "POST /auth/register HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:55490 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:55490 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45076 - "OPTIONS /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45076 - "GET /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55490 - "POST /entries/ HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
+INFO:     127.0.0.1:41502 - "GET /songs/mood/sad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "GET /songs/mood/sad HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'generate_song_list.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [31500]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [39126]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'generate_moods_with_llm.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [39126]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [39193]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'fetch_250_deezer_tracks.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [39193]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [39254]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_songs_250.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [39254]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [39315]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'generate_song_list.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [39315]
+WARNING:  WatchFiles detected changes in 'generate_moods_with_llm.py'. Reloading...
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [40822]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'fetch_250_deezer_tracks.py'. Reloading...
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [40872]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_songs_250.py'. Reloading...
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [40931]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [40977]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'seed_songs_spotify.py', 'seed_songs_deezer.py', 'fetch_deezer_tracks.py', 'fetch_spotify_tracks.py', 'seed_songs.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [40977]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42096]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/routers/spotify.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42096]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+Process SpawnProcess-11:
 Traceback (most recent call last):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/applications.py", line 1134, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/applications.py", line 107, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 125, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 111, in app
-    response = await f(request)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 413, in app
-    content = await serialize_response(
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 254, in serialize_response
-    raise ResponseValidationError(
-fastapi.exceptions.ResponseValidationError: 1 validation errors:
-  {'type': 'int_parsing', 'loc': ('response', 'song', '_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': '692e2032384a5a2ddc32f059'}
-
-INFO:     127.0.0.1:55626 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55630 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55626 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55630 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55630 - "GET /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55630 - "GET /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37664 - "GET /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37664 - "OPTIONS /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37664 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37664 - "GET /entries/?userId=692e20b7ec316451706633b4 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48402 - "GET /songs/mood/stress HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48412 - "GET /songs/mood/stress HTTP/1.1" 200 OK
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_compat.py", line 60, in asyncio_run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/isaac/Documents/code/side-b/backend/app/main.py", line 6, in <module>
+    from app.routers import users, entries, files, songs, auth, spotify
+ImportError: cannot import name 'spotify' from 'app.routers' (/home/isaac/Documents/code/side-b/backend/app/routers/__init__.py)
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+Process SpawnProcess-12:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_compat.py", line 60, in asyncio_run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/isaac/Documents/code/side-b/backend/app/main.py", line 51, in <module>
+    app.include_router(spotify.router, prefix="/spotify", tags=["spotify"])
+NameError: name 'spotify' is not defined
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42349]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42349]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42492]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/models.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42492]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42537]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/models.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42537]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42622]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42622]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42744]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42744]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42886]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42886]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42933]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [42933]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [42986]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+✓ Connected to mongodb
+✓ Connected to cassandra
+✓ Connected to Dgraph
+✓ Connected to dgraph
+✓ Database initialized
+✓ Initialized mongodb
+✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
+✓ Initialized dgraph
+✓ Cassandra tables initialized
+INFO:     127.0.0.1:52220 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52220 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37568 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37568 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49062 - "GET /songs/mood/calm HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49062 - "GET /songs/mood/calm HTTP/1.1" 200 OK

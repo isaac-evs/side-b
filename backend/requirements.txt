@@ -19,3 +19,6 @@ dnspython
 chromadb
 transformers
 sentence-transformers
+torch
+accelerate
+requests
