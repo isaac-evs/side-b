@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
+import blueShape from '../assets/blue.svg';
+import pinkShape from '../assets/pink.svg';
+import greenShape from '../assets/green.svg';
+import yellowShape from '../assets/yellow.svg';
+import orangeShape from '../assets/orange.svg';
 
 const AuthPage = () => {
   const navigate = useNavigate();
@@ -80,26 +86,142 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500 relative overflow-hidden flex items-center justify-center p-4">
+      {/* Floating Background Shapes - Framer Motion Animations */}
+      {/* Blue - top right area */}
+      <motion.img 
+        src={blueShape} 
+        alt="" 
+        className="absolute opacity-80" 
+        style={{ 
+          top: '-200px',
+          right: '-50px',
+          width: '650px', 
+          height: '650px',
+        }}
+        animate={{
+          x: [0, -150, -300, -150, 0],
+          y: [0, 150, 0, -150, 0],
+          rotate: [0, 90, 180, 270, 360],
+        }}
+        transition={{
+          duration: 45,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+      
+      {/* Pink - bottom left area */}
+      <motion.img 
+        src={pinkShape} 
+        alt="" 
+        className="absolute opacity-70" 
+        style={{ 
+          bottom: '-150px',
+          left: '20px',
+          width: '800px', 
+          height: '800px',
+        }}
+        animate={{
+          x: [0, 150, 300, 150, 0],
+          y: [0, -100, 0, 100, 0],
+          rotate: [0, -90, -180, -270, -360],
+        }}
+        transition={{
+          duration: 50,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+      
+      {/* Green - upper left */}
+      <motion.img 
+        src={greenShape} 
+        alt="" 
+        className="absolute opacity-75" 
+        style={{ 
+          top: '-450px',
+          left: '-200px',
+          width: '900px', 
+          height: '900px',
+        }}
+        animate={{
+          x: [0, 100, 200, 100, 0],
+          y: [0, 150, 300, 150, 0],
+          rotate: [0, 60, 120, 180, 240, 300, 360],
+        }}
+        transition={{
+          duration: 55,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+      
+      {/* Yellow - lower right */}
+      <motion.img 
+        src={yellowShape} 
+        alt="" 
+        className="absolute opacity-80" 
+        style={{ 
+          bottom: '0px',
+          right: '100px',
+          width: '520px', 
+          height: '520px',
+        }}
+        animate={{
+          x: [0, -120, -240, -120, 0],
+          y: [0, -80, -160, -80, 0],
+          rotate: [0, -45, -90, -135, -180],
+        }}
+        transition={{
+          duration: 40,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+      
+      {/* Orange - center-ish */}
+      <motion.img 
+        src={orangeShape} 
+        alt="" 
+        className="absolute opacity-60" 
+        style={{ 
+          top: '150px',
+          left: '-100px',
+          width: '320px', 
+          height: '320px',
+        }}
+        animate={{
+          x: [0, 180, 360, 180, 0],
+          y: [0, 50, 100, 50, 0],
+          rotate: [0, 180, 360, 180, 0],
+        }}
+        transition={{
+          duration: 35,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      <div className="w-full max-w-md relative z-10">
         {/* Logo/Brand */}
         <h1 className="text-6xl font-mea-culpa text-center text-gray-800 dark:text-white mb-8" style={{ fontFamily: '"Mea Culpa", cursive' }}>
           SIDE-B
         </h1>
 
         {/* Auth Card */}
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl p-8">
+        <div className="relative bg-white/40 dark:bg-gray-800/40 backdrop-blur-md shadow-xl p-8">
           {/* Toggle Buttons */}
-          <div className="flex mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+          <div className="flex mb-6 bg-white/20 backdrop-blur-md p-1">
             <button
               onClick={() => {
                 setIsLogin(true);
                 setError('');
               }}
-              className={`flex-1 py-2 rounded-md transition-all ${
+              className={`flex-1 py-2 transition-all ${
                 isLogin
-                  ? 'bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white'
-                  : 'text-gray-600 dark:text-gray-400'
+                  ? 'bg-white/40 shadow-sm text-gray-900 dark:text-white font-medium'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/10'
               }`}
             >
               Login
@@ -109,10 +231,10 @@ const AuthPage = () => {
                 setIsLogin(false);
                 setError('');
               }}
-              className={`flex-1 py-2 rounded-md transition-all ${
+              className={`flex-1 py-2 transition-all ${
                 !isLogin
-                  ? 'bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white'
-                  : 'text-gray-600 dark:text-gray-400'
+                  ? 'bg-white/40 shadow-sm text-gray-900 dark:text-white font-medium'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-white/10'
               }`}
             >
               Register
@@ -138,7 +260,7 @@ const AuthPage = () => {
                   required
                   value={loginData.username}
                   onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Enter your username"
                 />
               </div>
@@ -152,7 +274,7 @@ const AuthPage = () => {
                   required
                   value={loginData.password}
                   onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Enter your password"
                 />
               </div>
@@ -160,7 +282,7 @@ const AuthPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 bg-white/40 backdrop-blur-md text-gray-900 rounded-none font-medium hover:bg-white/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {loading ? 'Logging in...' : 'Login'}
               </button>
@@ -177,7 +299,7 @@ const AuthPage = () => {
                   required
                   value={registerData.name}
                   onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Enter your full name"
                 />
               </div>
@@ -191,7 +313,7 @@ const AuthPage = () => {
                   required
                   value={registerData.username}
                   onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Choose a username"
                 />
               </div>
@@ -205,7 +327,7 @@ const AuthPage = () => {
                   required
                   value={registerData.email}
                   onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Enter your email"
                 />
               </div>
@@ -219,7 +341,7 @@ const AuthPage = () => {
                   required
                   value={registerData.password}
                   onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-3 bg-white/30 backdrop-blur-md text-gray-800 dark:text-white placeholder-gray-500 outline-none focus:bg-white/40 transition-all rounded-none"
                   placeholder="Choose a password"
                   minLength={6}
                 />
@@ -228,7 +350,7 @@ const AuthPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 bg-white/40 backdrop-blur-md text-gray-900 rounded-none font-medium hover:bg-white/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>
@@ -236,9 +358,6 @@ const AuthPage = () => {
           )}
 
           {/* Footer */}
-          <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            Your day, one Song
-          </div>
         </div>
       </div>
     </div>
