@@ -50,27 +50,26 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
     >
       <div
         className={`h-full flex flex-col overflow-hidden transition-all duration-200 ${
-          isFocused ? 'shadow-2xl' : 'shadow-md'
+          isFocused ? 'shadow-2xl' : 'shadow-xl'
         }`}
         style={{
-          background: 'linear-gradient(to bottom, #e8e8e8 0%, #f5f5f5 100%)',
-          border: '1px solid rgba(0,0,0,0.3)',
-          borderRadius: '8px',
+          backgroundColor: '#fff',
+          borderRadius: '10px',
           boxShadow: isFocused 
-            ? '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5)' 
-            : '0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5)'
+            ? '0 20px 50px rgba(0,0,0,0.3)' 
+            : '0 10px 30px rgba(0,0,0,0.15)'
         }}
         onClick={() => focusWindow(appId)}
       >
-        {/* Title Bar with Aqua gradient */}
+        {/* Catalina Title Bar */}
         <div 
-          className="window-drag-handle flex items-center justify-between px-3 py-1.5 cursor-move select-none relative overflow-hidden"
+          className="window-drag-handle flex items-center justify-between px-4 py-3 cursor-move select-none relative"
           style={{
-            background: isFocused
-              ? 'linear-gradient(to bottom, #c8d5e5 0%, #9bb0cc 50%, #7a94b8 50%, #6382b0 100%)'
-              : 'linear-gradient(to bottom, #ececec 0%, #d5d5d5 50%, #bebebe 50%, #b0b0b0 100%)',
-            borderBottom: '1px solid rgba(0,0,0,0.15)',
-            minHeight: '22px'
+            backgroundColor: isFocused ? '#f6f6f6' : '#f6f6f6',
+            borderBottom: '1px solid #e1e1e1',
+            height: '38px',
+            borderTopLeftRadius: '10px',
+            borderTopRightRadius: '10px'
           }}
         >
           {/* Traffic Light Buttons (left side) */}
@@ -81,11 +80,10 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
                 e.stopPropagation();
                 closeWindow(appId);
               }}
-              className="w-3 h-3 rounded-full relative transition-all duration-150 hover:brightness-110"
+              className="w-3 h-3 rounded-full relative transition-all duration-150"
               style={{
-                background: 'radial-gradient(circle at 30% 30%, #ff5f52, #e33e32)',
-                border: '0.5px solid rgba(0,0,0,0.3)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.3)'
+                backgroundColor: '#ff5f56',
+                border: '0.5px solid rgba(0,0,0,0.1)',
               }}
               aria-label="Close"
             >
@@ -98,11 +96,10 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
                 e.stopPropagation();
                 minimizeWindow(appId);
               }}
-              className="w-3 h-3 rounded-full relative transition-all duration-150 hover:brightness-110"
+              className="w-3 h-3 rounded-full relative transition-all duration-150"
               style={{
-                background: 'radial-gradient(circle at 30% 30%, #ffbd2e, #f5a623)',
-                border: '0.5px solid rgba(0,0,0,0.3)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.3)'
+                backgroundColor: '#ffbd2e',
+                border: '0.5px solid rgba(0,0,0,0.1)',
               }}
               aria-label="Minimize"
             >
@@ -115,11 +112,10 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
                 e.stopPropagation();
                 maximizeWindow(appId);
               }}
-              className="w-3 h-3 rounded-full relative transition-all duration-150 hover:brightness-110"
+              className="w-3 h-3 rounded-full relative transition-all duration-150"
               style={{
-                background: 'radial-gradient(circle at 30% 30%, #28ca42, #1fa735)',
-                border: '0.5px solid rgba(0,0,0,0.3)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.3)'
+                backgroundColor: '#27c93f',
+                border: '0.5px solid rgba(0,0,0,0.1)',
               }}
               aria-label="Zoom"
             >
@@ -131,11 +127,10 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center space-x-1.5">
             {icon && <span className={isFocused ? 'opacity-90' : 'opacity-50'}>{icon}</span>}
             <span 
-              className="text-xs font-semibold tracking-tight"
+              className="text-sm font-medium tracking-tight"
               style={{
-                color: isFocused ? '#000' : '#666',
-                textShadow: isFocused ? '0 1px 0 rgba(255,255,255,0.8)' : '0 1px 0 rgba(255,255,255,0.5)',
-                fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
+                color: isFocused ? '#333' : '#888',
+                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
               }}
             >
               {title}
@@ -143,17 +138,12 @@ const Window = ({ appId, title, icon, children, minWidth = 400, minHeight = 300 
           </div>
           
           {/* Empty space for symmetry */}
-          <div className="w-20"></div>
+          <div className="w-14"></div>
         </div>
 
-        {/* Window Content with Pinstripes */}
+        {/* Window Content */}
         <div 
-          className="flex-1 overflow-auto relative"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.02) 1px, rgba(0,0,0,0.02) 2px)',
-            backgroundSize: '100% 2px',
-            backgroundColor: '#f5f5f5'
-          }}
+          className="flex-1 overflow-auto relative bg-white dark:bg-gray-900"
         >
           {children}
         </div>

@@ -152,14 +152,14 @@ const DesktopShell = () => {
 
   return (
     <>
-      {/* Aqua Menu Bar */}
+      {/* Catalina Menu Bar */}
       <div 
-        className="fixed top-0 left-0 right-0 h-8 z-50 flex items-center justify-between px-3"
+        className="fixed top-0 left-0 right-0 h-7 z-50 flex items-center justify-between px-4 text-sm"
         style={{
-          background: 'linear-gradient(to bottom, rgba(200, 213, 229, 0.95) 0%, rgba(155, 176, 204, 0.95) 100%)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(0,0,0,0.2)',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          backgroundColor: theme === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)',
+          backdropFilter: 'blur(25px)',
+          boxShadow: '0 1px 0 rgba(0,0,0,0.1)',
+          color: theme === 'dark' ? '#ffffff' : '#000000'
         }}
       >
         <div className="flex items-center space-x-4">
@@ -167,12 +167,9 @@ const DesktopShell = () => {
           <div className="relative">
             <button 
               onClick={() => setAppleMenuOpen(!appleMenuOpen)}
-              className="flex items-center justify-center hover:bg-white/20 p-1 rounded transition-colors"
-              style={{
-                color: '#000'
-              }}
+              className={`flex items-center justify-center hover:bg-white/20 rounded transition-colors ${appleMenuOpen ? 'bg-white/20' : ''}`}
             >
-              <Menu className="w-5 h-5" />
+              <Menu className="w-4 h-4 fill-current" />
             </button>
             
             {/* Apple Menu Dropdown */}
@@ -183,12 +180,13 @@ const DesktopShell = () => {
                   onClick={() => setAppleMenuOpen(false)}
                 />
                 <div 
-                  className="absolute top-full left-0 mt-1 w-48 rounded-lg overflow-hidden z-50"
+                  className="absolute top-full left-0 mt-1 w-56 rounded-lg overflow-hidden z-50 py-1"
                   style={{
-                    background: 'linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%)',
-                    border: '1px solid rgba(0,0,0,0.3)',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5)',
-                    backdropFilter: 'blur(40px)'
+                    backgroundColor: theme === 'dark' ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(25px)',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+                    color: theme === 'dark' ? '#fff' : '#000'
                   }}
                 >
                   <button
@@ -196,47 +194,31 @@ const DesktopShell = () => {
                       openWindow('profile', 'Profile', <User className="w-4 h-4" />);
                       setAppleMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-blue-500 hover:text-white transition-colors"
-                    style={{
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                      color: '#000'
-                    }}
+                    className="w-full text-left px-4 py-1 text-sm hover:bg-blue-500 hover:text-white transition-colors"
                   >
                     About This Mac
                   </button>
-                  <div style={{ height: '1px', background: 'rgba(0,0,0,0.1)', margin: '2px 0' }} />
+                  <div className="h-px bg-gray-400/20 my-1 mx-3" />
                   <button
                     onClick={() => {
                       openWindow('settings', 'Settings', <Settings className="w-4 h-4" />);
                       setAppleMenuOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-blue-500 hover:text-white transition-colors"
-                    style={{
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                      color: '#000'
-                    }}
+                    className="w-full text-left px-4 py-1 text-sm hover:bg-blue-500 hover:text-white transition-colors"
                   >
                     System Preferences...
                   </button>
-                  <div style={{ height: '1px', background: 'rgba(0,0,0,0.1)', margin: '2px 0' }} />
+                  <div className="h-px bg-gray-400/20 my-1 mx-3" />
                   <button
                     onClick={handleForceQuit}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-blue-500 hover:text-white transition-colors"
-                    style={{
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                      color: '#000'
-                    }}
+                    className="w-full text-left px-4 py-1 text-sm hover:bg-blue-500 hover:text-white transition-colors"
                   >
                     Force Quit...
                   </button>
-                  <div style={{ height: '1px', background: 'rgba(0,0,0,0.1)', margin: '2px 0' }} />
+                  <div className="h-px bg-gray-400/20 my-1 mx-3" />
                   <button
                     onClick={handleShutdown}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-blue-500 hover:text-white transition-colors"
-                    style={{
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                      color: '#000'
-                    }}
+                    className="w-full text-left px-4 py-1 text-sm hover:bg-blue-500 hover:text-white transition-colors"
                   >
                     Shut Down...
                   </button>
@@ -251,9 +233,7 @@ const DesktopShell = () => {
               onClick={() => handleMenuClick(item)}
               className="text-sm font-medium hover:bg-white/20 px-2 py-0.5 rounded transition-colors"
               style={{
-                fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                color: '#000',
-                textShadow: '0 1px 0 rgba(255,255,255,0.5)'
+                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
               }}
             >
               {item}
@@ -261,102 +241,87 @@ const DesktopShell = () => {
           ))}
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
+          <button onClick={toggleTheme} className="hover:bg-white/20 p-1 rounded">
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
           <span 
             className="text-sm font-medium"
             style={{
-              fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-              color: '#000',
-              textShadow: '0 1px 0 rgba(255,255,255,0.5)'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
             }}
           >
-            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {currentTime.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
           </span>
         </div>
       </div>
 
-      {/* Aqua Dock */}
+      {/* Catalina Dock */}
       <div className={`fixed bottom-2 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${
         hasMaximizedWindow ? 'translate-y-32 opacity-0' : 'translate-y-0 opacity-100'
       }`}>
         <div 
-          className="relative px-4 py-3"
+          className="px-2 py-2 flex items-end space-x-2"
           style={{
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, rgba(0,0,0,0.1) 100%)',
-            backdropFilter: 'blur(40px)',
-            borderRadius: '20px',
-            border: '1px solid rgba(255,255,255,0.4)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6)',
+            backgroundColor: theme === 'dark' ? 'rgba(30, 30, 30, 0.4)' : 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '24px',
+            border: '1px solid rgba(255,255,255,0.2)',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+            height: '68px'
           }}
         >
-          {/* Brushed metal texture overlay */}
-          <div 
-            className="absolute inset-0 rounded-[20px] opacity-30 pointer-events-none"
-            style={{
-              background: 'repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(255,255,255,0.1) 1px, rgba(255,255,255,0.1) 2px)',
-            }}
-          ></div>
-          
-          <div className="flex items-end space-x-1 relative">
-            {apps.map((app) => {
-              const isOpen = windows[app.id]?.isOpen;
-              const isMinimized = windows[app.id]?.isMinimized;
-              
-              return (
-                <div key={app.id} className="relative group flex flex-col items-center">
-                  <button
-                    onClick={() => {
-                      if (isOpen && !isMinimized) {
-                        minimizeWindow(app.id);
-                      } else {
-                        openWindow(app.id, app.name, app.icon);
-                      }
-                    }}
-                    className="p-3 transition-all duration-200 hover:scale-110 transform-gpu"
-                    style={{
-                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4)',
-                      borderRadius: '8px',
-                      width: '56px',
-                      height: '56px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                    aria-label={app.name}
-                  >
-                    <span className={app.color}>{app.icon}</span>
-                  </button>
-                  
-                  {/* Small arrow indicator for open apps */}
-                  {isOpen && (
-                    <div 
-                      className="absolute -bottom-2 w-1 h-1 rounded-full"
-                      style={{
-                        background: 'rgba(255,255,255,0.9)',
-                        boxShadow: '0 0 4px rgba(255,255,255,0.8)'
-                      }}
-                    />
-                  )}
-                  
-                  {/* Tooltip */}
-                  <div 
-                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none text-xs font-medium"
-                    style={{
-                      background: 'rgba(255, 251, 230, 0.95)',
-                      color: '#000',
-                      border: '1px solid rgba(0,0,0,0.2)',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                    }}
-                  >
-                    {app.name}
-                  </div>
+          {apps.map((app) => {
+            const isOpen = windows[app.id]?.isOpen;
+            const isMinimized = windows[app.id]?.isMinimized;
+            
+            return (
+              <div key={app.id} className="relative group flex flex-col items-center justify-end h-full">
+                <button
+                  onClick={() => {
+                    if (isOpen && !isMinimized) {
+                      minimizeWindow(app.id);
+                    } else {
+                      openWindow(app.id, app.name, app.icon);
+                    }
+                  }}
+                  className="transition-all duration-200 hover:scale-110 active:scale-95 transform-gpu mb-1"
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: theme === 'dark' ? '#2a2a2a' : '#f0f0f0',
+                    borderRadius: '12px',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+                  }}
+                  aria-label={app.name}
+                >
+                  <span className={app.color}>{app.icon}</span>
+                </button>
+                
+                {/* Dot indicator for open apps */}
+                <div 
+                  className={`w-1 h-1 rounded-full bg-black dark:bg-white transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                />
+                
+                {/* Tooltip */}
+                <div 
+                  className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none text-xs"
+                  style={{
+                    backgroundColor: theme === 'dark' ? 'rgba(30, 30, 30, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(10px)',
+                    color: theme === 'dark' ? '#fff' : '#000',
+                    border: '1px solid rgba(0,0,0,0.1)',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                  }}
+                >
+                  {app.name}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
