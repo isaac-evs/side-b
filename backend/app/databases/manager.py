@@ -80,6 +80,14 @@ class DatabaseManager:
                     health_status[db_name] = False
         return health_status
     
+    async def reset_dgraph_data(self) -> None:
+        if "dgraph" in self.active_databases:
+            try:
+                result = await dgraph_client.drop_data_only() 
+                print(f"Dgraph data reset: {result['message']}")
+            except Exception as e:
+                print(f"Failed to reset Dgraph data: {str(e)}")
+    
     def activate_database(self, db_name: str) -> None:
         """
         Activate a database for use.
@@ -105,6 +113,7 @@ class DatabaseManager:
     def get_active_databases(self) -> List[str]:
         """Get list of currently active databases."""
         return self.active_databases.copy()
+
 
 
 # Global database manager instance
