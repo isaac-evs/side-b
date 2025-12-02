@@ -1,12 +1,32 @@
 from fastapi import APIRouter, Body, HTTPException, status
 from typing import List, Union
 from bson import ObjectId
+from pydantic import BaseModel
 
 from app.models import Song, SongModel
 from app.database import song_collection
+from app.services.mood_service import mood_service
 from .entries import serialize_mongo_obj
 
 router = APIRouter()
+
+class RecommendationRequest(BaseModel):
+    text: str
+
+@router.post("/recommend", response_description="Recommend songs based on text", response_model=List[Union[SongModel, Song]])
+async def recommend_songs(request: RecommendationRequest):
+    """
+    Classifies the mood of the input text using ChromaDB and returns matching songs.
+    """
+    mood = await mood_service.classify_mood(request.text)
+    print(f"Recommendation requested for text: '{request.text[:30]}...' -> Detected Mood: {mood}")
+    
+    # Reuse the logic to fetch songs by mood
+    query = {"mood": mood}
+    # Requirement: "top 8 song that fit the diary entry"
+    songs = await song_collection.find(query).limit(8).to_list(8)
+    
+    return [serialize_mongo_obj(song) for song in songs]
 
 @router.post("/", response_description="Add new song", response_model=Song)
 async def create_song(song: Song = Body(...)):

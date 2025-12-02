@@ -3,18 +3,18 @@
 > npm-run-all --parallel dev:css dev:vite
 
 
-> nook-tunes@0.0.0 dev:css
-> tailwindcss -i ./src/input.css -o ./src/output.css --watch
-
-
 > nook-tunes@0.0.0 dev:vite
 > vite
 
+
+> nook-tunes@0.0.0 dev:css
+> tailwindcss -i ./src/input.css -o ./src/output.css --watch
+
 ≈ tailwindcss v4.1.14
 
+Port 5173 is in use, trying another one...
 
   VITE v7.1.10  ready in 109 ms
 
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: use --host to expose
-Done in 96ms
+  ➜  Local:   http://localhost:2:32:04 AM [vite] (client) hmr update /src/output.css
+s

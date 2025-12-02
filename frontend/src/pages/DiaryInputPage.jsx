@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
-import { MoodButton } from '../components/shared';
-import { moodOptions } from '../data/mockData';
 import blueShape from '../assets/blue.svg';
 import pinkShape from '../assets/pink.svg';
 import greenShape from '../assets/green.svg';
@@ -16,7 +14,6 @@ const DiaryInputPage = () => {
   const { isAuthenticated, user } = useAuth();
   const { setEntryText, setEntryMood, currentEntry, entries, fetchEntries } = useAppStore();
   const [text, setText] = useState(currentEntry.text || '');
-  const [selectedMood, setSelectedMood] = useState(currentEntry.mood || null);
   const [checking, setChecking] = useState(true);
 
   const MAX_CHARS = 500;
@@ -51,21 +48,18 @@ const DiaryInputPage = () => {
   }, [isAuthenticated, user, entries, fetchEntries, navigate]);
 
   const handleSubmit = () => {
-    if (!text.trim() || !selectedMood) {
-      alert('Please write your feelings and select a mood!');
+    if (!text.trim()) {
+      alert('Please write your feelings!');
       return;
     }
 
     // Save the entry to state
     setEntryText(text);
-    setEntryMood(selectedMood);
+    // Mood will be determined by AI in the next step
+    setEntryMood(null);
     
     // Navigate to song selector regardless of auth status
     navigate('/song-selector');
-  };
-
-  const handleMoodSelect = (mood) => {
-    setSelectedMood(mood);
   };
 
   const handleTextChange = (e) => {
@@ -265,46 +259,6 @@ const DiaryInputPage = () => {
           </button>
         </div>
 
-        {/* Mood Selection */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center">
-            Select Your Mood
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {moodOptions.map((mood) => {
-              const moodColors = {
-                joy: '#F6DD73',
-                calm: '#6EC9B1',
-                sad: '#5386FE',
-                stress: '#FE5344'
-              };
-              return (
-                <button
-                  key={mood.value}
-                  onClick={() => handleMoodSelect(mood.value)}
-                  className={`
-                    px-6 py-4 border-2 transition-all duration-300
-                    ${selectedMood === mood.value 
-                      ? 'border-gray-800 dark:border-white scale-105' 
-                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-500'
-                    }
-                    bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm
-                  `}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div 
-                      className="w-6 h-6 rounded-full" 
-                      style={{ backgroundColor: moodColors[mood.value] }}
-                    ></div>
-                    <span className="text-lg font-medium text-black dark:text-white">
-                      {mood.label}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </div>
     </div>
   );

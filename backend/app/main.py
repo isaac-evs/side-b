@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import create_indexes
 from app.databases.manager import db_manager
+from app.databases.chromadb import chromadb_client
+from app.services.mood_service import mood_service
 from app.routers import users, entries, files, songs, auth
 
 @asynccontextmanager
@@ -15,8 +17,15 @@ async def lifespan(app: FastAPI):
     await db_manager.initialize_all()
     print("✓ Cassandra tables initialized")
     
+    # Initialize ChromaDB
+    await chromadb_client.connect()
+    await chromadb_client.initialize()
+    await mood_service.initialize_anchors()
+    print("✓ ChromaDB initialized")
+    
     yield
     await db_manager.disconnect_all()
+    await chromadb_client.disconnect()
     # Shutdown: Clean up resources
     print("✓ Application shutdown")
 

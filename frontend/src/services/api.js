@@ -152,6 +152,11 @@ export const songsAPI = {
     return response.data;
   },
   
+  recommendSongs: async (text) => {
+    const response = await api.post('/songs/recommend', { text });
+    return response.data;
+  },
+
   createSong: async (songData) => {
     const response = await api.post('/songs/', songData);
     return response.data;

@@ -50,7 +50,7 @@ const ShuffleIcon = ({ className = "w-5 h-5" }) => (
 const SongSelectorPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { currentEntry, setEntrySong, addEntry, resetCurrentEntry, entries, fetchEntries } = useAppStore();
+  const { currentEntry, setEntrySong, setEntryMood, addEntry, resetCurrentEntry, entries, fetchEntries } = useAppStore();
   const [songs, setSongs] = useState([]);
   const [currentSongIndex, setCurrentSongIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -87,16 +87,33 @@ const SongSelectorPage = () => {
   }, [isAuthenticated, user, entries, fetchEntries, navigate]);
 
   useEffect(() => {
-    if (!currentEntry.mood) {
+    if (!currentEntry.text) {
       navigate('/diary-input');
       return;
     }
 
     const fetchSongs = async () => {
       try {
-        // Fetch songs filtered by mood from the API
-        console.log("Fetching songs for mood:", currentEntry.mood);
-        const moodSongs = await songsAPI.getSongsByMood(currentEntry.mood);
+        let moodSongs = [];
+        
+        if (currentEntry.mood) {
+          // If mood is already set (e.g. manual selection or already classified), fetch by mood
+          console.log("Fetching songs for mood:", currentEntry.mood);
+          moodSongs = await songsAPI.getSongsByMood(currentEntry.mood);
+        } else {
+          // If no mood set, use AI recommendation based on text
+          console.log("Fetching recommendations for text:", currentEntry.text);
+          moodSongs = await songsAPI.recommendSongs(currentEntry.text);
+          
+          // If we got songs, update the mood in the store to match the detected mood
+          if (moodSongs.length > 0 && moodSongs[0].mood) {
+            console.log("AI detected mood:", moodSongs[0].mood);
+            setEntryMood(moodSongs[0].mood);
+            // Note: Setting mood will trigger this effect again, which will fall into the 'if (currentEntry.mood)' block
+            // This ensures consistency and updates the UI background
+          }
+        }
+        
         console.log("Fetched songs:", moodSongs);
         setSongs(moodSongs);
       } catch (error) {
@@ -105,7 +122,7 @@ const SongSelectorPage = () => {
     };
 
     fetchSongs();
-  }, [currentEntry.mood, navigate]);
+  }, [currentEntry.mood, currentEntry.text, navigate, setEntryMood]);
 
   const handleShuffle = () => {
     // Shuffle the current songs array
@@ -150,12 +167,19 @@ const SongSelectorPage = () => {
     setIsPlaying(true);
 
     if (song.previewUrl) {
+      // Reset audio source first to avoid conflicts
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current.load(); // Force reload
+
       audioRef.current.src = song.previewUrl;
       
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-            console.error("Playback failed:", error);
+            console.error("Playback failed for URL:", song.previewUrl, error);
+            // Try to recover or just log
+            setIsPlaying(false);
         });
       }
     } else {

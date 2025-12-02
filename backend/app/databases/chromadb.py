@@ -24,8 +24,14 @@ class ChromaDBClient:
 
     async def initialize(self):
         if self.client:
-            # Create default collection if needed
-            self.collection = self.client.get_or_create_collection(name="entries")
+            # Create default collections
+            self.entries_collection = self.client.get_or_create_collection(name="entries")
+            self.moods_collection = self.client.get_or_create_collection(name="moods")
+
+    def get_collection(self, name: str):
+        if self.client:
+            return self.client.get_or_create_collection(name=name)
+        return None
 
     async def health_check(self):
         if self.client:

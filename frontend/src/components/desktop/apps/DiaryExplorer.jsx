@@ -3,6 +3,25 @@ import useAppStore from '../../../store/appStore';
 import FileIcon from '../FileIcon';
 import { FolderOpen, FileText, Music, Calendar, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
 
+const FileThumbnail = ({ file, fallbackIcon }) => {
+  const [error, setError] = useState(false);
+  
+  const hasImage = (file.type === 'image' || file.type === 'gif') && file.metadata?.imageUrl;
+  
+  if (hasImage && !error) {
+    return (
+      <img 
+        src={file.metadata.imageUrl} 
+        alt={file.name}
+        className="w-8 h-8 object-cover rounded shadow-sm"
+        onError={() => setError(true)}
+      />
+    );
+  }
+  
+  return fallbackIcon;
+};
+
 const DiaryExplorer = () => {
   const { entries } = useAppStore();
   const [selectedEntry, setSelectedEntry] = useState(null);
@@ -251,7 +270,12 @@ const DiaryExplorer = () => {
                   {getVisibleFiles().map((file, index) => (
                     <FileIcon
                       key={`${file.type}-${index}`}
-                      icon={getFileIcon(file.type)}
+                      icon={
+                        <FileThumbnail 
+                          file={file} 
+                          fallbackIcon={getFileIcon(file.type)} 
+                        />
+                      }
                       title={file.name}
                       subtitle={getFileSubtitle(file)}
                       position={{ x: 20 + (index * 140), y: 20 }}
