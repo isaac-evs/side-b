@@ -36,6 +36,7 @@ async def create_file(file: CreateFile = Body(...)):
             entry_id=file.entryId,
             file_id=str(created_file["_id"]),
             file_type=file.fileType,
+            url=file_dict.get("url") or file_dict.get("link") or file_dict.get("filePath")
         )
     except Exception as e:
         print(f"Warning: Failed to log media attachment to Cassandra: {e}")

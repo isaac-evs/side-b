@@ -61,17 +61,25 @@ async def create_entry(entry: CreateEntry = Body(...)):
         print(f"Warning: Failed to sync entry to Dgraph: {e}")
     
     # Cassandra logging (resilient)
-    try:
+    # Log journal text
+    if entry_dict.get("text"):
+        await cassandra_client.log_journal_text(
+            user_id=entry.userId,
+            entry_id=str(created_entry["_id"]),
+            text=entry_dict["text"]
+        )
+    else:
+        # If no text field, just increment entry count
         await cassandra_client.increment_entry_count(entry.userId)
-        if entry_dict.get("song") and entry_dict["song"].get("_id"):
-            await cassandra_client.log_song_selection(
-                user_id = entry.userId,
-                entry_id = str(created_entry["_id"]),
-                song_id = entry_dict["song"]["_id"],
-                mood = entry_dict["song"].get("mood", "unknown")
-            )
-    except Exception as e:
-        print(f"Warning: Failed to log stats to Cassandra: {e}")
+    
+    # Log song selection
+    if entry_dict.get("song") and entry_dict["song"].get("_id"):
+        await cassandra_client.log_song_selection(
+            user_id=entry.userId,
+            entry_id=str(created_entry["_id"]),
+            song_id=entry_dict["song"]["_id"],
+            mood=entry_dict["song"].get("mood", "unknown")
+        )
         
     return created_entry
 
