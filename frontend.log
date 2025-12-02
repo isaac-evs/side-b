@@ -3,93 +3,18 @@
 > npm-run-all --parallel dev:css dev:vite
 
 
-> nook-tunes@0.0.0 dev:css
-> tailwindcss -i ./src/input.css -o ./src/output.css --watch
-
-
 > nook-tunes@0.0.0 dev:vite
 > vite
+
+
+> nook-tunes@0.0.0 dev:css
+> tailwindcss -i ./src/input.css -o ./src/output.css --watch
 
 ≈ tailwindcss v4.1.14
 
 
-  VITE v7.1.10  ready in 175 ms
+  VITE v7.1.10  ready in 112 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-Done in 99ms
-10:32:41 PM [vite] (client) hmr update /src/pages/SpotifyCallback.jsx
-10:32:41 PM [vite] (client) hmr update /src/components/desktop/apps/SpotifyPlayer.jsx
-10:33:16 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:18 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:19 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:20 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:22 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:24 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:25 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:26 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:26 PM [vite] (client) warning: The character "}" is not valid inside a JSX element
-179 |              </div>
-180 |              </div>
-181 |          )}
-    |           ^
-182 |        </div>
-183 |  
-
-  Plugin: vite:esbuild
-  File: /home/isaac/Documents/code/side-b/frontend/src/components/desktop/apps/MusicPlayer.jsx
-10:33:28 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:28 PM [vite] (client) warning: The character "}" is not valid inside a JSX element
-253 |              </div>
-254 |          </div>
-255 |        )}
-    |         ^
-256 |      </div>);
-257 |  
-
-  Plugin: vite:esbuild
-  File: /home/isaac/Documents/code/side-b/frontend/src/components/desktop/apps/MusicPlayer.jsx
-10:33:37 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:37 PM [vite] (client) warning: The character "}" is not valid inside a JSX element
-253 |              </div>
-254 |          </div>
-255 |        )}
-    |         ^
-256 |      </div>);
-257 |  
-
-  Plugin: vite:esbuild
-  File: /home/isaac/Documents/code/side-b/frontend/src/components/desktop/apps/MusicPlayer.jsx
-10:33:40 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:41 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:33:50 PM [vite] (client) hmr update /src/App.jsx, /src/pages/LandingPage.jsx, /src/pages/AuthPage.jsx, /src/pages/DiaryInputPage.jsx, /src/pages/SongSelectorPage.jsx, /src/pages/Desktop.jsx, /src/components/desktop/DesktopShell.jsx, /src/components/desktop/apps/DiaryExplorer.jsx, /src/components/desktop/apps/Profile.jsx, /src/components/desktop/apps/Settings.jsx
-10:33:50 PM [vite] (client) Pre-transform error: Failed to load url /src/pages/SpotifyCallback.jsx (resolved id: /home/isaac/Documents/code/side-b/frontend/src/pages/SpotifyCallback.jsx) in /home/isaac/Documents/code/side-b/frontend/src/App.jsx. Does the file exist?
-10:33:53 PM [vite] (client) hmr update /src/App.jsx, /src/pages/LandingPage.jsx, /src/pages/AuthPage.jsx, /src/pages/DiaryInputPage.jsx, /src/pages/SongSelectorPage.jsx, /src/pages/Desktop.jsx, /src/components/desktop/DesktopShell.jsx, /src/components/desktop/apps/DiaryExplorer.jsx, /src/components/desktop/apps/Profile.jsx, /src/components/desktop/apps/Settings.jsx
-10:33:53 PM [vite] (client) Pre-transform error: Failed to load url /src/pages/SpotifyCallback.jsx (resolved id: /home/isaac/Documents/code/side-b/frontend/src/pages/SpotifyCallback.jsx) in /home/isaac/Documents/code/side-b/frontend/src/App.jsx. Does the file exist?
-10:34:04 PM [vite] (client) hmr update /src/App.jsx
-10:34:06 PM [vite] (client) hmr update /src/App.jsx
-10:34:07 PM [vite] (client) hmr update /src/App.jsx
-10:45:59 PM [vite] (client) page reload index.html
-10:46:42 PM [vite] (client) hmr update /src/pages/LandingPage.jsx
-10:47:33 PM [vite] (client) hmr update /src/pages/DiaryInputPage.jsx
-10:48:52 PM [vite] (client) hmr update /src/pages/SongSelectorPage.jsx
-10:49:42 PM [vite] (client) hmr update /src/pages/Desktop.jsx
-10:49:55 PM [vite] (client) hmr update /src/output.css
-10:51:54 PM [vite] (client) page reload index.html
-10:51:54 PM [vite] (client) hmr update /src/pages/DiaryInputPage.jsx
-10:51:54 PM [vite] (client) hmr update /src/output.css
-10:51:54 PM [vite] (client) hmr update /src/pages/SongSelectorPage.jsx
-10:51:54 PM [vite] (client) hmr update /src/output.css
-10:51:54 PM [vite] (client) hmr update /src/pages/Desktop.jsx
-10:51:54 PM [vite] (client) hmr update /src/output.css
-10:54:25 PM [vite] (client) page reload index.html
-10:54:25 PM [vite] (client) hmr update /src/App.jsx
-10:54:25 PM [vite] (client) hmr update /src/components/desktop/apps/MusicPlayer.jsx
-10:54:25 PM [vite] (client) hmr update /src/components/desktop/apps/SpotifyPlayer.jsx
-10:54:25 PM [vite] (client) hmr update /src/output.css
-10:54:25 PM [vite] (client) hmr update /src/pages/Desktop.jsx
-10:54:25 PM [vite] (client) hmr update /src/pages/DiaryInputPage.jsx
-10:54:25 PM [vite] (client) hmr update /src/pages/LandingPage.jsx
-10:54:25 PM [vite] (client) hmr update /src/pages/SongSelectorPage.jsx
-10:54:25 PM [vite] (client) hmr update /src/App.jsx, /src/pages/LandingPage.jsx, /src/pages/AuthPage.jsx, /src/pages/DiaryInputPage.jsx, /src/pages/SongSelectorPage.jsx, /src/pages/Desktop.jsx, /src/components/desktop/DesktopShell.jsx, /src/components/desktop/apps/DiaryExplorer.jsx, /src/components/desktop/apps/Profile.jsx, /src/components/desktop/apps/Settings.jsx
-10:54:25 PM [vite] (client) hmr update /src/pages/SpotifyCallback.jsx
+Done in 199ms
