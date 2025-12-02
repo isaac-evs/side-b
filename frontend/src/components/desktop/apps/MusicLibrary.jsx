@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Music, List, Grid } from 'lucide-react';
-import { songsAPI } from '../../../services/api';
+import useAppStore from '../../../store/appStore';
 
 const MusicLibrary = () => {
+  const { entries } = useAppStore();
   const [songs, setSongs] = useState([]);
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'grid'
   const [selectedMood, setSelectedMood] = useState('all');
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const data = await songsAPI.getSongs();
-        setSongs(data);
-      } catch (error) {
-        console.error("Failed to fetch songs:", error);
-      }
-    };
-    fetchSongs();
-  }, []);
+    // Extract songs from entries
+    const userSongs = entries
+      .map(entry => entry.song)
+      .filter(song => song !== null && song !== undefined);
+      
+    // Remove duplicates based on _id or id
+    const uniqueSongs = Array.from(new Map(userSongs.map(song => [song._id || song.id, song])).values());
+    
+    setSongs(uniqueSongs);
+  }, [entries]);
 
   const moods = {
     all: { name: 'All Songs', color: '#666' },

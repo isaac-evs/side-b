@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, Repeat, Shuffle, LogIn } from 'lucide-react';
-import { songsAPI } from '../../../services/api';
+import useAppStore from '../../../store/appStore';
 import SpotifyPlayer from './SpotifyPlayer';
 
 const MusicPlayer = () => {
+  const { entries } = useAppStore();
   const [songs, setSongs] = useState([]);
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -13,19 +14,21 @@ const MusicPlayer = () => {
   const audioRef = useRef(new Audio());
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const data = await songsAPI.getSongs();
-        setSongs(data);
-        if (data.length > 0) {
-          setCurrentSong(data[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch songs:", error);
-      }
-    };
-    fetchSongs();
-  }, []);
+    // Extract songs from entries
+    const userSongs = entries
+      .map(entry => entry.song)
+      .filter(song => song !== null && song !== undefined);
+    
+    // Remove duplicates based on _id or id
+    const uniqueSongs = Array.from(new Map(userSongs.map(song => [song._id || song.id, song])).values());
+    
+    setSongs(uniqueSongs);
+    
+    // Set initial song if none selected and songs exist
+    if (uniqueSongs.length > 0 && !currentSong) {
+      setCurrentSong(uniqueSongs[0]);
+    }
+  }, [entries]);
 
   // Handle Audio Preview Playback
   useEffect(() => {
