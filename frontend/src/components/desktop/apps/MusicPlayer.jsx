@@ -140,32 +140,41 @@ const MusicPlayer = () => {
   }
 
   return (
-    <div className="h-full flex flex-col" style={{ backgroundColor: '#f5f5f5' }}>
+    <div className="h-full flex flex-col bg-white dark:bg-gray-900">
+      {/* Header / Now Playing Info */}
+      <div className="flex items-center justify-center pt-8 pb-4">
+        <div className="text-center">
+            <h2 className="text-sm font-semibold text-gray-900 dark:text-white">{currentSong.title}</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{currentSong.artist} — {currentSong.album || 'Unknown Album'}</p>
+        </div>
+      </div>
+
       {/* Album Art Area */}
-      <div className="flex-1 flex items-center justify-center p-8 relative">
+      <div className="flex-1 flex items-center justify-center p-8">
         <div 
-          className="w-64 h-64 rounded-lg shadow-2xl flex items-center justify-center overflow-hidden relative"
+          className="w-64 h-64 rounded-lg shadow-2xl flex items-center justify-center overflow-hidden relative bg-gray-200 dark:bg-gray-800"
           style={{
-            border: '1px solid rgba(0,0,0,0.1)',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)'
+            boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
           }}
         >
-          {/* Gradient Background */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(135deg, ${currentSong.mood === 'joy' ? '#F6DD73' : 
-                                                     currentSong.mood === 'calm' ? '#6EC9B1' : 
-                                                     currentSong.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
-                                                     ${currentSong.mood === 'joy' ? '#f5c842' : 
-                                                       currentSong.mood === 'calm' ? '#4db89a' : 
-                                                       currentSong.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`
-            }}
-          />
+          {/* Gradient Background if no image */}
+          {!currentSong.coverUrl && (
+            <div 
+                className="absolute inset-0"
+                style={{
+                background: `linear-gradient(135deg, ${currentSong.mood === 'joy' ? '#F6DD73' : 
+                                                        currentSong.mood === 'calm' ? '#6EC9B1' : 
+                                                        currentSong.mood === 'sad' ? '#5386FE' : '#FE5344'} 0%, 
+                                                        ${currentSong.mood === 'joy' ? '#f5c842' : 
+                                                        currentSong.mood === 'calm' ? '#4db89a' : 
+                                                        currentSong.mood === 'sad' ? '#3d6edb' : '#db3228'} 100%)`
+                }}
+            />
+          )}
           
           {/* Icon if no image */}
           <div className="absolute inset-0 flex items-center justify-center z-10">
-              {!currentSong.coverUrl && <div className="text-white text-6xl opacity-80">♪</div>}
+              {!currentSong.coverUrl && <Music className="w-24 h-24 text-white opacity-50" />}
           </div>
 
           {/* Image */}
@@ -180,114 +189,67 @@ const MusicPlayer = () => {
         </div>
       </div>
 
-      {/* Song Info */}
-      <div className="px-8 pb-4 text-center">
-        <h2 
-          className="text-xl font-bold mb-1"
-          style={{
-            color: '#000',
-            fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-          }}
-        >
-          {currentSong.title}
-        </h2>
-        <p 
-          className="text-sm mb-4"
-          style={{
-            color: '#666',
-            fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-          }}
-        >
-          {currentSong.artist}
-        </p>
-
+      {/* Controls Area */}
+      <div className="px-10 pb-10">
         {/* Progress Bar */}
-        <div className="mb-4">
-        <input
-            type="range"
-            min="0"
-            max="100"
-            value={progress}
-            onChange={handleSeek}
-            className="w-full h-1 rounded-full appearance-none cursor-pointer"
-            style={{
-            background: `linear-gradient(to right, #4580d4 0%, #4580d4 ${progress}%, #d0d0d0 ${progress}%, #d0d0d0 100%)`
-            }}
-        />
+        <div className="mb-6 group">
+            <input
+                type="range"
+                min="0"
+                max="100"
+                value={progress}
+                onChange={handleSeek}
+                className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-gray-500 dark:accent-gray-400 hover:accent-gray-700 dark:hover:accent-white"
+                style={{
+                    backgroundImage: `linear-gradient(to right, #888 0%, #888 ${progress}%, transparent ${progress}%, transparent 100%)`
+                }}
+            />
+            <div className="flex justify-between text-[10px] text-gray-400 mt-1 font-medium">
+                <span>0:00</span>
+                <span>-3:45</span>
+            </div>
         </div>
-      </div>
 
-      {/* Controls */}
-      <div 
-          className="px-8 pb-6"
-          style={{
-          background: 'linear-gradient(to bottom, #e0e0e0 0%, #d5d5d5 100%)',
-          borderTop: '1px solid rgba(0,0,0,0.1)'
-          }}
-      >
-          <div className="flex items-center justify-center space-x-4 py-4">
-          <button 
-              className="p-2 rounded-full hover:bg-white/50 transition-colors"
-              style={{ color: '#333' }}
-          >
-              <Shuffle className="w-5 h-5" />
-          </button>
-          
+        {/* Main Controls */}
+        <div className="flex items-center justify-center space-x-10 mb-8">
           <button 
               onClick={handlePrevious}
-              className="p-2 rounded-full hover:bg-white/50 transition-colors"
-              style={{ color: '#333' }}
+              className="text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400 transition-colors"
           >
-              <SkipBack className="w-6 h-6" />
+              <SkipBack className="w-8 h-8 fill-current" />
           </button>
           
           <button 
               onClick={handlePlayPause}
-              className="p-4 rounded-full transition-all hover:scale-105"
-              style={{
-              background: 'linear-gradient(to bottom, #4580d4 0%, #2e5fa8 100%)',
-              border: '1px solid rgba(0,0,0,0.2)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)'
-              }}
+              className="text-gray-900 dark:text-white hover:scale-105 transition-transform"
           >
               {isPlaying ? (
-              <Pause className="w-6 h-6 text-white" />
+              <Pause className="w-12 h-12 fill-current" />
               ) : (
-              <Play className="w-6 h-6 text-white" />
+              <Play className="w-12 h-12 fill-current" />
               )}
           </button>
           
           <button 
               onClick={handleNext}
-              className="p-2 rounded-full hover:bg-white/50 transition-colors"
-              style={{ color: '#333' }}
+              className="text-gray-800 dark:text-gray-200 hover:text-gray-500 dark:hover:text-gray-400 transition-colors"
           >
-              <SkipForward className="w-6 h-6" />
+              <SkipForward className="w-8 h-8 fill-current" />
           </button>
-          
-          <button 
-              className="p-2 rounded-full hover:bg-white/50 transition-colors"
-              style={{ color: '#333' }}
-          >
-              <Repeat className="w-5 h-5" />
-          </button>
-          </div>
+        </div>
 
-          {/* Volume Control */}
-          <div className="flex items-center justify-center space-x-3 mt-2">
-          <Volume2 className="w-4 h-4" style={{ color: '#666' }} />
+        {/* Volume Control */}
+        <div className="flex items-center justify-center space-x-3">
+          <Volume2 className="w-4 h-4 text-gray-400" />
           <input
               type="range"
               min="0"
               max="100"
               value={volume}
               onChange={(e) => setVolume(parseInt(e.target.value))}
-              className="w-32 h-1 rounded-full appearance-none cursor-pointer"
-              style={{
-              background: `linear-gradient(to right, #4580d4 0%, #4580d4 ${volume}%, #d0d0d0 ${volume}%, #d0d0d0 100%)`
-              }}
+              className="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-gray-500"
           />
-          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,119 +1,130 @@
 import React from 'react';
 import useAppStore from '../../../store/appStore';
-import { Moon, Sun, Bell, Volume2, Wifi } from 'lucide-react';
+import { Moon, Sun, Bell, Volume2, Wifi, Monitor } from 'lucide-react';
 
 const Settings = () => {
   const { theme, toggleTheme } = useAppStore();
   
-  const SettingToggle = ({ icon: Icon, label, description, checked, onChange, last }) => (
-    <div className={`flex items-center justify-between p-3 bg-white dark:bg-gray-800 ${!last ? 'border-b border-gray-200 dark:border-gray-700' : ''}`}>
-      <div className="flex items-center space-x-3">
-        <div className="w-7 h-7 rounded-md bg-blue-500 flex items-center justify-center text-white">
-          <Icon className="w-4 h-4" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{label}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
-        </div>
-      </div>
-      <button
-        onClick={onChange}
-        className={`relative w-10 h-6 rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
-          checked ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
-        }`}
-      >
-        <div
-          className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
-            checked ? 'transform translate-x-4' : ''
-          }`}
-        />
-      </button>
+  const Checkbox = ({ label, checked, onChange }) => (
+    <div className="flex items-center gap-2 mb-2">
+      <input 
+        type="checkbox" 
+        checked={checked} 
+        onChange={onChange}
+        className="w-3.5 h-3.5 rounded-sm border-gray-400 text-blue-600 focus:ring-blue-500"
+      />
+      <span className="text-sm text-gray-700" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>{label}</span>
     </div>
   );
 
   return (
-    <div className="h-full overflow-auto bg-[#f5f5f7] dark:bg-gray-900 p-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-center mb-8">
-          <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mb-2">
-            <SettingsIcon className="w-8 h-8 text-gray-600" />
-          </div>
-        </div>
+    <div className="h-full bg-[#ececec] flex flex-col">
+      {/* Header */}
+      <div className="h-12 border-b border-[#d1d1d1] flex items-center justify-center bg-[#f6f6f6] shadow-sm z-10">
+        <span className="font-semibold text-gray-700" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>System Preferences</span>
+      </div>
 
-        {/* Appearance Section */}
-        <div className="mb-6">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 ml-2">
-            Appearance
-          </h3>
-          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <SettingToggle
-              icon={theme === 'dark' ? Moon : Sun}
-              label="Dark Mode"
-              description="Switch between light and dark theme"
-              checked={theme === 'dark'}
-              onChange={toggleTheme}
-              last={true}
-            />
-          </div>
-        </div>
+      <div className="flex-1 overflow-auto p-6">
+        <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+           
+           {/* Appearance Pane */}
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                 <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 shadow-inner">
+                    <Monitor size={20} />
+                 </div>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>General</span>
+              </div>
+              
+              <div className="space-y-4 pl-2">
+                 <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Appearance:</span>
+                    <div className="flex bg-gray-200 p-0.5 rounded-lg">
+                       <button 
+                          onClick={() => theme === 'dark' && toggleTheme()}
+                          className={`px-3 py-1 rounded-md text-xs flex items-center gap-1 transition-all ${theme !== 'dark' ? 'bg-white shadow-sm text-black' : 'text-gray-500'}`}
+                       >
+                          <Sun size={12} /> Light
+                       </button>
+                       <button 
+                          onClick={() => theme !== 'dark' && toggleTheme()}
+                          className={`px-3 py-1 rounded-md text-xs flex items-center gap-1 transition-all ${theme === 'dark' ? 'bg-white shadow-sm text-black' : 'text-gray-500'}`}
+                       >
+                          <Moon size={12} /> Dark
+                       </button>
+                    </div>
+                 </div>
+                 
+                 <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Accent Color:</span>
+                    <div className="flex gap-1.5">
+                       {['#007aff', '#a650c2', '#ff2d55', '#ff9500', '#ffcc00', '#4cd964'].map(c => (
+                          <div key={c} className="w-4 h-4 rounded-full shadow-sm cursor-pointer border border-black/5" style={{ backgroundColor: c }} />
+                       ))}
+                    </div>
+                 </div>
+              </div>
+           </div>
 
-        {/* Notifications Section */}
-        <div className="mb-6">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 ml-2">
-            Notifications
-          </h3>
-          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <SettingToggle
-              icon={Bell}
-              label="Daily Reminders"
-              description="Get reminded to write your daily entry"
-              checked={false}
-              onChange={() => {}}
-            />
-            <SettingToggle
-              icon={Volume2}
-              label="Sound Effects"
-              description="Play sounds for app interactions"
-              checked={true}
-              onChange={() => {}}
-              last={true}
-            />
-          </div>
-        </div>
+           {/* Notifications Pane */}
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                 <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-500 shadow-inner">
+                    <Bell size={20} />
+                 </div>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Notifications</span>
+              </div>
+              
+              <div className="pl-2">
+                 <Checkbox label="Allow Notifications" checked={true} onChange={() => {}} />
+                 <Checkbox label="Play sound for notifications" checked={true} onChange={() => {}} />
+                 <Checkbox label="Show previews" checked={true} onChange={() => {}} />
+                 <Checkbox label="Show in Lock Screen" checked={false} onChange={() => {}} />
+              </div>
+           </div>
 
-        {/* System Section */}
-        <div className="mb-6">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 ml-2">
-            System
-          </h3>
-          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <SettingToggle
-              icon={Wifi}
-              label="Auto Sync"
-              description="Automatically sync your data"
-              checked={true}
-              onChange={() => {}}
-              last={true}
-            />
-          </div>
-        </div>
+           {/* Sound Pane */}
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
+                    <Volume2 size={20} />
+                 </div>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Sound</span>
+              </div>
+              
+              <div className="pl-2 space-y-3">
+                 <div>
+                    <span className="text-xs text-gray-500 block mb-1" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Output Volume</span>
+                    <input type="range" className="w-full h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-gray-500" />
+                 </div>
+                 <Checkbox label="Play user interface sound effects" checked={true} onChange={() => {}} />
+                 <Checkbox label="Play feedback when volume is changed" checked={false} onChange={() => {}} />
+              </div>
+           </div>
 
-        {/* About Section */}
-        <div className="text-center mt-8">
-          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Side-B</p>
-          <p className="text-xs text-gray-500">Version 1.0.0</p>
-          <p className="text-xs text-gray-400 mt-1">© 2024 Side-B. All rights reserved.</p>
+           {/* Network Pane */}
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-inner">
+                    <Wifi size={20} />
+                 </div>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Network</span>
+              </div>
+              
+              <div className="pl-2">
+                 <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_4px_rgba(34,197,94,0.6)]"></div>
+                    <span className="text-sm text-gray-700" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Wi-Fi is connected</span>
+                 </div>
+                 <Checkbox label="Ask to join new networks" checked={true} onChange={() => {}} />
+                 <Checkbox label="Show Wi-Fi status in menu bar" checked={true} onChange={() => {}} />
+              </div>
+           </div>
+
         </div>
       </div>
     </div>
   );
 };
-
-const SettingsIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-  </svg>
-);
 
 export default Settings;

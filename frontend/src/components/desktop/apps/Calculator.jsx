@@ -71,8 +71,8 @@ const Calculator = () => {
   const Button = ({ children, onClick, className = '', span = false }) => (
     <button
       onClick={onClick}
-      className={`p-4 text-lg font-semibold rounded-lg transition-all hover:scale-105 active:scale-95 ${
-        span ? 'col-span-2' : ''
+      className={`h-12 text-lg font-medium transition-colors active:opacity-80 ${
+        span ? 'col-span-2 pl-6 text-left' : 'flex items-center justify-center'
       } ${className}`}
     >
       {children}
@@ -80,136 +80,137 @@ const Calculator = () => {
   );
 
   return (
-    <div className="h-full p-6 bg-gray-100 dark:bg-gray-800">
-      <div className="max-w-sm mx-auto">
-        {/* Display */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-6 mb-4 shadow-inner">
-          <div className="text-right">
-            <div className="text-sm text-gray-500 dark:text-gray-400 h-6">
-              {previousValue !== null && operation ? `${previousValue} ${operation}` : ''}
-            </div>
-            <div className="text-4xl font-bold text-gray-800 dark:text-gray-200 truncate">
-              {display}
-            </div>
+    <div className="h-full flex flex-col bg-[#323232] text-white">
+      {/* Display */}
+      <div className="flex-1 flex flex-col justify-end p-4">
+        <div className="text-right">
+          <div className="text-5xl font-light truncate tracking-tight">
+            {display}
           </div>
         </div>
+      </div>
 
-        {/* Buttons */}
-        <div className="grid grid-cols-4 gap-2">
-          <Button
-            onClick={handleClear}
-            className="bg-red-500 hover:bg-red-600 text-white col-span-2"
-          >
-            C
-          </Button>
-          <Button
-            onClick={() => setDisplay(String(-parseFloat(display)))}
-            className="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          >
-            +/-
-          </Button>
-          <Button
-            onClick={() => handleOperation('÷')}
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            ÷
-          </Button>
+      {/* Buttons */}
+      <div className="grid grid-cols-4 gap-[1px] bg-[#323232] border-t border-[#323232]">
+        <Button
+          onClick={handleClear}
+          className="bg-[#505050] text-white"
+        >
+          {display === '0' ? 'AC' : 'C'}
+        </Button>
+        <Button
+          onClick={() => setDisplay(String(-parseFloat(display)))}
+          className="bg-[#505050] text-white"
+        >
+          +/-
+        </Button>
+        <Button
+          onClick={() => handleOperation('%')}
+          className="bg-[#505050] text-white"
+        >
+          %
+        </Button>
+        <Button
+          onClick={() => handleOperation('÷')}
+          className={`text-white ${operation === '÷' ? 'bg-[#fbc78d] text-[#ff9f0a]' : 'bg-[#ff9f0a]'}`}
+        >
+          ÷
+        </Button>
 
-          <Button
-            onClick={() => handleNumber(7)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            7
-          </Button>
-          <Button
-            onClick={() => handleNumber(8)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            8
-          </Button>
-          <Button
-            onClick={() => handleNumber(9)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            9
-          </Button>
-          <Button
-            onClick={() => handleOperation('×')}
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            ×
-          </Button>
+        <Button
+          onClick={() => handleNumber(7)}
+          className="bg-[#666666] text-white"
+        >
+          7
+        </Button>
+        <Button
+          onClick={() => handleNumber(8)}
+          className="bg-[#666666] text-white"
+        >
+          8
+        </Button>
+        <Button
+          onClick={() => handleNumber(9)}
+          className="bg-[#666666] text-white"
+        >
+          9
+        </Button>
+        <Button
+          onClick={() => handleOperation('×')}
+          className={`text-white ${operation === '×' ? 'bg-[#fbc78d] text-[#ff9f0a]' : 'bg-[#ff9f0a]'}`}
+        >
+          ×
+        </Button>
 
-          <Button
-            onClick={() => handleNumber(4)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            4
-          </Button>
-          <Button
-            onClick={() => handleNumber(5)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            5
-          </Button>
-          <Button
-            onClick={() => handleNumber(6)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            6
-          </Button>
-          <Button
-            onClick={() => handleOperation('-')}
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            -
-          </Button>
+        <Button
+          onClick={() => handleNumber(4)}
+          className="bg-[#666666] text-white"
+        >
+          4
+        </Button>
+        <Button
+          onClick={() => handleNumber(5)}
+          className="bg-[#666666] text-white"
+        >
+          5
+        </Button>
+        <Button
+          onClick={() => handleNumber(6)}
+          className="bg-[#666666] text-white"
+        >
+          6
+        </Button>
+        <Button
+          onClick={() => handleOperation('-')}
+          className={`text-white ${operation === '-' ? 'bg-[#fbc78d] text-[#ff9f0a]' : 'bg-[#ff9f0a]'}`}
+        >
+          -
+        </Button>
 
-          <Button
-            onClick={() => handleNumber(1)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            1
-          </Button>
-          <Button
-            onClick={() => handleNumber(2)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            2
-          </Button>
-          <Button
-            onClick={() => handleNumber(3)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            3
-          </Button>
-          <Button
-            onClick={() => handleOperation('+')}
-            className="bg-orange-500 hover:bg-orange-600 text-white"
-          >
-            +
-          </Button>
+        <Button
+          onClick={() => handleNumber(1)}
+          className="bg-[#666666] text-white"
+        >
+          1
+        </Button>
+        <Button
+          onClick={() => handleNumber(2)}
+          className="bg-[#666666] text-white"
+        >
+          2
+        </Button>
+        <Button
+          onClick={() => handleNumber(3)}
+          className="bg-[#666666] text-white"
+        >
+          3
+        </Button>
+        <Button
+          onClick={() => handleOperation('+')}
+          className={`text-white ${operation === '+' ? 'bg-[#fbc78d] text-[#ff9f0a]' : 'bg-[#ff9f0a]'}`}
+        >
+          +
+        </Button>
 
-          <Button
-            onClick={() => handleNumber(0)}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow col-span-2"
-            span
-          >
-            0
-          </Button>
-          <Button
-            onClick={handleDecimal}
-            className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow"
-          >
-            .
-          </Button>
-          <Button
-            onClick={handleEquals}
-            className="bg-blue-500 hover:bg-blue-600 text-white"
-          >
-            =
-          </Button>
-        </div>
+        <Button
+          onClick={() => handleNumber(0)}
+          className="bg-[#666666] text-white col-span-2"
+          span
+        >
+          0
+        </Button>
+        <Button
+          onClick={handleDecimal}
+          className="bg-[#666666] text-white"
+        >
+          .
+        </Button>
+        <Button
+          onClick={handleEquals}
+          className="bg-[#ff9f0a] text-white"
+        >
+          =
+        </Button>
       </div>
     </div>
   );

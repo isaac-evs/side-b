@@ -111,42 +111,45 @@ const DiaryExplorer = () => {
   };
 
   return (
-    <div className="flex h-full" style={{ backgroundColor: '#f5f5f5' }}>
-      {/* Sidebar with Aqua styling */}
+    <div className="flex h-full bg-white dark:bg-gray-900 text-sm">
+      {/* Sidebar with Catalina styling */}
       <div 
-        className="w-64 border-r flex flex-col"
+        className="w-48 flex flex-col border-r border-gray-200 dark:border-gray-700"
         style={{
-          background: 'linear-gradient(to right, #dde5ef 0%, #e8ecf3 100%)',
-          borderRight: '1px solid rgba(0,0,0,0.15)',
-          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.5)'
+          backgroundColor: 'rgba(240, 240, 240, 0.8)',
+          backdropFilter: 'blur(20px)',
         }}
       >
-        <div className="p-4">
+        <div className="p-3 pt-4">
           <h3 
-            className="font-semibold mb-4 flex items-center text-sm"
+            className="text-xs font-semibold text-gray-500 mb-2 px-2"
             style={{
-              color: '#000',
-              fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
             }}
           >
-            <FolderOpen className="w-4 h-4 mr-2" />
-            Diary Entries
+            Favorites
           </h3>
+          <div className="space-y-0.5">
+             <div className="flex items-center px-2 py-1 rounded bg-gray-300/50 text-gray-800">
+                <FolderOpen className="w-4 h-4 mr-2 text-blue-500" />
+                <span>All Entries</span>
+             </div>
+          </div>
         </div>
         
         {/* Scrollable entries list */}
-        <div className="flex-1 overflow-y-auto px-4">
-          <div className="space-y-2">
+        <div className="flex-1 overflow-y-auto px-2">
+          <h3 
+            className="text-xs font-semibold text-gray-500 mb-2 px-2 mt-2"
+            style={{
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
+            }}
+          >
+            Entries
+          </h3>
+          <div className="space-y-0.5">
             {entries.length === 0 ? (
-              <p 
-                className="text-sm"
-                style={{
-                  color: '#666',
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                }}
-              >
-                No entries yet
-              </p>
+              <p className="text-xs text-gray-500 px-2">No entries yet</p>
             ) : (
               entries.map((entry) => (
                 <button
@@ -155,25 +158,18 @@ const DiaryExplorer = () => {
                     setSelectedEntry(entry);
                     setViewingFile(null);
                   }}
-                  className="w-full text-left p-2.5 rounded transition-all"
-                  style={{
-                    background: selectedEntry?.id === entry.id
-                      ? 'linear-gradient(to bottom, #4580d4 0%, #2e5fa8 100%)'
-                      : 'transparent',
-                    color: selectedEntry?.id === entry.id ? '#fff' : '#000',
-                    fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                    border: selectedEntry?.id === entry.id ? '1px solid rgba(0,0,0,0.2)' : '1px solid transparent'
-                  }}
+                  className={`w-full text-left px-2 py-1 rounded flex items-center space-x-2 transition-colors ${
+                    selectedEntry?.id === entry.id 
+                      ? 'bg-blue-500 text-white' 
+                      : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
+                  }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs flex items-center" style={{ opacity: selectedEntry?.id === entry.id ? 1 : 0.7 }}>
-                      <Calendar className="w-3 h-3 mr-1" />
+                  <Calendar className={`w-4 h-4 ${selectedEntry?.id === entry.id ? 'text-white' : 'text-gray-500'}`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="truncate text-xs font-medium">
                       {new Date(entry.date).toLocaleDateString()}
-                    </span>
+                    </div>
                   </div>
-                  <p className="text-xs truncate" style={{ opacity: selectedEntry?.id === entry.id ? 0.9 : 0.7 }}>
-                    {entry.text.substring(0, 30)}...
-                  </p>
                 </button>
               ))
             )}
@@ -181,38 +177,27 @@ const DiaryExplorer = () => {
         </div>
 
         {/* Mood Filter Tags - Below entries */}
-        <div className="p-4 border-t" style={{ borderTop: '1px solid rgba(0,0,0,0.1)' }}>
+        <div className="p-3 border-t border-gray-200 dark:border-gray-700">
           <h4 
-            className="text-xs font-semibold mb-2"
-            style={{
-              color: '#666',
-              fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-            }}
+            className="text-xs font-semibold text-gray-500 mb-2 px-2"
           >
             Tags
           </h4>
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {Object.entries(moods).map(([key, mood]) => (
               <button
                 key={key}
                 onClick={() => toggleMoodFilter(key)}
-                className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded text-xs transition-all"
+                className="w-full flex items-center space-x-2 px-2 py-1 rounded text-xs transition-all hover:bg-gray-200 dark:hover:bg-gray-700"
                 style={{
-                  background: excludedMoods.includes(key)
-                    ? 'rgba(0,0,0,0.1)'
-                    : 'linear-gradient(to bottom, #fff 0%, #f0f0f0 100%)',
-                  border: '1px solid rgba(0,0,0,0.15)',
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                  opacity: excludedMoods.includes(key) ? 0.4 : 1,
-                  textDecoration: excludedMoods.includes(key) ? 'line-through' : 'none'
+                  opacity: excludedMoods.includes(key) ? 0.5 : 1,
                 }}
-                title={excludedMoods.includes(key) ? `Show ${mood.name} files` : `Hide ${mood.name} files`}
               >
                 <div
-                  className="w-3 h-3 rounded-full flex-shrink-0"
+                  className="w-3 h-3 rounded-full flex-shrink-0 border border-black/10"
                   style={{ backgroundColor: mood.color }}
                 />
-                <span style={{ color: '#000' }}>{mood.name}</span>
+                <span className="text-gray-700 dark:text-gray-300">{mood.name}</span>
               </button>
             ))}
           </div>
@@ -220,72 +205,57 @@ const DiaryExplorer = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col bg-white dark:bg-gray-900">
+        {/* Finder Toolbar */}
+        <div className="h-12 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 bg-[#f6f6f6] dark:bg-[#2a2a2a]">
+            <div className="flex space-x-4">
+                <div className="flex space-x-1">
+                    <button className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+                <div className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
+                    {selectedEntry ? new Date(selectedEntry.date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Diary Explorer'}
+                </div>
+            </div>
+        </div>
+
         {/* File Icons View */}
         {selectedEntry && !viewingFile && (
-          <div 
-            className="flex-1 relative overflow-hidden"
-            style={{ backgroundColor: '#f5f5f5' }}
-          >
-            {/* Header Bar */}
-            <div 
-              className="absolute top-0 left-0 right-0 p-4 border-b"
-              style={{
-                background: 'linear-gradient(to bottom, #e8e8e8 0%, #f5f5f5 100%)',
-                borderBottom: '1px solid rgba(0,0,0,0.1)'
-              }}
-            >
-              <h2 
-                className="text-lg font-bold"
-                style={{
-                  color: '#000',
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                }}
-              >
-                {new Date(selectedEntry.date).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </h2>
-            </div>
-
-            {/* Files Container */}
-            <div className="absolute top-20 left-0 right-0 bottom-0 overflow-auto">
-              {getVisibleFiles().length === 0 ? (
-                <div className="flex items-center justify-center h-full">
-                  <p 
-                    className="text-sm"
-                    style={{
-                      color: '#666',
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                    }}
-                  >
-                    All files are filtered out by tags
-                  </p>
-                </div>
-              ) : (
-                <>
-                  {getVisibleFiles().map((file, index) => (
-                    <FileIcon
-                      key={`${file.type}-${index}`}
-                      icon={
-                        <FileThumbnail 
-                          file={file} 
-                          fallbackIcon={getFileIcon(file.type)} 
-                        />
-                      }
-                      title={file.name}
-                      subtitle={getFileSubtitle(file)}
-                      position={{ x: 20 + (index * 140), y: 20 }}
-                      moodColor={moods[file.mood]?.color}
-                      onDoubleClick={() => setViewingFile(file.type === 'feelings' || file.type === 'song' ? file.type : file)}
-                    />
-                  ))}
-                </>
-              )}
-            </div>
+          <div className="flex-1 relative overflow-auto p-4">
+            {getVisibleFiles().length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-sm text-gray-400">No items</p>
+              </div>
+            ) : (
+              <div className="w-full h-full relative min-h-[500px]">
+                  {getVisibleFiles().map((file, index) => {
+                    // Calculate grid-like initial positions
+                    const col = index % 6;
+                    const row = Math.floor(index / 6);
+                    
+                    return (
+                      <FileIcon
+                        key={`${file.type}-${index}`}
+                        icon={
+                            <FileThumbnail 
+                            file={file} 
+                            fallbackIcon={getFileIcon(file.type)} 
+                            />
+                        }
+                        title={file.name}
+                        subtitle={getFileSubtitle(file)}
+                        position={{ x: 20 + (col * 130), y: 20 + (row * 130) }}
+                        moodColor={moods[file.mood]?.color}
+                        onDoubleClick={() => setViewingFile(file.type === 'feelings' || file.type === 'song' ? file.type : file)}
+                      />
+                    );
+                  })}
+              </div>
+            )}
           </div>
         )}
 
@@ -294,53 +264,57 @@ const DiaryExplorer = () => {
           <div className="flex-1 p-6 bg-white dark:bg-gray-900 overflow-y-auto">
             <button
               onClick={() => setViewingFile(null)}
-              className="mb-4 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
+              className="mb-4 flex items-center text-sm text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
             >
-              ← Back to files
+              <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              Back
             </button>
 
             {viewingFile === 'feelings' && (
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
-                    feelings.txt
+              <div className="max-w-2xl mx-auto bg-white shadow-sm border p-8 min-h-[400px]">
+                <div className="flex items-center justify-between mb-6 border-b pb-4">
+                  <h3 className="text-xl font-serif font-bold text-gray-900">
+                    {new Date(selectedEntry.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
                   </h3>
                   <div
-                    className="px-3 py-1 rounded-full text-sm font-semibold"
+                    className="px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide"
                     style={{
-                      backgroundColor: moods[selectedEntry.mood]?.color,
+                      backgroundColor: moods[selectedEntry.mood]?.color + '40',
                       color: '#000'
                     }}
                   >
                     {moods[selectedEntry.mood]?.name}
                   </div>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                <p className="text-gray-800 leading-relaxed font-serif text-lg whitespace-pre-wrap">
                   {selectedEntry.text}
                 </p>
               </div>
             )}
 
             {viewingFile === 'song' && (
-              <div>
-                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">
-                  song.mp3
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="w-64 h-64 bg-gray-100 rounded-lg shadow-lg mb-6 flex items-center justify-center overflow-hidden">
+                    {selectedEntry.song.coverUrl ? (
+                        <img src={selectedEntry.song.coverUrl} alt="Album Art" className="w-full h-full object-cover" />
+                    ) : (
+                        <Music className="w-24 h-24 text-gray-300" />
+                    )}
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  {selectedEntry.song.title}
                 </h3>
-                <div className="bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg p-6 text-white">
-                  <div className="mb-4">
-                    <Music className="w-16 h-16 mb-4" />
-                    <h4 className="text-2xl font-bold mb-2">{selectedEntry.song.title}</h4>
-                    <p className="text-lg opacity-90">{selectedEntry.song.artist}</p>
-                  </div>
-                  <div className="mt-6">
-                    <div className="w-full h-2 bg-white/30 rounded-full mb-2">
-                      <div className="w-0 h-full bg-white rounded-full" />
+                <p className="text-lg text-gray-500 mb-8">{selectedEntry.song.artist}</p>
+                
+                {/* Simple Player UI */}
+                <div className="w-96 bg-gray-100 dark:bg-gray-800 rounded-full p-2 flex items-center space-x-4">
+                    <button className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-105 transition-transform">
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </button>
+                    <div className="flex-1 h-1 bg-gray-300 rounded-full overflow-hidden">
+                        <div className="w-1/3 h-full bg-black"></div>
                     </div>
-                    <div className="flex justify-between text-sm opacity-75">
-                      <span>0:00</span>
-                      <span>3:45</span>
-                    </div>
-                  </div>
+                    <span className="text-xs text-gray-500 pr-3">1:23</span>
                 </div>
               </div>
             )}
@@ -348,10 +322,10 @@ const DiaryExplorer = () => {
         )}
 
         {!selectedEntry && (
-          <div className="flex-1 flex items-center justify-center text-gray-500 dark:text-gray-400">
+          <div className="flex-1 flex items-center justify-center text-gray-400">
             <div className="text-center">
-              <FolderOpen className="w-16 h-16 mx-auto mb-4 opacity-50" />
-              <p>Select an entry to view</p>
+              <FolderOpen className="w-16 h-16 mx-auto mb-4 opacity-20" />
+              <p>Select an entry to view files</p>
             </div>
           </div>
         )}

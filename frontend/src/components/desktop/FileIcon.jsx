@@ -16,29 +16,39 @@ const FileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor })
     >
       <div
         onDoubleClick={onDoubleClick}
-        className="file-icon-handle cursor-pointer select-none group"
+        className="file-icon-handle cursor-pointer select-none group flex flex-col items-center"
         style={{ width: '120px' }}
       >
-        <div className="flex flex-col items-center space-y-2">
+        <div className="flex flex-col items-center space-y-1">
           {/* Icon Container with mood indicator */}
-          <div className="relative">
+          <div className="relative transition-transform active:scale-95">
             <div 
-              className="w-16 h-20 rounded-lg flex flex-col items-center justify-center group-hover:bg-white/20 transition-colors"
+              className="w-12 h-16 bg-white flex flex-col items-center justify-center relative"
               style={{
-                background: 'linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(240,240,240,0.9) 100%)',
-                border: '1px solid rgba(0,0,0,0.2)',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                borderRadius: '2px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                border: '1px solid #e0e0e0'
               }}
             >
-              {icon}
+              {/* Folded corner */}
+              <div 
+                className="absolute top-0 right-0 w-3 h-3 bg-[#f0f0f0]"
+                style={{
+                  borderBottomLeftRadius: '2px',
+                  boxShadow: '-1px 1px 1px rgba(0,0,0,0.05)'
+                }}
+              />
+              
+              {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-6 h-6 text-gray-500" }) : icon}
             </div>
+            
             {/* Mood color indicator */}
             {moodColor && (
               <div
-                className="absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-white"
+                className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
                 style={{ 
                   backgroundColor: moodColor,
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
                 }}
               />
             )}
@@ -46,16 +56,15 @@ const FileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor })
           
           {/* Title */}
           <div 
-            className="text-center px-2 py-1 rounded w-full"
+            className="text-center px-1 w-full"
             style={{
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              backdropFilter: 'blur(10px)'
+              maxWidth: '100px'
             }}
           >
             <div 
-              className="text-xs font-medium text-white truncate"
+              className="text-xs font-medium text-white truncate leading-tight group-hover:bg-[#0061D5] group-hover:rounded px-1.5 py-0.5 inline-block"
               style={{
-                fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
                 textShadow: '0 1px 2px rgba(0,0,0,0.8)'
               }}
             >
@@ -63,9 +72,9 @@ const FileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor })
             </div>
             {subtitle && (
               <div 
-                className="text-[10px] text-white/80 truncate"
+                className="text-[10px] text-white/80 truncate mt-0.5"
                 style={{
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
                   textShadow: '0 1px 2px rgba(0,0,0,0.8)'
                 }}
               >

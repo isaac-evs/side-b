@@ -14,103 +14,80 @@ const SearchModal = ({ isOpen, onClose, entries }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20"
-      style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-2xl rounded-xl overflow-hidden"
+        className="w-full max-w-xl rounded-xl overflow-hidden"
         style={{
-          background: 'linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%)',
-          border: '1px solid rgba(0,0,0,0.3)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+          backgroundColor: 'rgba(240, 240, 240, 0.95)',
+          backdropFilter: 'blur(40px)',
+          border: '1px solid rgba(0,0,0,0.1)',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
         }}
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input */}
         <div 
-          className="flex items-center p-4 border-b"
-          style={{ borderBottom: '1px solid rgba(0,0,0,0.15)' }}
+          className="flex items-center p-3"
         >
-          <Search className="w-5 h-5 mr-3" style={{ color: '#666' }} />
+          <Search className="w-5 h-5 mr-3 text-gray-500" />
           <input
             type="text"
-            placeholder="Search entries, songs, feelings..."
+            placeholder="Spotlight Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             autoFocus
-            className="flex-1 bg-transparent outline-none text-base"
+            className="flex-1 bg-transparent outline-none text-xl font-light"
             style={{
               color: '#000',
-              fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
             }}
           />
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-black/10 rounded transition-colors"
-          >
-            <X className="w-5 h-5" style={{ color: '#666' }} />
-          </button>
         </div>
 
         {/* Results */}
-        <div 
-          className="max-h-96 overflow-y-auto"
-          style={{ backgroundColor: '#fff' }}
-        >
-          {searchQuery && (
+        {searchQuery && (
+          <div 
+            className="max-h-96 overflow-y-auto border-t border-gray-300/50"
+          >
             <div className="p-2">
               {filteredResults.length === 0 ? (
                 <div className="text-center py-8">
-                  <p 
-                    className="text-sm"
-                    style={{
-                      color: '#666',
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                    }}
-                  >
-                    No results found
-                  </p>
+                  <p className="text-sm text-gray-500">No results found</p>
                 </div>
               ) : (
-                filteredResults.map(entry => (
-                  <div
-                    key={entry.id}
-                    className="p-3 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer"
-                    style={{
-                      fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                    }}
-                  >
-                    <div className="text-sm font-semibold mb-1">
-                      {new Date(entry.date).toLocaleDateString()}
-                    </div>
-                    <div className="text-xs opacity-90 line-clamp-2">
-                      {entry.text}
-                    </div>
-                    {entry.song && (
-                      <div className="text-xs opacity-75 mt-1">
-                        🎵 {entry.song.title} - {entry.song.artist}
+                <>
+                  <div className="px-2 py-1 text-xs font-semibold text-gray-500 uppercase">Top Hits</div>
+                  {filteredResults.map(entry => (
+                    <div
+                      key={entry.id}
+                      className="flex items-center p-2 rounded-lg hover:bg-blue-500 hover:text-white transition-colors cursor-default group"
+                    >
+                      <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center mr-3 text-gray-500 group-hover:text-blue-500 group-hover:bg-white">
+                        <span className="text-xs font-bold">{new Date(entry.date).getDate()}</span>
                       </div>
-                    )}
-                  </div>
-                ))
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium truncate">
+                          {entry.text}
+                        </div>
+                        {entry.song && (
+                          <div className="text-xs opacity-70 truncate">
+                            {entry.song.title} - {entry.song.artist}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-xs opacity-50 ml-2">
+                        {new Date(entry.date).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))}
+                </>
               )}
             </div>
-          )}
-          {!searchQuery && (
-            <div className="text-center py-8">
-              <p 
-                className="text-sm"
-                style={{
-                  color: '#999',
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
-                }}
-              >
-                Start typing to search...
-              </p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

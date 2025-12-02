@@ -16,53 +16,50 @@ const DesktopIcon = ({ icon, title, description, onDoubleClick, position }) => {
     >
       <div
         onDoubleClick={onDoubleClick}
-        className="desktop-icon-handle cursor-pointer select-none group"
+        className="desktop-icon-handle cursor-pointer select-none group flex flex-col items-center"
         style={{ width: '100px' }}
       >
-        <div className="flex flex-col items-center space-y-1">
-          {/* Icon Container */}
+        {/* Icon Container - macOS Style Squircle */}
+        <div 
+          className="w-14 h-14 mb-1 flex items-center justify-center transition-transform active:scale-95"
+          style={{
+            background: 'linear-gradient(180deg, #ffffff 0%, #e6e6e6 100%)',
+            borderRadius: '14px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5)',
+            border: '1px solid rgba(0,0,0,0.1)'
+          }}
+        >
+          {/* Clone icon to ensure size fits */}
+          {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-8 h-8 text-gray-700" }) : icon}
+        </div>
+        
+        {/* Title - macOS Style Label */}
+        <div 
+          className="px-1 py-0.5 text-center"
+          style={{
+            maxWidth: '100px'
+          }}
+        >
           <div 
-            className="w-16 h-16 rounded-lg flex items-center justify-center group-hover:bg-white/20 transition-colors"
+            className="text-xs font-medium text-white truncate leading-tight group-hover:bg-[#0061D5] group-hover:rounded px-1.5 py-0.5 inline-block"
             style={{
-              background: 'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(240,240,240,0.2) 100%)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,255,255,0.3)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+              textShadow: '0 1px 2px rgba(0,0,0,0.8)',
             }}
           >
-            {icon}
+            {title}
           </div>
-          
-          {/* Title */}
-          <div 
-            className="text-center px-2 py-0.5 rounded"
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              backdropFilter: 'blur(10px)',
-              maxWidth: '100px'
-            }}
-          >
+          {description && (
             <div 
-              className="text-xs font-medium text-white truncate"
+              className="text-[10px] text-white/90 truncate mt-0.5"
               style={{
-                fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
                 textShadow: '0 1px 2px rgba(0,0,0,0.8)'
               }}
             >
-              {title}
+              {description}
             </div>
-            {description && (
-              <div 
-                className="text-[10px] text-white/80 truncate"
-                style={{
-                  fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif',
-                  textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-                }}
-              >
-                {description}
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </Rnd>
