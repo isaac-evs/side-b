@@ -52,15 +52,14 @@ const LandingPage = () => {
           height: '650px',
         }}
         animate={{
-          y: [0, -50, 20, -30, 0],
-          x: [0, 30, -10, 20, 0],
-          rotate: [0, 12, -8, 15, 0],
-          scale: [1, 1.05, 0.98, 1.03, 1],
+          x: [0, -150, -300, -150, 0],
+          y: [0, 150, 0, -150, 0],
+          rotate: [0, 90, 180, 270, 360],
         }}
         transition={{
-          duration: 20,
+          duration: 45,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       />
       
@@ -76,15 +75,14 @@ const LandingPage = () => {
           height: '800px',
         }}
         animate={{
-          y: [0, 40, -20, 35, 0],
-          x: [0, -25, 15, -20, 0],
-          rotate: [0, -10, 6, -12, 0],
-          scale: [1, 0.95, 1.08, 0.97, 1],
+          x: [0, 150, 300, 150, 0],
+          y: [0, -100, 0, 100, 0],
+          rotate: [0, -90, -180, -270, -360],
         }}
         transition={{
-          duration: 18,
+          duration: 50,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       />
       
@@ -100,15 +98,14 @@ const LandingPage = () => {
           height: '900px',
         }}
         animate={{
-          y: [0, -60, 25, -40, 0],
-          x: [0, 35, -15, 30, 0],
-          rotate: [0, 18, -12, 20, 0],
-          scale: [1, 1.08, 0.94, 1.05, 1],
+          x: [0, 100, 200, 100, 0],
+          y: [0, 150, 300, 150, 0],
+          rotate: [0, 60, 120, 180, 240, 300, 360],
         }}
         transition={{
-          duration: 25,
+          duration: 55,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       />
       
@@ -124,15 +121,14 @@ const LandingPage = () => {
           height: '520px',
         }}
         animate={{
-          y: [0, 45, -18, 38, 0],
-          x: [0, -28, 12, -22, 0],
-          rotate: [0, -15, 9, -18, 0],
-          scale: [1, 0.96, 1.06, 0.98, 1],
+          x: [0, -120, -240, -120, 0],
+          y: [0, -80, -160, -80, 0],
+          rotate: [0, -45, -90, -135, -180],
         }}
         transition={{
-          duration: 16,
+          duration: 40,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       />
       
@@ -148,15 +144,14 @@ const LandingPage = () => {
           height: '320px',
         }}
         animate={{
-          y: [0, -35, 15, -28, 0],
-          x: [0, 20, -8, 18, 0],
-          rotate: [0, 22, -14, 25, 0],
-          scale: [1, 1.1, 0.92, 1.07, 1],
+          x: [0, 180, 360, 180, 0],
+          y: [0, 50, 100, 50, 0],
+          rotate: [0, 180, 360, 180, 0],
         }}
         transition={{
-          duration: 14,
+          duration: 35,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: "linear",
         }}
       />
 
