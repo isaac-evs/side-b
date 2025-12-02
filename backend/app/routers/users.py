@@ -4,6 +4,7 @@ from bson import ObjectId
 
 from app.models import User, CreateUser, UpdateUser
 from app.database import user_collection, entry_collection
+from app.databases.cassandra import cassandra_client
 
 router = APIRouter()
 
@@ -98,3 +99,49 @@ async def get_user_stats(id: str):
     if stats:
         return stats[0]
     return {"totalEntries": 0, "moodCounts": [], "totalDaysActive": 0}
+
+#Cassandra. Gets monthly stats and song frequency
+@router.get("/{id}/cassandra-stats", response_description="Get Cassandra statistics")
+async def get_cassandra_stats(id: str, year_month: str = None):
+    """Get monthly statistics from Cassandra"""
+    try:
+        stats = await cassandra_client.get_monthly_stats(id, year_month)
+        return stats
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch Cassandra stats: {str(e)}"
+        )
+
+@router.get("/{id}/song-frequency/{song_id}", response_description="Get song selection frequency")
+async def get_song_frequency(id: str, song_id: str):
+    """Get how many times a user has selected a song"""
+    try:
+        freq = await cassandra_client.get_song_frequency(id, song_id)
+        return freq
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch song frequency: {str(e)}"
+        )
+
+router.delete("/{id}", response_description="Delete user account permanently")
+async def delete_user(id: str):
+    """
+    Delete all Cassandra data for a user (logging, stats, attachments, etc.).
+    WARNING: This is permanent and cannot be undone!
+    """
+    
+    # Delete from Cassandra
+    try:
+        await cassandra_client.delete_user_all_data(id)
+        
+        return {
+            "message": "User account permanently deleted",
+            "user_id": id
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete user from Cassandra: {str(e)}"
+        )
