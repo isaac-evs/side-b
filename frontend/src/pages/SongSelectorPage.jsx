@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import useAppStore from '../store/appStore';
 import { songsAPI } from '../services/api';
+import { motion } from 'framer-motion';
+import blueShape from '../assets/blue.svg';
+import pinkShape from '../assets/pink.svg';
+import greenShape from '../assets/green.svg';
+import yellowShape from '../assets/yellow.svg';
+import orangeShape from '../assets/orange.svg';
 
 // Icon Components
 const QuaverIcon = ({ className = "w-10 h-10" }) => (
@@ -299,26 +305,117 @@ const SongSelectorPage = () => {
 
   const currentSongName = currentSongIndex !== null ? songs[currentSongIndex]?.title : "";
 
-  const getMoodColor = (mood) => {
+  const shapes = [
+    {
+      src: blueShape,
+      style: { top: '-200px', right: '-50px', width: '650px', height: '650px' },
+      joyAnimate: { x: [0, -150, -300, -150, 0], y: [0, 150, 0, -150, 0], rotate: [0, 90, 180, 270, 360] },
+      joyTransition: { duration: 45, repeat: Infinity, ease: "linear" }
+    },
+    {
+      src: pinkShape,
+      style: { bottom: '-150px', left: '20px', width: '800px', height: '800px' },
+      joyAnimate: { x: [0, 150, 300, 150, 0], y: [0, -100, 0, 100, 0], rotate: [0, -90, -180, -270, -360] },
+      joyTransition: { duration: 50, repeat: Infinity, ease: "linear" }
+    },
+    {
+      src: greenShape,
+      style: { top: '-450px', left: '-200px', width: '900px', height: '900px' },
+      joyAnimate: { x: [0, 100, 200, 100, 0], y: [0, 150, 300, 150, 0], rotate: [0, 60, 120, 180, 240, 300, 360] },
+      joyTransition: { duration: 55, repeat: Infinity, ease: "linear" }
+    },
+    {
+      src: yellowShape,
+      style: { bottom: '0px', right: '100px', width: '520px', height: '520px' },
+      joyAnimate: { x: [0, -120, -240, -120, 0], y: [0, -80, -160, -80, 0], rotate: [0, -45, -90, -135, -180] },
+      joyTransition: { duration: 40, repeat: Infinity, ease: "linear" }
+    },
+    {
+      src: orangeShape,
+      style: { top: '150px', left: '-100px', width: '320px', height: '320px' },
+      joyAnimate: { x: [0, 180, 360, 180, 0], y: [0, 50, 100, 50, 0], rotate: [0, 180, 360, 180, 0] },
+      joyTransition: { duration: 35, repeat: Infinity, ease: "linear" }
+    }
+  ];
+
+  const getMoodAnimations = (mood, shape, index) => {
     switch (mood) {
-      case 'joy': return '#FFD93D';
-      case 'calm': return '#6BCB77';
-      case 'sad': return '#4D96FF';
-      case 'stress': return '#FF6B6B';
-      default: return '#e8f0e7';
+      case 'joy':
+        return {
+          animate: shape.joyAnimate,
+          transition: shape.joyTransition
+        };
+      case 'calm':
+        // Falling like leaves gently (swaying)
+        return {
+          animate: {
+            y: [0, 50, 100, 50, 0],
+            x: [0, 30, 0, -30, 0],
+            rotate: [0, 10, 0, -10, 0],
+          },
+          transition: {
+            duration: 20 + index * 5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        };
+      case 'sad':
+        // Falling like drops of water (vertical, slightly faster)
+        return {
+          animate: {
+            y: [0, 150, 300, 150, 0],
+            scaleY: [1, 1.05, 1.1, 1.05, 1],
+            opacity: [0.6, 0.8, 0.4, 0.8, 0.6]
+          },
+          transition: {
+            duration: 8 + index * 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        };
+      case 'stress':
+        // Violent clashing
+        return {
+          animate: {
+            x: [0, -40, 40, -20, 20, 0],
+            y: [0, 30, -30, 15, -15, 0],
+            scale: [1, 1.1, 0.9, 1.15, 0.85, 1],
+          },
+          transition: {
+            duration: 0.4 + (index * 0.1),
+            repeat: Infinity,
+            ease: "linear"
+          }
+        };
+      default:
+        // Default to Joy/Harmonic if undefined
+        return {
+          animate: shape.joyAnimate,
+          transition: shape.joyTransition
+        };
     }
   };
 
-  const bgColor = getMoodColor(currentEntry.mood);
-
   return (
     <div 
-      className="min-h-screen p-4 relative transition-colors duration-500"
-      style={{ 
-        backgroundColor: bgColor,
-        backgroundImage: `linear-gradient(135deg, ${bgColor}dd 0%, ${bgColor}99 100%)`
-      }}
+      className="min-h-screen p-4 relative overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors duration-500"
     >
+      {/* Background Shapes */}
+      {shapes.map((shape, index) => {
+        const animation = getMoodAnimations(currentEntry.mood, shape, index);
+        return (
+          <motion.img 
+            key={index}
+            src={shape.src} 
+            alt="" 
+            className="absolute opacity-60 pointer-events-none" 
+            style={shape.style}
+            animate={animation.animate}
+            transition={animation.transition}
+          />
+        );
+      })}
+
       {/* Header with current song and volume controls */}
       <div className="fixed top-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 w-full max-w-[500px] px-4 pointer-events-none">
         <header className="flex-1 flex items-center bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-full shadow-lg pointer-events-auto min-w-0">
