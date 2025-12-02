@@ -1,11 +1,11 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [145803] using WatchFiles
+INFO:     Started reloader process [151304] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [145825]
+INFO:     Started server process [151325]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -21,63 +21,16 @@ INFO:     Application startup complete.
 ✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
 ✓ Initialized dgraph
 ✓ Cassandra tables initialized
-INFO:     127.0.0.1:36394 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36406 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50594 - "GET /songs/mood/calm HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50600 - "GET /songs/mood/calm HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45908 - "OPTIONS /auth/register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45908 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:45908 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45910 - "OPTIONS /entries/?userId=692e96b74946877bd40d53d3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45910 - "GET /entries/?userId=692e96b74946877bd40d53d3 HTTP/1.1" 200 OK
-[Cassandra] INFO - Logged journal text for user=692e96b74946877bd40d53d3, entry=692e96b74946877bd40d53d4
-[Cassandra] INFO - Entry count incremented for user=692e96b74946877bd40d53d3, month=2025-12
-[Cassandra] INFO - Song selection logged for user=692e96b74946877bd40d53d3, song=692e965487aa0b81a9ba116d
-INFO:     127.0.0.1:45908 - "POST /entries/ HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/applications.py", line 1134, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/applications.py", line 107, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 125, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 111, in app
-    response = await f(request)
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 413, in app
-    content = await serialize_response(
-  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/fastapi/routing.py", line 254, in serialize_response
-    raise ResponseValidationError(
-fastapi.exceptions.ResponseValidationError: 1 validation errors:
-  {'type': 'int_parsing', 'loc': ('response', 'song', '_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': '692e965487aa0b81a9ba116d'}
-
+INFO:     127.0.0.1:50928 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:50940 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:34424 - "GET /songs/mood/sad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34436 - "GET /songs/mood/sad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50910 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50910 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50910 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50922 - "OPTIONS /entries/?userId=692e9996d736ab463b3d2b3e HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50922 - "GET /entries/?userId=692e9996d736ab463b3d2b3e HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged journal text for user=692e9996d736ab463b3d2b3e, entry=692e9996d736ab463b3d2b3f
+[Cassandra] INFO - Entry count incremented for user=692e9996d736ab463b3d2b3e, month=2025-12
+[Cassandra] INFO - Song selection logged for user=692e9996d736ab463b3d2b3e, song=692e965487aa0b81a9ba118a
+INFO:     127.0.0.1:50910 - "POST /entries/ HTTP/1.1" 200 OK

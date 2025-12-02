@@ -104,12 +104,14 @@ class Song(MongoBaseModel):
     createdAt: datetime = Field(default_factory=datetime.utcnow)
 
 class EmbeddedSong(BaseModel):
-    id: int = Field(alias="_id")  # Changed to int to match mock song IDs
+    id: str = Field(alias="_id")  # Changed to str to support ObjectId
     title: str
     artist: str
     album: Optional[str] = None
     mood: str
     albumArt: Optional[str] = None
+    coverUrl: Optional[str] = None
+    previewUrl: Optional[str] = None
     duration: int # Requirement says int here in Entries Collection
     createdAt: datetime
 

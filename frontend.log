@@ -3,18 +3,18 @@
 > npm-run-all --parallel dev:css dev:vite
 
 
-> nook-tunes@0.0.0 dev:vite
-> vite
-
-
 > nook-tunes@0.0.0 dev:css
 > tailwindcss -i ./src/input.css -o ./src/output.css --watch
+
+
+> nook-tunes@0.0.0 dev:vite
+> vite
 
 ≈ tailwindcss v4.1.14
 
 
-  VITE v7.1.10  ready in 112 ms
+  VITE v7.1.10  ready in 109 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-Done in 199ms
+Done in 96ms
