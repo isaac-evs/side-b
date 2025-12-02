@@ -413,10 +413,20 @@ const SongSelectorPage = () => {
               </div>
               
               {/* Song info tooltip */}
-              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max max-w-xs px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-sm font-semibold rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-                <div className="font-bold">{song.title}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400">{song.artist}</div>
-                <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-white dark:border-t-gray-800"></div>
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max max-w-xs px-3 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md text-gray-800 dark:text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 flex items-center gap-2">
+                <div 
+                  className="w-2 h-2 rounded-full flex-shrink-0 block"
+                  style={{
+                    backgroundColor: song.mood === 'joy' ? '#F6DD73' : 
+                                     song.mood === 'calm' ? '#6EC9B1' : 
+                                     song.mood === 'sad' ? '#5386FE' : '#FE3444'
+                  }}
+                />
+                <div>
+                  <div className="font-bold text-xs">{song.title}</div>
+                  <div className="text-[10px] text-gray-600 dark:text-gray-400">{song.artist}</div>
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-white dark:border-t-gray-800 opacity-80"></div>
               </div>
             </div>
           ))}
