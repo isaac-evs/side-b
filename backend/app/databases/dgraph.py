@@ -269,4 +269,22 @@ class DgraphClient:
             "raw": data
         }
 
+    async def get_mood_counts(self) -> Dict[str, Any]:
+        """
+        Get the count of entries for each mood using Dgraph aggregation.
+        """
+        client = await self._get_client()
+        headers = {"Content-Type": GRAPHQL_PLUS}
+        q = """
+        {
+          mood_counts(func: has(mood_name)) {
+            mood_name
+            entry_count: count(~has_mood)
+          }
+        }
+        """
+        r = await client.post(self.query_url, data=q.encode("utf-8"), headers=headers)
+        r.raise_for_status()
+        return r.json()
+
 dgraph_client = DgraphClient()

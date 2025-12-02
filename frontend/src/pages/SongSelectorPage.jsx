@@ -47,6 +47,19 @@ const ShuffleIcon = ({ className = "w-5 h-5" }) => (
   </svg>
 );
 
+const HomeIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+);
+
+const HeartIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+  </svg>
+);
+
 const SongSelectorPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -307,42 +320,40 @@ const SongSelectorPage = () => {
       }}
     >
       {/* Header with current song and volume controls */}
-      <header className="fixed top-6 left-6 z-10 flex items-center w-full max-w-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-3xl shadow-lg">
-        <QuaverIcon className="w-6 h-6 text-gray-700 dark:text-gray-300 mr-3 flex-shrink-0" />
-        <h1 className="text-xl font-bold truncate pr-4 text-gray-800 dark:text-white">
-          {currentSongName || "Pick a song"}
-        </h1>
-        <div className="flex items-center space-x-2 ml-auto">
-          <button
-            onClick={handleShuffle}
-            className="p-2 bg-purple-500 hover:bg-purple-600 rounded-full transition-colors"
-            title="Shuffle songs"
-          >
-            <ShuffleIcon className="w-5 h-5 text-white" />
-          </button>
-          <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />
-          <button
-            onClick={() => handleVolumeChange("down")}
-            className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            <MinusIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </button>
-          <VolumeSpeakerIcon volume={volume} className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-          <button
-            onClick={() => handleVolumeChange("up")}
-            className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            <PlusIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </button>
-        </div>
-      </header>
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-10 flex items-center gap-4 w-full max-w-[500px] px-4 pointer-events-none">
+        <header className="flex-1 flex items-center bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-full shadow-lg pointer-events-auto min-w-0">
+          <QuaverIcon className="w-6 h-6 text-gray-700 dark:text-gray-300 ml-2 mr-3 flex-shrink-0" />
+          <h1 className="text-xl font-bold truncate pr-4 text-gray-800 dark:text-white">
+            {currentSongName || "Pick a song"}
+          </h1>
+          <div className="flex items-center space-x-1 ml-auto mr-2">
+            <button
+              onClick={() => handleVolumeChange("down")}
+              className="p-2 rounded-full hover:scale-110 transition-transform"
+            >
+              <MinusIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            </button>
+            <VolumeSpeakerIcon volume={volume} className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            <button
+              onClick={() => handleVolumeChange("up")}
+              className="p-2 rounded-full hover:scale-110 transition-transform"
+            >
+              <PlusIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            </button>
+          </div>
+        </header>
+        
+        <button
+          onClick={() => navigate('/diary-input')}
+          className="p-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-colors pointer-events-auto flex-shrink-0"
+          title="Back to Diary"
+        >
+          <HomeIcon className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+        </button>
+      </div>
 
       {/* Main content - song grid */}
       <div className="flex items-center justify-center w-full min-h-screen pt-24 pb-24">
-        {/* Debug info */}
-        <div className="fixed top-20 left-6 bg-black/50 text-white p-2 rounded text-xs z-50">
-          Songs loaded: {songs.length} | Mood: {currentEntry.mood}
-        </div>
         <main className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full max-w-5xl">
           {songs.map((song, index) => (
             <div
@@ -354,8 +365,6 @@ const SongSelectorPage = () => {
                 className={`relative w-full h-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 transform group-hover:scale-105 ${
                   currentSongIndex === index && isPlaying 
                     ? "ring-4 ring-yellow-400 shadow-lg shadow-yellow-400/50 scale-105" 
-                    : (selectedSong?.id || selectedSong?._id) === (song.id || song._id)
-                    ? "ring-4 ring-green-500"
                     : ""
                 }`}
               >
@@ -386,7 +395,7 @@ const SongSelectorPage = () => {
                 
                 {/* Selected indicator */}
                 {(selectedSong?.id || selectedSong?._id) === (song.id || song._id) && (
-                  <div className="absolute top-2 right-2 bg-green-500 rounded-full p-1">
+                  <div className="absolute top-2 right-2 bg-yellow-400 rounded-full p-1">
                     <CheckIcon className="w-5 h-5 text-white" />
                   </div>
                 )}
@@ -417,22 +426,24 @@ const SongSelectorPage = () => {
       {/* Footer with action buttons */}
       <footer className="fixed bottom-6 right-6 z-10 flex flex-row space-x-4">
         <button
-          onClick={() => navigate('/diary-input')}
-          className="flex items-center space-x-2 px-6 py-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 rounded-full transition-colors shadow-lg"
+          onClick={handleShuffle}
+          className="flex items-center justify-center space-x-3 px-8 py-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 rounded-full transition-colors shadow-lg text-gray-800 dark:text-white"
+          title="Shuffle songs"
         >
-          <span className="font-bold text-sm text-gray-800 dark:text-white">← Back</span>
+          <ShuffleIcon className="w-8 h-8" />
+          <span className="font-bold text-lg">Shuffle</span>
         </button>
         <button
           onClick={handleSubmit}
           disabled={!selectedSong}
-          className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all shadow-lg ${
+          className={`flex items-center space-x-3 px-8 py-4 rounded-full transition-all shadow-lg ${
             selectedSong
-              ? "bg-green-500 hover:bg-green-600 text-white hover:scale-105"
+              ? "bg-white hover:bg-gray-100 text-black hover:scale-105"
               : "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
           }`}
         >
-          <CheckIcon className="w-5 h-5" />
-          <span className="font-bold text-sm">Confirm Selection</span>
+          <HeartIcon className="w-8 h-8" />
+          <span className="font-bold text-lg">I like it</span>
         </button>
       </footer>
     </div>
