@@ -1,25 +1,111 @@
 import React, { useState } from 'react';
 import useAppStore from '../../../store/appStore';
-import FileIcon from '../FileIcon';
+import { Rnd } from 'react-rnd';
 import { FolderOpen, FileText, Music, Calendar, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
+import txtIcon from '../../../assets/txt.png';
 
-const FileThumbnail = ({ file, fallbackIcon }) => {
+const FileThumbnail = ({ file, fallbackIcon, songData }) => {
   const [error, setError] = useState(false);
   
   const hasImage = (file.type === 'image' || file.type === 'gif') && file.metadata?.imageUrl;
+  const hasSongCover = file.type === 'song' && songData?.coverUrl;
+  
+  if (hasSongCover && !error) {
+    return (
+      <img 
+        src={songData.coverUrl} 
+        alt={file.name}
+        className="w-20 object-contain"
+        onError={() => setError(true)}
+        draggable={false}
+      />
+    );
+  }
   
   if (hasImage && !error) {
     return (
       <img 
         src={file.metadata.imageUrl} 
         alt={file.name}
-        className="w-8 h-8 object-cover rounded shadow-sm"
+        className="w-16 object-contain"
         onError={() => setError(true)}
+        draggable={false}
       />
     );
   }
   
   return fallbackIcon;
+};
+
+const SimpleFileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor }) => {
+  return (
+    <Rnd
+      default={{
+        x: position.x,
+        y: position.y,
+        width: 120,
+        height: 'auto'
+      }}
+      enableResizing={false}
+      bounds="parent"
+      dragHandleClassName="file-icon-handle"
+    >
+      <div
+        onDoubleClick={onDoubleClick}
+        className="file-icon-handle cursor-pointer select-none group flex flex-col items-center"
+        style={{ width: '120px' }}
+      >
+        <div className="flex flex-col items-center space-y-1">
+          {/* Icon Container */}
+          <div className="relative transition-transform active:scale-95">
+            <div className="flex items-center justify-center">
+              {icon}
+            </div>
+            
+            {/* Mood color indicator */}
+            {moodColor && (
+              <div
+                className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
+                style={{ 
+                  backgroundColor: moodColor,
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                }}
+              />
+            )}
+          </div>
+          
+          {/* Title */}
+          <div 
+            className="text-center px-1 w-full"
+            style={{
+              maxWidth: '100px'
+            }}
+          >
+            <div 
+              className="text-xs font-medium text-white truncate leading-tight group-hover:bg-[#0061D5] group-hover:rounded px-1.5 py-0.5 inline-block"
+              style={{
+                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+                textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+              }}
+            >
+              {title}
+            </div>
+            {subtitle && (
+              <div 
+                className="text-[10px] text-white/80 truncate mt-0.5"
+                style={{
+                  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+                  textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+                }}
+              >
+                {subtitle}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </Rnd>
+  );
 };
 
 const DiaryExplorer = () => {
@@ -91,14 +177,14 @@ const DiaryExplorer = () => {
 
   const getFileIcon = (type) => {
     switch (type) {
-      case 'feelings': return <FileText className="w-8 h-8 text-blue-500" />;
-      case 'song': return <Music className="w-8 h-8 text-pink-500" />;
+      case 'feelings': return <img src={txtIcon} alt="text file" className="w-16 object-contain" draggable={false} />;
+      case 'song': return <Music className="w-16 h-16 text-pink-500" />;
       case 'image': 
-      case 'gif': return <ImageIcon className="w-8 h-8 text-purple-500" />;
-      case 'book': return <BookOpen className="w-8 h-8 text-amber-600" />;
-      case 'movie': return <Film className="w-8 h-8 text-red-500" />;
-      case 'video': return <Youtube className="w-8 h-8 text-red-600" />;
-      default: return <FileText className="w-8 h-8 text-gray-500" />;
+      case 'gif': return <ImageIcon className="w-16 h-16 text-purple-500" />;
+      case 'book': return <BookOpen className="w-16 h-16 text-amber-600" />;
+      case 'movie': return <Film className="w-16 h-16 text-red-500" />;
+      case 'video': return <Youtube className="w-16 h-16 text-red-600" />;
+      default: return <FileText className="w-16 h-16 text-gray-500" />;
     }
   };
 
@@ -114,7 +200,7 @@ const DiaryExplorer = () => {
     <div className="flex h-full bg-white dark:bg-gray-900 text-sm">
       {/* Sidebar with Catalina styling */}
       <div 
-        className="w-48 flex flex-col border-r border-gray-200 dark:border-gray-700"
+        className="w-48 flex flex-col"
         style={{
           backgroundColor: 'rgba(240, 240, 240, 0.8)',
           backdropFilter: 'blur(20px)',
@@ -131,7 +217,7 @@ const DiaryExplorer = () => {
           </h3>
           <div className="space-y-0.5">
              <div className="flex items-center px-2 py-1 rounded bg-gray-300/50 text-gray-800">
-                <FolderOpen className="w-4 h-4 mr-2 text-blue-500" />
+                <FolderOpen className="w-4 h-4 mr-2 text-gray-500" />
                 <span>All Entries</span>
              </div>
           </div>
@@ -160,13 +246,13 @@ const DiaryExplorer = () => {
                   }}
                   className={`w-full text-left px-2 py-1 rounded flex items-center space-x-2 transition-colors ${
                     selectedEntry?.id === entry.id 
-                      ? 'bg-blue-500 text-white' 
+                      ? 'text-gray-900' 
                       : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <Calendar className={`w-4 h-4 ${selectedEntry?.id === entry.id ? 'text-white' : 'text-gray-500'}`} />
+                  <Calendar className="w-4 h-4 text-gray-500" />
                   <div className="flex-1 min-w-0">
-                    <div className="truncate text-xs font-medium">
+                    <div className={`truncate text-xs ${selectedEntry?.id === entry.id ? 'font-bold' : 'font-medium'}`}>
                       {new Date(entry.date).toLocaleDateString()}
                     </div>
                   </div>
@@ -177,7 +263,7 @@ const DiaryExplorer = () => {
         </div>
 
         {/* Mood Filter Tags - Below entries */}
-        <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-3 pb-6">
           <h4 
             className="text-xs font-semibold text-gray-500 mb-2 px-2"
           >
@@ -194,7 +280,7 @@ const DiaryExplorer = () => {
                 }}
               >
                 <div
-                  className="w-3 h-3 rounded-full flex-shrink-0 border border-black/10"
+                  className="w-3 h-3 rounded-full flex-shrink-0"
                   style={{ backgroundColor: mood.color }}
                 />
                 <span className="text-gray-700 dark:text-gray-300">{mood.name}</span>
@@ -207,7 +293,7 @@ const DiaryExplorer = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-white dark:bg-gray-900">
         {/* Finder Toolbar */}
-        <div className="h-12 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 bg-[#f6f6f6] dark:bg-[#2a2a2a]">
+        <div className="h-12 flex items-center px-4 bg-[#f6f6f6] dark:bg-[#2a2a2a]">
             <div className="flex space-x-4">
                 <div className="flex space-x-1">
                     <button className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500">
@@ -234,16 +320,17 @@ const DiaryExplorer = () => {
               <div className="w-full h-full relative min-h-[500px]">
                   {getVisibleFiles().map((file, index) => {
                     // Calculate grid-like initial positions
-                    const col = index % 6;
-                    const row = Math.floor(index / 6);
+                    const col = index % 4;
+                    const row = Math.floor(index / 4);
                     
                     return (
-                      <FileIcon
+                      <SimpleFileIcon
                         key={`${file.type}-${index}`}
                         icon={
                             <FileThumbnail 
                             file={file} 
-                            fallbackIcon={getFileIcon(file.type)} 
+                            fallbackIcon={getFileIcon(file.type)}
+                            songData={file.type === 'song' ? selectedEntry.song : null}
                             />
                         }
                         title={file.name}
@@ -271,8 +358,8 @@ const DiaryExplorer = () => {
             </button>
 
             {viewingFile === 'feelings' && (
-              <div className="max-w-2xl mx-auto bg-white shadow-sm border p-8 min-h-[400px]">
-                <div className="flex items-center justify-between mb-6 border-b pb-4">
+              <div className="max-w-2xl mx-auto bg-white shadow-sm p-8 min-h-[400px]">
+                <div className="flex items-center justify-between mb-6 pb-4">
                   <h3 className="text-xl font-serif font-bold text-gray-900">
                     {new Date(selectedEntry.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
                   </h3>

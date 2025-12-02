@@ -2,6 +2,9 @@ import React from 'react';
 import { Rnd } from 'react-rnd';
 
 const FileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor }) => {
+  // Check if icon is an img element (for custom file icons like txt.png)
+  const isCustomImage = React.isValidElement(icon) && icon.type === 'img';
+  
   return (
     <Rnd
       default={{
@@ -22,25 +25,33 @@ const FileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor })
         <div className="flex flex-col items-center space-y-1">
           {/* Icon Container with mood indicator */}
           <div className="relative transition-transform active:scale-95">
-            <div 
-              className="w-12 h-16 bg-white flex flex-col items-center justify-center relative"
-              style={{
-                borderRadius: '2px',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                border: '1px solid #e0e0e0'
-              }}
-            >
-              {/* Folded corner */}
+            {isCustomImage ? (
+              // Render custom image without frame
+              <div className="flex items-center justify-center">
+                {React.cloneElement(icon, { className: "w-12 h-12 object-contain" })}
+              </div>
+            ) : (
+              // Render default file icon with frame
               <div 
-                className="absolute top-0 right-0 w-3 h-3 bg-[#f0f0f0]"
+                className="w-12 h-16 bg-white flex flex-col items-center justify-center relative"
                 style={{
-                  borderBottomLeftRadius: '2px',
-                  boxShadow: '-1px 1px 1px rgba(0,0,0,0.05)'
+                  borderRadius: '2px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                  border: '1px solid #e0e0e0'
                 }}
-              />
-              
-              {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-6 h-6 text-gray-500" }) : icon}
-            </div>
+              >
+                {/* Folded corner */}
+                <div 
+                  className="absolute top-0 right-0 w-3 h-3 bg-[#f0f0f0]"
+                  style={{
+                    borderBottomLeftRadius: '2px',
+                    boxShadow: '-1px 1px 1px rgba(0,0,0,0.05)'
+                  }}
+                />
+                
+                {React.isValidElement(icon) ? React.cloneElement(icon, { className: "w-6 h-6 text-gray-500" }) : icon}
+              </div>
+            )}
             
             {/* Mood color indicator */}
             {moodColor && (
