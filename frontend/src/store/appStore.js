@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { entriesAPI } from '../services/api';
+import { entriesAPI, filesAPI } from '../services/api';
 
 const useAppStore = create((set, get) => ({
   // Theme
@@ -30,13 +30,42 @@ const useAppStore = create((set, get) => ({
   entries: [],
   entriesLoading: false,
   entriesError: null,
+
+  // Trash items
+  trashedFiles: [],
   
   // Fetch entries from API
   fetchEntries: async (userId) => {
     set({ entriesLoading: true, entriesError: null });
     try {
       const entries = await entriesAPI.getAllEntries(userId);
-      set({ entries, entriesLoading: false });
+      
+      // Rebuild trash from entries with deleted files
+      const trashedFiles = [];
+      entries.forEach(entry => {
+        if (entry.files && Array.isArray(entry.files)) {
+          entry.files.forEach((file, index) => {
+            // Check if file is an object (not just an ID) and has deleted flag
+            if (file && typeof file === 'object' && file.deleted) {
+              console.log('Found deleted file:', file);
+              trashedFiles.push({
+                id: `trash-${entry._id || entry.id}-${index}`,
+                fileId: file._id,
+                entryId: entry._id || entry.id,
+                fileName: file.fileName || file.name,
+                fileType: file.fileType || file.type,
+                metadata: file.metadata,
+                mood: file.mood,
+                deletedAt: file.deletedAt || new Date().toISOString(),
+                originalIndex: index,
+              });
+            }
+          });
+        }
+      });
+      
+      console.log('Rebuilt trash with', trashedFiles.length, 'items');
+      set({ entries, trashedFiles, entriesLoading: false });
     } catch (error) {
       set({ entriesError: error.message, entriesLoading: false });
       console.error('Failed to fetch entries:', error);
@@ -96,6 +125,245 @@ const useAppStore = create((set, get) => ({
         : entry
     ),
   })),
+
+  // Delete file from entry
+  deleteFileFromEntry: (entryId, fileIndex) => set((state) => ({
+    entries: state.entries.map((entry) => {
+      if (entry.id === entryId || entry._id === entryId) {
+        const newFiles = [...(entry.files || [])];
+        newFiles.splice(fileIndex, 1);
+        return { ...entry, files: newFiles };
+      }
+      return entry;
+    }),
+  })),
+
+  // Move file to trash
+  moveFileToTrash: async (entryId, fileIndex, file) => {
+    const state = get();
+    const entry = state.entries.find(e => (e.id === entryId || e._id === entryId));
+    if (!entry) return;
+
+    const deletedAt = new Date().toISOString();
+    const trashedItem = {
+      id: `trash-${Date.now()}-${fileIndex}`,
+      fileId: file._id,
+      entryId: entryId,
+      fileName: file.fileName || file.name,
+      fileType: file.fileType || file.type,
+      metadata: file.metadata,
+      mood: file.mood,
+      deletedAt: deletedAt,
+      originalIndex: fileIndex,
+    };
+
+    // Mark file as deleted in the entry (don't remove it)
+    const newFiles = [...(entry.files || [])];
+    if (newFiles[fileIndex]) {
+      newFiles[fileIndex] = { ...newFiles[fileIndex], deleted: true, deletedAt: deletedAt };
+    }
+
+    try {
+      // Update entry in backend with deleted flag
+      await entriesAPI.updateEntry(entry._id || entry.id, {
+        ...entry,
+        files: newFiles
+      });
+
+      // Update local state
+      set((state) => ({
+        entries: state.entries.map((e) => {
+          if (e.id === entryId || e._id === entryId) {
+            return { ...e, files: newFiles };
+          }
+          return e;
+        }),
+        trashedFiles: [...state.trashedFiles, trashedItem],
+      }));
+    } catch (error) {
+      console.error('Failed to move file to trash:', error);
+      alert('Failed to move file to trash: ' + error.message);
+    }
+  },
+
+  // Restore file from trash
+  restoreFileFromTrash: async (trashItemId) => {
+    const state = get();
+    const trashedItem = state.trashedFiles.find(item => item.id === trashItemId);
+    if (!trashedItem) return;
+
+    const entry = state.entries.find(e => (e.id === trashedItem.entryId || e._id === trashedItem.entryId));
+    if (!entry) return;
+
+    // Restore file by removing the deleted flag
+    const newFiles = [...(entry.files || [])];
+    if (newFiles[trashedItem.originalIndex]) {
+      const { deleted, ...fileWithoutDeletedFlag } = newFiles[trashedItem.originalIndex];
+      newFiles[trashedItem.originalIndex] = fileWithoutDeletedFlag;
+    }
+
+    try {
+      // Update entry in backend
+      await entriesAPI.updateEntry(entry._id || entry.id, {
+        ...entry,
+        files: newFiles
+      });
+
+      // Update local state
+      set((state) => ({
+        entries: state.entries.map((e) => {
+          if (e.id === trashedItem.entryId || e._id === trashedItem.entryId) {
+            return { ...e, files: newFiles };
+          }
+          return e;
+        }),
+        trashedFiles: state.trashedFiles.filter(item => item.id !== trashItemId),
+      }));
+    } catch (error) {
+      console.error('Failed to restore file:', error);
+      alert('Failed to restore file: ' + error.message);
+    }
+  },
+
+  // Permanently delete file from trash (from all databases)
+  permanentlyDeleteFile: async (trashItemId) => {
+    const state = get();
+    const trashedItem = state.trashedFiles.find(item => item.id === trashItemId);
+    if (!trashedItem) {
+      set((state) => ({
+        trashedFiles: state.trashedFiles.filter(item => item.id !== trashItemId),
+      }));
+      return;
+    }
+
+    try {
+      // Delete from all databases via API (only if fileId exists)
+      if (trashedItem.fileId) {
+        try {
+          await filesAPI.deleteFile(trashedItem.fileId);
+        } catch (error) {
+          // If file doesn't exist in database (404), that's ok, continue with cleanup
+          if (error.response?.status !== 404) {
+            throw error;
+          }
+          console.log('File already deleted from database, cleaning up locally');
+        }
+      }
+      
+      // Remove the file object from the entry's files array
+      const entry = state.entries.find(e => (e.id === trashedItem.entryId || e._id === trashedItem.entryId));
+      if (entry) {
+        const newFiles = [...(entry.files || [])];
+        // Remove the file at the original index
+        newFiles.splice(trashedItem.originalIndex, 1);
+        
+        // Update entry in backend
+        await entriesAPI.updateEntry(entry._id || entry.id, {
+          ...entry,
+          files: newFiles
+        });
+        
+        // Update local state
+        set((state) => ({
+          entries: state.entries.map((e) => {
+            if (e.id === trashedItem.entryId || e._id === trashedItem.entryId) {
+              return { ...e, files: newFiles };
+            }
+            return e;
+          }),
+          trashedFiles: state.trashedFiles.filter(item => item.id !== trashItemId),
+        }));
+      } else {
+        // Entry not found, just remove from trash
+        set((state) => ({
+          trashedFiles: state.trashedFiles.filter(item => item.id !== trashItemId),
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to permanently delete file:', error);
+      throw error;
+    }
+  },
+
+  // Empty entire trash
+  emptyTrash: async () => {
+    const state = get();
+    
+    // Delete files from databases and remove from entries
+    const deletePromises = state.trashedFiles.map(async (item) => {
+      try {
+        // Delete from database if fileId exists
+        if (item.fileId) {
+          try {
+            await filesAPI.deleteFile(item.fileId);
+          } catch (error) {
+            // If 404, file already deleted, continue
+            if (error.response?.status !== 404) {
+              console.error(`Failed to delete file ${item.fileId}:`, error);
+            }
+          }
+        }
+        
+        // Remove from entry's files array
+        const entry = state.entries.find(e => (e.id === item.entryId || e._id === item.entryId));
+        if (entry) {
+          return { entryId: entry._id || entry.id, index: item.originalIndex };
+        }
+      } catch (err) {
+        console.error(`Failed to process trash item:`, err);
+      }
+      return null;
+    });
+
+    try {
+      const results = await Promise.all(deletePromises);
+      
+      // Group deletions by entry to update efficiently
+      const entryUpdates = {};
+      results.forEach(result => {
+        if (result) {
+          if (!entryUpdates[result.entryId]) {
+            entryUpdates[result.entryId] = [];
+          }
+          entryUpdates[result.entryId].push(result.index);
+        }
+      });
+      
+      // Update each entry by removing deleted files
+      const updatePromises = Object.entries(entryUpdates).map(async ([entryId, indices]) => {
+        const entry = state.entries.find(e => (e.id === entryId || e._id === entryId));
+        if (entry) {
+          // Sort indices in descending order to remove from end first
+          const sortedIndices = indices.sort((a, b) => b - a);
+          const newFiles = [...(entry.files || [])];
+          sortedIndices.forEach(index => {
+            newFiles.splice(index, 1);
+          });
+          
+          await entriesAPI.updateEntry(entryId, { ...entry, files: newFiles });
+          return { entryId, newFiles };
+        }
+        return null;
+      });
+      
+      const entryResults = await Promise.all(updatePromises);
+      
+      // Update local state
+      set((state) => ({
+        entries: state.entries.map((entry) => {
+          const update = entryResults.find(r => r && (r.entryId === entry.id || r.entryId === entry._id));
+          if (update) {
+            return { ...entry, files: update.newFiles };
+          }
+          return entry;
+        }),
+        trashedFiles: [],
+      }));
+    } catch (error) {
+      console.error('Failed to empty trash:', error);
+      throw error;
+    }
+  },
 
   // Selected entry in explorer
   selectedEntryId: null,

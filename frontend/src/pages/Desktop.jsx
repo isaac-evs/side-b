@@ -9,7 +9,8 @@ import MusicLibrary from '../components/desktop/apps/MusicLibrary';
 import Profile from '../components/desktop/apps/Profile';
 import Settings from '../components/desktop/apps/Settings';
 import Trash from '../components/desktop/apps/Trash';
-import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp } from 'lucide-react';
+import FileViewer from '../components/desktop/apps/FileViewer';
+import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp, FileText } from 'lucide-react';
 import useAppStore from '../store/appStore';
 
 const DesktopContent = () => {
@@ -161,6 +162,29 @@ const DesktopContent = () => {
       >
         <Trash />
       </Window>
+
+      {/* Dynamic File Viewer Windows */}
+      {Object.entries(windows).map(([appId, window]) => {
+        if (appId.startsWith('file-viewer-')) {
+          return (
+            <Window
+              key={appId}
+              appId={appId}
+              title={window.title || 'File Viewer'}
+              icon={<FileText className="w-4 h-4" />}
+              minWidth={400}
+              minHeight={400}
+            >
+              <FileViewer 
+                file={window.file} 
+                entry={window.entry}
+                moods={window.moods}
+              />
+            </Window>
+          );
+        }
+        return null;
+      })}
     </>
   );
 };

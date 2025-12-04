@@ -92,7 +92,7 @@ export const entriesAPI = {
   },
   
   updateEntry: async (entryId, entryData) => {
-    const response = await api.put(`/entries/${entryId}`, entryData);
+    const response = await api.patch(`/entries/${entryId}`, entryData);
     return response.data;
   },
   

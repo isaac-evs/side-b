@@ -118,25 +118,32 @@ async def list_entries(userId: str = None):
                 detail=f"Invalid userId format: {userId}"
             )
     
-    # Lookup stage - populate files from file_collection
-    pipeline.append({
-        "$lookup": {
-            "from": "files",
-            "localField": "files",
-            "foreignField": "_id",
-            "as": "populatedFiles"
-        }
-    })
+    # Execute query
+    entries = await entry_collection.find(pipeline[0]["$match"] if pipeline else {}).to_list(1000)
     
-    # Execute aggregation
-    entries = await entry_collection.aggregate(pipeline).to_list(1000)
-    
-    # Serialize and map populatedFiles to files
-    serialized_entries = serialize_mongo_obj(entries)
-    for entry in serialized_entries:
-        if "populatedFiles" in entry:
-            entry["files"] = entry["populatedFiles"]
-            del entry["populatedFiles"]
+    # Process each entry to handle files
+    serialized_entries = []
+    for entry in entries:
+        serialized_entry = serialize_mongo_obj(entry)
+        
+        # Handle files array - could be ObjectIds or full objects
+        if "files" in serialized_entry and isinstance(serialized_entry["files"], list):
+            populated_files = []
+            for file_ref in serialized_entry["files"]:
+                # If it's already an object (has fileName or fileType), use it directly
+                if isinstance(file_ref, dict) and ("fileName" in file_ref or "fileType" in file_ref):
+                    populated_files.append(file_ref)
+                # If it's an ObjectId string, look it up
+                elif isinstance(file_ref, str):
+                    try:
+                        file_obj = await file_collection.find_one({"_id": ObjectId(file_ref)})
+                        if file_obj:
+                            populated_files.append(serialize_mongo_obj(file_obj))
+                    except:
+                        pass
+            serialized_entry["files"] = populated_files
+        
+        serialized_entries.append(serialized_entry)
             
     return serialized_entries
 
@@ -243,3 +250,34 @@ async def show_entry(id: str):
     if (entry := await entry_collection.find_one({"_id": ObjectId(id)})) is not None:
         return entry
     raise HTTPException(status_code=404, detail=f"Entry {id} not found")
+
+@router.patch("/{id}", response_description="Update an entry")
+async def update_entry(id: str, update_data: dict = Body(...)):
+    """
+    Update an entry. Used for marking files as deleted/restored.
+    """
+    # Validate entry exists
+    entry = await entry_collection.find_one({"_id": ObjectId(id)})
+    if not entry:
+        raise HTTPException(status_code=404, detail=f"Entry {id} not found")
+    
+    # Remove fields that shouldn't be updated directly
+    update_data.pop("_id", None)
+    update_data.pop("id", None)
+    
+    # Convert userId to ObjectId if present
+    if "userId" in update_data:
+        update_data["userId"] = ObjectId(update_data["userId"])
+    
+    # Update the entry
+    result = await entry_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": update_data}
+    )
+    
+    if result.modified_count == 0 and result.matched_count == 0:
+        raise HTTPException(status_code=404, detail=f"Entry {id} not found")
+    
+    # Return updated entry
+    updated_entry = await entry_collection.find_one({"_id": ObjectId(id)})
+    return serialize_mongo_obj(updated_entry)

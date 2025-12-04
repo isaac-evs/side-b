@@ -287,4 +287,35 @@ class DgraphClient:
         r.raise_for_status()
         return r.json()
 
+    async def delete_file(self, file_id: str) -> Dict[str, Any]:
+        """
+        Delete a file/media node from Dgraph by its ID.
+        """
+        client = await self._get_client()
+        headers = {"Content-Type": "application/json"}
+        
+        # First, query to find the UID of the file with this file_id
+        query = f"""
+        {{
+          file as var(func: eq(file_id, "{file_id}"))
+        }}
+        """
+        
+        # Then delete the node
+        mutation = {
+            "query": query,
+            "delete": {
+                "uid": "uid(file)"
+            }
+        }
+        
+        try:
+            r = await client.post(self.mutate_url, json=mutation, headers=headers)
+            r.raise_for_status()
+            result = r.json()
+            return {"ok": True, "result": result}
+        except Exception as e:
+            print(f"Error deleting file from Dgraph: {e}")
+            return {"ok": False, "error": str(e)}
+
 dgraph_client = DgraphClient()

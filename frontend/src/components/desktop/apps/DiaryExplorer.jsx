@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useAppStore from '../../../store/appStore';
+import { useDesktop } from '../../../contexts/DesktopContext';
 import { Rnd } from 'react-rnd';
 import { FolderOpen, FileText, Music, Calendar, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
 import txtIcon from '../../../assets/txt.png';
@@ -37,7 +38,7 @@ const FileThumbnail = ({ file, fallbackIcon, songData }) => {
   return fallbackIcon;
 };
 
-const SimpleFileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodColor }) => {
+const SimpleFileIcon = ({ icon, title, subtitle, onDoubleClick, onContextMenu, position, moodColor }) => {
   return (
     <Rnd
       default={{
@@ -52,55 +53,46 @@ const SimpleFileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodCo
     >
       <div
         onDoubleClick={onDoubleClick}
+        onContextMenu={onContextMenu}
         className="file-icon-handle cursor-pointer select-none group flex flex-col items-center"
         style={{ width: '120px' }}
       >
         <div className="flex flex-col items-center space-y-1">
           {/* Icon Container */}
-          <div className="relative transition-transform active:scale-95">
+          <div className="transition-transform active:scale-95">
             <div className="flex items-center justify-center">
               {icon}
             </div>
-            
-            {/* Mood color indicator */}
+          </div>
+          
+          {/* Title with mood dot */}
+          <div 
+            className="text-center px-1 w-full flex items-center justify-center gap-1.5"
+            style={{
+              maxWidth: '100px'
+            }}
+          >
+            {/* Mood color indicator - now on the left of text */}
             {moodColor && (
               <div
-                className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
+                className="w-2 h-2 rounded-full flex-shrink-0"
                 style={{ 
                   backgroundColor: moodColor,
                   boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
                 }}
               />
             )}
-          </div>
-          
-          {/* Title */}
-          <div 
-            className="text-center px-1 w-full"
-            style={{
-              maxWidth: '100px'
-            }}
-          >
-            <div 
-              className="text-xs font-medium text-white truncate leading-tight group-hover:bg-[#0061D5] group-hover:rounded px-1.5 py-0.5 inline-block"
-              style={{
-                fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-                textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-              }}
-            >
-              {title}
-            </div>
-            {subtitle && (
+            
+            <div className="flex-1 min-w-0">
               <div 
-                className="text-[10px] text-white/80 truncate mt-0.5"
+                className="text-xs font-medium text-black truncate leading-tight px-1.5 py-0.5"
                 style={{
-                  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-                  textShadow: '0 1px 2px rgba(0,0,0,0.8)'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
                 }}
               >
-                {subtitle}
+                {title}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -109,10 +101,18 @@ const SimpleFileIcon = ({ icon, title, subtitle, onDoubleClick, position, moodCo
 };
 
 const DiaryExplorer = () => {
-  const { entries } = useAppStore();
+  const { entries, moveFileToTrash } = useAppStore();
+  const { openWindow } = useDesktop();
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const [viewingFile, setViewingFile] = useState(null);
   const [excludedMoods, setExcludedMoods] = useState([]);
+  const [contextMenu, setContextMenu] = useState(null);
+
+  // Close context menu when clicking anywhere
+  React.useEffect(() => {
+    const handleClick = () => setContextMenu(null);
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
 
   const moods = {
     joy: { name: 'Joy', color: '#F6DD73', emoji: '😊' },
@@ -158,9 +158,12 @@ const DiaryExplorer = () => {
       });
     }
     
-    // Add uploaded files from the entry
+    // Add uploaded files from the entry (filter out deleted ones)
     if (selectedEntry.files && Array.isArray(selectedEntry.files)) {
       selectedEntry.files.forEach(file => {
+        // Skip files marked as deleted
+        if (file.deleted) return;
+        
         if (isFileVisible(file.mood || selectedEntry.mood)) {
           files.push({
             ...file,
@@ -194,6 +197,27 @@ const DiaryExplorer = () => {
     if (file.type === 'book') return file.metadata?.author || 'Book';
     if (file.type === 'image' || file.type === 'gif') return file.metadata?.extension || 'Image';
     return file.type;
+  };
+
+  const handleDeleteFile = (fileIndex, fileType, file) => {
+    if (fileType === 'feelings' || fileType === 'song') {
+      alert('Cannot delete feelings.txt or song.mp3');
+      return;
+    }
+    
+    if (window.confirm('Move this file to trash?')) {
+      // Find the actual index in the entry's files array
+      // We need to find which uploaded file this corresponds to
+      const uploadedFileIndex = selectedEntry.files.findIndex(f => 
+        f._id === file._id || 
+        (f.fileName === file.fileName && f.fileType === file.fileType)
+      );
+      
+      if (uploadedFileIndex !== -1) {
+        moveFileToTrash(selectedEntry.id || selectedEntry._id, uploadedFileIndex, file);
+      }
+      setContextMenu(null);
+    }
   };
 
   return (
@@ -242,7 +266,6 @@ const DiaryExplorer = () => {
                   key={entry.id}
                   onClick={() => {
                     setSelectedEntry(entry);
-                    setViewingFile(null);
                   }}
                   className={`w-full text-left px-2 py-1 rounded flex items-center space-x-2 transition-colors ${
                     selectedEntry?.id === entry.id 
@@ -310,7 +333,7 @@ const DiaryExplorer = () => {
         </div>
 
         {/* File Icons View */}
-        {selectedEntry && !viewingFile && (
+        {selectedEntry && (
           <div className="flex-1 relative overflow-auto p-4">
             {getVisibleFiles().length === 0 ? (
               <div className="flex items-center justify-center h-full">
@@ -323,6 +346,54 @@ const DiaryExplorer = () => {
                     const col = index % 4;
                     const row = Math.floor(index / 4);
                     
+                    // Get the display name with extension for uploaded files
+                    let displayName = file.name;
+                    if (file.metadata?.extension && file.type !== 'feelings' && file.type !== 'song') {
+                      displayName = `${file.name}.${file.metadata.extension}`;
+                    }
+                    
+                    // Handle double click
+                    const handleDoubleClick = () => {
+                      if (file.type === 'song') {
+                        openWindow('music-player');
+                      } else {
+                        // Open file viewer window for all other file types
+                        openWindow(`file-viewer-${file.type}-${index}`, {
+                          title: displayName,
+                          file: file,
+                          entry: selectedEntry,
+                          moods: moods,
+                          size: { width: 800, height: 600 }
+                        });
+                      }
+                    };
+
+                    // Handle right click for context menu
+                    const handleContextMenu = (e) => {
+                      e.preventDefault();
+                      
+                      // Get the position relative to the scrollable container
+                      const container = e.currentTarget.closest('.flex-1.relative.overflow-auto');
+                      const containerRect = container?.getBoundingClientRect();
+                      
+                      let menuX = e.clientX;
+                      let menuY = e.clientY;
+                      
+                      if (containerRect) {
+                        menuX = e.clientX - containerRect.left + container.scrollLeft;
+                        menuY = e.clientY - containerRect.top + container.scrollTop;
+                      }
+                      
+                      setContextMenu({
+                        x: menuX,
+                        y: menuY,
+                        fileIndex: index,
+                        fileType: file.type,
+                        fileName: displayName,
+                        file: file
+                      });
+                    };
+                    
                     return (
                       <SimpleFileIcon
                         key={`${file.type}-${index}`}
@@ -333,76 +404,15 @@ const DiaryExplorer = () => {
                             songData={file.type === 'song' ? selectedEntry.song : null}
                             />
                         }
-                        title={file.name}
+                        title={displayName}
                         subtitle={getFileSubtitle(file)}
                         position={{ x: 20 + (col * 130), y: 20 + (row * 130) }}
                         moodColor={moods[file.mood]?.color}
-                        onDoubleClick={() => setViewingFile(file.type === 'feelings' || file.type === 'song' ? file.type : file)}
+                        onDoubleClick={handleDoubleClick}
+                        onContextMenu={handleContextMenu}
                       />
                     );
                   })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* File Viewer */}
-        {viewingFile && (
-          <div className="flex-1 p-6 bg-white dark:bg-gray-900 overflow-y-auto">
-            <button
-              onClick={() => setViewingFile(null)}
-              className="mb-4 flex items-center text-sm text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
-            >
-              <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              Back
-            </button>
-
-            {viewingFile === 'feelings' && (
-              <div className="max-w-2xl mx-auto bg-white shadow-sm p-8 min-h-[400px]">
-                <div className="flex items-center justify-between mb-6 pb-4">
-                  <h3 className="text-xl font-serif font-bold text-gray-900">
-                    {new Date(selectedEntry.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
-                  </h3>
-                  <div
-                    className="px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide"
-                    style={{
-                      backgroundColor: moods[selectedEntry.mood]?.color + '40',
-                      color: '#000'
-                    }}
-                  >
-                    {moods[selectedEntry.mood]?.name}
-                  </div>
-                </div>
-                <p className="text-gray-800 leading-relaxed font-serif text-lg whitespace-pre-wrap">
-                  {selectedEntry.text}
-                </p>
-              </div>
-            )}
-
-            {viewingFile === 'song' && (
-              <div className="flex flex-col items-center justify-center h-full">
-                <div className="w-64 h-64 bg-gray-100 rounded-lg shadow-lg mb-6 flex items-center justify-center overflow-hidden">
-                    {selectedEntry.song.coverUrl ? (
-                        <img src={selectedEntry.song.coverUrl} alt="Album Art" className="w-full h-full object-cover" />
-                    ) : (
-                        <Music className="w-24 h-24 text-gray-300" />
-                    )}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  {selectedEntry.song.title}
-                </h3>
-                <p className="text-lg text-gray-500 mb-8">{selectedEntry.song.artist}</p>
-                
-                {/* Simple Player UI */}
-                <div className="w-96 bg-gray-100 dark:bg-gray-800 rounded-full p-2 flex items-center space-x-4">
-                    <button className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-105 transition-transform">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                    </button>
-                    <div className="flex-1 h-1 bg-gray-300 rounded-full overflow-hidden">
-                        <div className="w-1/3 h-full bg-black"></div>
-                    </div>
-                    <span className="text-xs text-gray-500 pr-3">1:23</span>
-                </div>
               </div>
             )}
           </div>
@@ -417,6 +427,34 @@ const DiaryExplorer = () => {
           </div>
         )}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          className="absolute bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-1 z-50"
+          style={{
+            left: `${contextMenu.x}px`,
+            top: `${contextMenu.y}px`,
+            minWidth: '160px'
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700">
+            {contextMenu.fileName}
+          </div>
+          <button
+            onClick={() => handleDeleteFile(contextMenu.fileIndex, contextMenu.fileType, contextMenu.file)}
+            disabled={contextMenu.fileType === 'feelings' || contextMenu.fileType === 'song'}
+            className={`w-full text-left px-4 py-2 text-sm transition-colors ${
+              contextMenu.fileType === 'feelings' || contextMenu.fileType === 'song'
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20'
+            }`}
+          >
+            Move to Trash
+          </button>
+        </div>
+      )}
     </div>
   );
 };
