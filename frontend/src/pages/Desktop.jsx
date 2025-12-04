@@ -10,7 +10,8 @@ import Profile from '../components/desktop/apps/Profile';
 import Settings from '../components/desktop/apps/Settings';
 import Trash from '../components/desktop/apps/Trash';
 import FileViewer from '../components/desktop/apps/FileViewer';
-import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp, FileText } from 'lucide-react';
+import Insights from '../components/desktop/apps/Insights';
+import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp, FileText, Activity } from 'lucide-react';
 import useAppStore from '../store/appStore';
 
 const DesktopContent = () => {
@@ -106,6 +107,17 @@ const DesktopContent = () => {
         minHeight={400}
       >
         <DiaryExplorer />
+      </Window>
+
+      {/* Insights Window */}
+      <Window
+        appId="insights"
+        title="Insights"
+        icon={<Activity className="w-4 h-4" />}
+        minWidth={800}
+        minHeight={600}
+      >
+        <Insights />
       </Window>
 
       {/* Music Player Window */}

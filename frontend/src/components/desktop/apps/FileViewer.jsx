@@ -1,5 +1,18 @@
 import React from 'react';
-import { FileText, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
+import { FileText, Image as ImageIcon, BookOpen, Film, Youtube, ExternalLink } from 'lucide-react';
+
+const getEmbedUrl = (url) => {
+  if (!url) return null;
+  // Handle standard youtube.com/watch?v=ID
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+
+  if (match && match[2].length === 11) {
+    return `https://www.youtube.com/embed/${match[2]}`;
+  }
+  
+  return url;
+};
 
 const FileViewer = ({ file, entry, moods }) => {
   if (!file || !entry) {
@@ -10,27 +23,34 @@ const FileViewer = ({ file, entry, moods }) => {
     );
   }
 
-  // Render feelings.txt
-  if (file === 'feelings' || file.type === 'feelings') {
+  // Render feelings.txt or custom text files
+  if (file === 'feelings' || file.type === 'feelings' || file.type === 'text') {
+    const isFeelings = file === 'feelings' || file.type === 'feelings';
+    const content = isFeelings ? entry.text : (file.metadata?.content || '');
+    const mood = isFeelings ? entry.mood : file.mood;
+    
     return (
       <div className="flex-1 p-6 bg-white dark:bg-gray-900 overflow-y-auto h-full">
         <div className="max-w-2xl mx-auto bg-white shadow-sm p-8 min-h-[400px]">
           <div className="flex items-center justify-between mb-6 pb-4">
             <h3 className="text-xl font-serif font-bold text-gray-900">
-              {new Date(entry.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+              {isFeelings 
+                ? new Date(entry.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+                : file.name
+              }
             </h3>
             <div
               className="px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide"
               style={{
-                backgroundColor: moods[entry.mood]?.color + '40',
+                backgroundColor: (moods[mood]?.color || '#e5e7eb') + '40',
                 color: '#000'
               }}
             >
-              {moods[entry.mood]?.name}
+              {moods[mood]?.name || mood}
             </div>
           </div>
           <p className="text-gray-800 leading-relaxed font-serif text-lg whitespace-pre-wrap">
-            {entry.text}
+            {content}
           </p>
         </div>
       </div>
@@ -66,21 +86,30 @@ const FileViewer = ({ file, entry, moods }) => {
 
   // Render books
   if (file.type === 'book') {
+    const bookCoverUrl = file.metadata?.coverUrl || file.metadata?.imageUrl;
+    
     return (
       <div className="flex-1 p-6 bg-white dark:bg-gray-900 overflow-y-auto h-full">
         <div className="max-w-3xl mx-auto">
           <div className="flex gap-6 mb-6">
-            {file.metadata?.coverUrl ? (
+            {bookCoverUrl ? (
               <img 
-                src={file.metadata.coverUrl} 
+                src={bookCoverUrl} 
                 alt={file.name}
-                className="w-48 h-auto object-contain rounded-lg shadow-lg"
+                className="w-48 h-auto object-cover rounded-lg shadow-lg"
+                onError={(e) => {
+                  // Fallback to placeholder if image fails to load
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'flex';
+                }}
               />
-            ) : (
-              <div className="w-48 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                <BookOpen className="w-16 h-16 text-gray-400" />
-              </div>
-            )}
+            ) : null}
+            <div 
+              className="w-48 h-64 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center"
+              style={{ display: bookCoverUrl ? 'none' : 'flex' }}
+            >
+              <BookOpen className="w-16 h-16 text-gray-400" />
+            </div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 {file.name}
@@ -117,13 +146,16 @@ const FileViewer = ({ file, entry, moods }) => {
 
   // Render movies
   if (file.type === 'movie') {
+    const coverUrl = file.metadata?.imageUrl || file.metadata?.coverUrl || file.imageUrl;
+    const videoUrl = file.metadata?.youtubeUrl || file.metadata?.videoUrl || file.youtubeUrl;
+
     return (
       <div className="flex-1 p-6 bg-white dark:bg-gray-900 overflow-y-auto h-full">
         <div className="max-w-3xl mx-auto">
           <div className="flex gap-6 mb-6">
-            {file.metadata?.coverUrl ? (
+            {coverUrl ? (
               <img 
-                src={file.metadata.coverUrl} 
+                src={coverUrl} 
                 alt={file.name}
                 className="w-48 h-auto object-contain rounded-lg shadow-lg"
               />
@@ -144,6 +176,18 @@ const FileViewer = ({ file, entry, moods }) => {
                   </p>
                 </div>
               )}
+              {videoUrl && (
+                <a 
+                  href={videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center mt-6 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <Youtube className="w-5 h-5 mr-2" />
+                  Watch Movie
+                  <ExternalLink className="w-4 h-4 ml-2 opacity-70" />
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -153,22 +197,27 @@ const FileViewer = ({ file, entry, moods }) => {
 
   // Render videos (YouTube, etc.)
   if (file.type === 'video') {
+    const videoUrl = file.metadata?.youtubeUrl || file.metadata?.videoUrl || file.youtubeUrl;
+    const embedUrl = getEmbedUrl(videoUrl);
+
     return (
       <div className="flex items-center justify-center h-full bg-gray-50 dark:bg-gray-900 p-8">
         <div className="max-w-4xl w-full">
-          {file.metadata?.videoUrl ? (
+          {embedUrl ? (
             <div className="aspect-video">
               <iframe
-                src={file.metadata.videoUrl}
+                src={embedUrl}
                 title={file.name}
                 className="w-full h-full rounded-lg shadow-lg"
                 allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-gray-400">
               <Youtube className="w-24 h-24 mb-4 opacity-20" />
               <p>Video not available</p>
+              {videoUrl && <p className="text-xs mt-2">{videoUrl}</p>}
             </div>
           )}
           <div className="mt-4 text-center">

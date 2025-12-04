@@ -150,6 +150,7 @@ class FileMetadata(BaseModel):
     bookUrl: Optional[str] = None
     coverUrl: Optional[str] = None
     videoUrl: Optional[str] = None
+    youtubeUrl: Optional[str] = None
     websiteUrl: Optional[str] = None
     content: Optional[str] = None
 

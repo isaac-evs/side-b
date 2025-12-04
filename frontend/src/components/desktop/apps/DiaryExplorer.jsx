@@ -4,12 +4,14 @@ import { useDesktop } from '../../../contexts/DesktopContext';
 import { Rnd } from 'react-rnd';
 import { FolderOpen, FileText, Music, Calendar, Image as ImageIcon, BookOpen, Film, Youtube } from 'lucide-react';
 import txtIcon from '../../../assets/txt.png';
+import webIcon from '../../../assets/web.png';
 
 const FileThumbnail = ({ file, fallbackIcon, songData }) => {
   const [error, setError] = useState(false);
   
-  const hasImage = (file.type === 'image' || file.type === 'gif') && file.metadata?.imageUrl;
+  const hasImage = (file.type === 'image' || file.type === 'gif' || file.type === 'movie' || file.type === 'video') && file.metadata?.imageUrl;
   const hasSongCover = file.type === 'song' && songData?.coverUrl;
+  const hasBookCover = file.type === 'book' && (file.metadata?.coverUrl || file.metadata?.imageUrl);
   
   if (hasSongCover && !error) {
     return (
@@ -17,6 +19,18 @@ const FileThumbnail = ({ file, fallbackIcon, songData }) => {
         src={songData.coverUrl} 
         alt={file.name}
         className="w-20 object-contain"
+        onError={() => setError(true)}
+        draggable={false}
+      />
+    );
+  }
+  
+  if (hasBookCover && !error) {
+    return (
+      <img 
+        src={file.metadata.coverUrl || file.metadata.imageUrl} 
+        alt={file.name}
+        className="w-16 object-contain"
         onError={() => setError(true)}
         draggable={false}
       />
@@ -180,13 +194,16 @@ const DiaryExplorer = () => {
 
   const getFileIcon = (type) => {
     switch (type) {
-      case 'feelings': return <img src={txtIcon} alt="text file" className="w-16 object-contain" draggable={false} />;
+      case 'feelings': 
+      case 'text':
+        return <img src={txtIcon} alt="text file" className="w-16 object-contain" draggable={false} />;
       case 'song': return <Music className="w-16 h-16 text-pink-500" />;
       case 'image': 
-      case 'gif': return <ImageIcon className="w-16 h-16 text-purple-500" />;
-      case 'book': return <BookOpen className="w-16 h-16 text-amber-600" />;
-      case 'movie': return <Film className="w-16 h-16 text-red-500" />;
-      case 'video': return <Youtube className="w-16 h-16 text-red-600" />;
+      case 'gif': 
+      case 'book': 
+      case 'movie': 
+      case 'video': 
+        return <img src={webIcon} alt="web link" className="w-16 object-contain" draggable={false} />;
       default: return <FileText className="w-16 h-16 text-gray-500" />;
     }
   };

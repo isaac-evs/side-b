@@ -6,6 +6,7 @@ import SearchModal from './SearchModal';
 import AddFileModal from './AddFileModal';
 import MusicControlsModal from './MusicControlsModal';
 import HelpModal from './HelpModal';
+import Insights from './apps/Insights';
 import { 
   FolderOpen, 
   Music, 
@@ -15,7 +16,8 @@ import {
   Trash2,
   Menu,
   Moon,
-  Sun
+  Sun,
+  Activity
 } from 'lucide-react';
 import useAppStore from '../../store/appStore';
 import { filesAPI, entriesAPI } from '../../services/api';
@@ -103,7 +105,8 @@ const DesktopShell = () => {
             author: file.author || file.metadata?.author || '',
             bookUrl: file.bookUrl || file.metadata?.bookUrl || '',
             coverUrl: file.coverUrl || file.metadata?.coverUrl || '',
-            videoUrl: file.videoUrl || file.metadata?.videoUrl || '',
+            videoUrl: file.videoUrl || file.youtubeUrl || file.metadata?.videoUrl || '',
+            youtubeUrl: file.youtubeUrl || file.metadata?.youtubeUrl || '',
             websiteUrl: file.websiteUrl || file.metadata?.websiteUrl || '',
             content: file.content || file.metadata?.content || ''
           }
@@ -129,6 +132,7 @@ const DesktopShell = () => {
 
   const apps = [
     { id: 'diary-explorer', name: 'Diary', icon: <FolderOpen className="w-6 h-6" />, color: 'text-blue-500' },
+    { id: 'insights', name: 'Insights', icon: <Activity className="w-6 h-6" />, color: 'text-indigo-500' },
     { id: 'music-player', name: 'Player', icon: <Music className="w-6 h-6" />, color: 'text-purple-500' },
     { id: 'music-library', name: 'Library', icon: <Library className="w-6 h-6" />, color: 'text-pink-500' },
     { id: 'profile', name: 'Profile', icon: <User className="w-6 h-6" />, color: 'text-green-500' },

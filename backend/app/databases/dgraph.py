@@ -318,4 +318,49 @@ class DgraphClient:
             print(f"Error deleting file from Dgraph: {e}")
             return {"ok": False, "error": str(e)}
 
+    async def get_user_insights(self, user_id: str) -> Dict[str, Any]:
+        """
+        Fetch comprehensive insights for a user from the graph.
+        """
+        query = """
+        query user_insights($user_id: string) {
+          user(func: eq(user_id, $user_id)) {
+            uid
+            username
+            created_entries {
+              uid
+              date
+              mood
+              text_length
+              selected_song {
+                uid
+                title
+                artist
+                album
+                song_mood
+                genre
+              }
+            }
+          }
+        }
+        """
+        
+        client = await self._get_client()
+        try:
+            response = await client.post(
+                self.query_url, 
+                json={"query": query, "variables": {"$user_id": user_id}}
+            )
+            response.raise_for_status()
+            data = response.json()
+            
+            user_data = data.get("data", {}).get("user", [])
+            if not user_data:
+                return None
+                
+            return user_data[0]
+        except Exception as e:
+            print(f"Error fetching insights: {e}")
+            return None
+
 dgraph_client = DgraphClient()

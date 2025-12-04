@@ -1,139 +1,11 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [6491] using WatchFiles
+INFO:     Started reloader process [54898] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [6506]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-INFO:     Application startup complete.
-✓ Connected to mongodb
-✗ Failed to connect to cassandra: ('Unable to connect to any servers', {'127.0.0.1:9042': ConnectionResetError(104, 'Connection reset by peer')})
-✓ Connected to Dgraph
-✓ Connected to dgraph
-✓ Database initialized
-✓ Initialized mongodb
-✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
-✓ Initialized dgraph
-✓ Cassandra tables initialized
-✓ Mood anchors already present (28 anchors).
-✓ ChromaDB initialized
-INFO:     127.0.0.1:47600 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47608 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47600 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47608 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47608 - "OPTIONS /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47608 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56248 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56248 - "OPTIONS /files/ HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: 'NoneType' object has no attribute 'execute'
-Warning: Failed to log media attachment to Cassandra: 'NoneType' object has no attribute 'execute'
-INFO:     127.0.0.1:56248 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56248 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40006 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40012 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40012 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40006 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40006 - "OPTIONS /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40006 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40006 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58290 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58298 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58298 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37294 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37302 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37302 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53500 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53504 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53504 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53504 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53500 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53500 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53500 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36298 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36312 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36312 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36312 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37202 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37210 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37210 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37210 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41030 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41036 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41036 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41036 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54390 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54396 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54396 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54396 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'app/routers/files.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [6506]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [17316]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/routers/files.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [17316]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [17519]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [17519]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [17803]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/routers/files.py', 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [17803]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [17956]
+INFO:     Started server process [54915]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -151,259 +23,33 @@ INFO:     Application startup complete.
 ✓ Cassandra tables initialized
 ✓ Mood anchors already present (28 anchors).
 ✓ ChromaDB initialized
-INFO:     127.0.0.1:52538 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52548 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52548 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52538 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52538 - "OPTIONS /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52538 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52538 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57148 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57154 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57154 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57154 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53698 - "OPTIONS /files/6931d1cba90831fb114d3294 HTTP/1.1" 200 OK
-File 6931d1cba90831fb114d3294 deleted from Cassandra logs (if exists)
-File 6931d1cba90831fb114d3294 deleted from Dgraph
-INFO:     127.0.0.1:53698 - "DELETE /files/6931d1cba90831fb114d3294 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53136 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53136 - "OPTIONS /files/ HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:53136 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53136 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35074 - "OPTIONS /files/6931d9da1f32c53e4780c928 HTTP/1.1" 200 OK
-File 6931d9da1f32c53e4780c928 deleted from Cassandra logs (if exists)
-File 6931d9da1f32c53e4780c928 deleted from Dgraph
-INFO:     127.0.0.1:35074 - "DELETE /files/6931d9da1f32c53e4780c928 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37914 - "OPTIONS /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37914 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:37914 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37914 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59876 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59884 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59884 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59876 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59876 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59876 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36002 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36010 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36010 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36010 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60128 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60132 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60132 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60132 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59204 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59220 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59220 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59220 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39970 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39972 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39972 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39972 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41972 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41988 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41988 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41988 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46866 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46876 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46876 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46876 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37142 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37148 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37148 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37148 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36066 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36082 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36082 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36082 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38462 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38462 - "OPTIONS /files/ HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:38462 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38462 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51284 - "OPTIONS /files/6931dc751f32c53e4780c92a HTTP/1.1" 200 OK
-File 6931dc751f32c53e4780c92a deleted from Cassandra logs (if exists)
-File 6931dc751f32c53e4780c92a deleted from Dgraph
-INFO:     127.0.0.1:51284 - "DELETE /files/6931dc751f32c53e4780c92a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51284 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51292 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51292 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51292 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57914 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "OPTIONS /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "OPTIONS /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57924 - "PUT /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 405 Method Not Allowed
-INFO:     127.0.0.1:57924 - "PUT /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 405 Method Not Allowed
-INFO:     127.0.0.1:57788 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:57788 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57788 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51796 - "PUT /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 405 Method Not Allowed
-WARNING:  WatchFiles detected changes in 'app/routers/entries.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [17956]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [26724]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/routers/entries.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [26724]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [26839]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-✓ Connected to mongodb
-✓ Connected to cassandra
-✓ Connected to Dgraph
-✓ Connected to dgraph
-✓ Database initialized
-✓ Initialized mongodb
-✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
-✓ Initialized dgraph
-✓ Cassandra tables initialized
-✓ Mood anchors already present (28 anchors).
-✓ ChromaDB initialized
-INFO:     127.0.0.1:49372 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49378 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43128 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43132 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39840 - "PATCH /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39840 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39846 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39846 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39846 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44154 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:44154 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44154 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52204 - "PATCH /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45578 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45588 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45578 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45578 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45578 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45578 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'app/routers/entries.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [26839]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [27821]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/routers/entries.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [27821]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [28396]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-✓ Connected to mongodb
-✓ Connected to cassandra
-✓ Connected to Dgraph
-✓ Connected to dgraph
-✓ Database initialized
-✓ Initialized mongodb
-✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
-✓ Initialized dgraph
-✓ Cassandra tables initialized
-✓ Mood anchors already present (28 anchors).
-✓ ChromaDB initialized
-INFO:     127.0.0.1:60340 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60356 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60356 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60356 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59108 - "OPTIONS /files/6931dd626f3e1707da594634 HTTP/1.1" 200 OK
-File 6931dd626f3e1707da594634 deleted from Cassandra logs (if exists)
-File 6931dd626f3e1707da594634 deleted from Dgraph
-INFO:     127.0.0.1:59108 - "DELETE /files/6931dd626f3e1707da594634 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41156 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:41156 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41156 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53144 - "DELETE /files/6931dd626f3e1707da594634 HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:37010 - "PATCH /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37010 - "OPTIONS /files/6931de5c317af22c113e91e6 HTTP/1.1" 200 OK
-File 6931de5c317af22c113e91e6 deleted from Cassandra logs (if exists)
-File 6931de5c317af22c113e91e6 deleted from Dgraph
-INFO:     127.0.0.1:37010 - "DELETE /files/6931de5c317af22c113e91e6 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37010 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47764 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47764 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47764 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42866 - "DELETE /files/6931de5c317af22c113e91e6 HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:45440 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45442 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45442 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45442 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50396 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50396 - "OPTIONS /files/ HTTP/1.1" 200 OK
-[Cassandra] ERROR - Failed to log media attachment: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-Warning: Failed to log media attachment to Cassandra: Error from server: code=2200 [Invalid query] message="Undefined column name url in table sideb.media_attachments_log"
-INFO:     127.0.0.1:50396 - "POST /files/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50396 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34290 - "PATCH /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34294 - "OPTIONS /files/6931df11317af22c113e91e7 HTTP/1.1" 200 OK
-File 6931df11317af22c113e91e7 deleted from Cassandra logs (if exists)
-File 6931df11317af22c113e91e7 deleted from Dgraph
-INFO:     127.0.0.1:34294 - "DELETE /files/6931df11317af22c113e91e7 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34294 - "PATCH /entries/693112493ce63bf2c8e3edd9 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34294 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43724 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43724 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43724 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60102 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60104 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60104 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60102 - "GET /entries/?userId=693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60116 - "OPTIONS /insights/693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60120 - "OPTIONS /insights/693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60116 - "GET /insights/693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60120 - "GET /insights/693112493ce63bf2c8e3edd8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39300 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39302 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'I love music so much...' -> Detected Mood: joy
+🔍 Text classified as: joy
+Recommendation requested for text: 'I love music so much...' -> Detected Mood: joy
+INFO:     127.0.0.1:39300 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39302 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39302 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58636 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58636 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:58636 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58642 - "OPTIONS /entries/?userId=6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58642 - "GET /entries/?userId=6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged journal text for user=6931ed7fd8619ef852304f44, entry=6931ed7fd8619ef852304f45
+[Cassandra] INFO - Entry count incremented for user=6931ed7fd8619ef852304f44, month=2025-12
+[Cassandra] INFO - Song selection logged for user=6931ed7fd8619ef852304f44, song=692e9d17c96cadd75386cd24
+INFO:     127.0.0.1:58636 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58654 - "OPTIONS /insights/6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58662 - "OPTIONS /insights/6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58654 - "GET /insights/6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58662 - "GET /insights/6931ed7fd8619ef852304f44 HTTP/1.1" 200 OK
