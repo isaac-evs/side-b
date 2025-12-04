@@ -5,6 +5,7 @@ from bson import ObjectId
 from app.models import User, CreateUser, UpdateUser
 from app.database import user_collection, entry_collection
 from app.databases.cassandra import cassandra_client
+from app.databases.dgraph import dgraph_client
 
 router = APIRouter()
 
@@ -13,6 +14,13 @@ async def create_user(user: CreateUser = Body(...)):
     user = user.model_dump()
     new_user = await user_collection.insert_one(user)
     created_user = await user_collection.find_one({"_id": new_user.inserted_id})
+    
+    # Sync user to Dgraph
+    try:
+        await dgraph_client.upsert_user(str(created_user["_id"]), created_user["username"])
+    except Exception as e:
+        print(f"Warning: Failed to sync user to Dgraph: {e}")
+        
     return created_user
 
 @router.get("/", response_description="List all users", response_model=List[User])

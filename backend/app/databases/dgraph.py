@@ -122,10 +122,39 @@ class DgraphClient:
         return r.json()
 
     async def upsert_user(self, user_id: str, username: Optional[str] = None) -> Dict[str, Any]:
-        user_node = {"uid": f"_:{user_id}", "user_id": user_id}
+        client = await self._get_client()
+        
+        # 1. Check if user exists
+        check_query = f"""
+        {{
+            u(func: eq(user_id, "{user_id}")) {{
+                uid
+            }}
+        }}
+        """
+        res = await client.post(self.query_url, json={"query": check_query})
+        data = res.json()
+        uids = data.get("data", {}).get("u", [])
+        
+        uid = uids[0]["uid"] if uids else "_:new"
+        
+        # 2. Mutate
+        user_node = {
+            "uid": uid,
+            "user_id": user_id,
+            "dgraph.type": "User"
+        }
         if username:
             user_node["username"] = username
-        return await self.mutate([user_node])
+            
+        mutation = {
+            "set": [user_node]
+        }
+        
+        headers = {"Content-Type": JSON_CT}
+        r = await client.post(self.mutate_url, json=mutation, headers=headers)
+        r.raise_for_status()
+        return r.json()
 
     async def upsert_song(self, song_payload: Dict[str, Any]) -> Dict[str, Any]:
         song_node = {"uid": f"_:{song_payload.get('song_id')}", "song_id": song_payload.get("song_id")}
@@ -145,59 +174,140 @@ class DgraphClient:
         except:
             date_iso = str(date_value)
         text_len = len(entry_doc.get("text", ""))
-        set_objs = []
-        mood_name = entry_doc.get("mood") if isinstance(entry_doc.get("mood"), str) else None
-        if mood_name:
-            set_objs.append({"uid": f"_:{mood_name}_mood", "mood_name": mood_name})
+        mood_name = entry_doc.get("mood") if isinstance(entry_doc.get("mood"), str) else "unknown"
+        
+        client = await self._get_client()
+        headers = {"Content-Type": JSON_CT}
+
+        # 1. Resolve UIDs for User, Mood, Song, Entry
+        check_query_parts = [f'e(func: eq(entry_id, "{entry_id}")) {{ uid }}']
+        
         if user_id:
-            username = entry_doc.get("username")
-            u = {"uid": f"_:{user_id}", "user_id": user_id}
-            if username:
-                u["username"] = username
-            set_objs.append(u)
+            check_query_parts.append(f'u(func: eq(user_id, "{user_id}")) {{ uid }}')
+            
+        if mood_name:
+            check_query_parts.append(f'm(func: eq(mood_name, "{mood_name}")) {{ uid }}')
+            
         song = entry_doc.get("song")
         song_id = None
         if song and isinstance(song, dict):
             song_id = song.get("_id") or song.get("song_id") or song.get("songId")
-            if not song_id:
-                song_id = f"song_{abs(hash(song.get('title','')))}"
-            s = {"uid": f"_:{song_id}", "song_id": str(song_id)}
-            for k in ("title", "artist", "song_mood", "album", "album_art", "duration", "total_plays", "popularity_score"):
-                if song.get(k) is not None:
-                    key = k
-                    if k == "album_art" or k == "albumArt":
-                        key = "album_art"
-                    if k == "mood":
-                        key = "song_mood"
-                    s[key] = song.get(k)
-            set_objs.append(s)
+            if song_id:
+                check_query_parts.append(f's(func: eq(song_id, "{song_id}")) {{ uid }}')
+
+        check_query = "{\n" + "\n".join(check_query_parts) + "\n}"
+        res = await client.post(self.query_url, json={"query": check_query})
+        data = res.json().get("data", {})
+        
+        # Resolve UIDs
+        e_list = data.get("e", [])
+        entry_uid = e_list[0].get("uid") if e_list else "_:entry"
+        
+        u_list = data.get("u", [])
+        user_uid = u_list[0].get("uid") if u_list else "_:user"
+        
+        print(f"DEBUG: Entry {entry_id} -> User {user_id} resolved to UID {user_uid}")
+
+        m_list = data.get("m", [])
+        mood_uid = m_list[0].get("uid") if m_list else f"_:{mood_name}"
+        
+        s_list = data.get("s", [])
+        song_uid = s_list[0].get("uid") if s_list else (f"_:{song_id}" if song_id else None)
+
+        # 2. Prepare JSON objects
+        mutations = []
+        
+        # Entry Node
+        entry_node = {
+            "uid": entry_uid,
+            "entry_id": entry_id,
+            "dgraph.type": "Entry",
+            "text_length": str(text_len),
+            "mood": mood_name
+        }
+        if date_iso:
+            entry_node["date"] = date_iso
+            
+        # Link to User
+        if user_id:
+            user_node = {
+                "uid": user_uid,
+                "user_id": user_id,
+                "dgraph.type": "User",
+                "created_entries": [{"uid": entry_uid}]
+            }
+            if entry_doc.get("username"):
+                user_node["username"] = entry_doc.get("username")
+            mutations.append(user_node)
+            
+            # Inverse link
+            entry_node["creator"] = {"uid": user_uid}
+            
+        # Link to Mood
+        if mood_name:
+            mood_node = {
+                "uid": mood_uid,
+                "mood_name": mood_name
+            }
+            mutations.append(mood_node)
+            entry_node["has_mood"] = {"uid": mood_uid}
+            
+        # Link to Song
+        if song_id:
+            song_node = {
+                "uid": song_uid,
+                "song_id": song_id
+            }
+            # Add details
+            for k in ("title", "artist", "album", "album_art", "duration", "total_plays", "popularity_score"):
+                val = song.get(k)
+                if val is not None:
+                    song_node[k] = str(val)
+            
+            if song.get("mood"):
+                song_node["song_mood"] = song.get("mood")
+                
+            mutations.append(song_node)
+            entry_node["selected_song"] = {"uid": song_uid}
+
+        # Handle Files
         files = entry_doc.get("files") or []
-        media_nodes = []
-        for f in files:
+        file_nodes = []
+        for i, f in enumerate(files):
+            f_uid = f"_:file{i}"
+            file_node = {"uid": f_uid}
             if isinstance(f, dict):
-                fid = str(f.get("_id") or f.get("id", ""))
-                node = {"uid": f"_:{fid}", "media_type": f.get("fileType") or f.get("file_type") or "unknown"}
+                file_node["file_id"] = str(f.get("_id") or f.get("id", ""))
+                file_node["media_type"] = f.get("fileType") or f.get("file_type") or "unknown"
                 meta = f.get("metadata") or {}
                 for k in ("imageUrl", "videoUrl", "websiteUrl"):
                     if meta.get(k):
-                        node[k] = meta[k]
-                media_nodes.append(node)
-                set_objs.append(node)
+                        file_node[k] = meta[k]
             else:
-                fid = f"file_{str(f)}"
-                node = {"uid": f"_:{fid}", "media_type": "unknown"}
-                media_nodes.append(node)
-                set_objs.append(node)
-        entry_node = {
-            "uid": f"_:{entry_id}",
-            "entry_id": entry_id,
-            "date": date_iso or datetime.utcnow().isoformat(),
-            "text_length": text_len,
+                file_node["file_id"] = str(f)
+                file_node["media_type"] = "unknown"
+            
+            file_nodes.append(file_node)
+            
+        if file_nodes:
+            entry_node["entry_has_media"] = file_nodes
+            
+        mutations.append(entry_node)
+        
+        mutation = {
+            "set": mutations
         }
-        if user_id:
-            entry_node["creator"] = {"uid": f"_:{user_id}"}
-        if song_id:
-            entry_node["selected_song"] = {"uid": f"_:{song_id}"}
+        
+        # print(f"DEBUG MUTATION: {mutation}")
+        
+        headers = {"Content-Type": JSON_CT}
+        r = await client.post(self.mutate_url, json=mutation, headers=headers)
+        r.raise_for_status()
+        resp_json = r.json()
+        if "errors" in resp_json:
+            print(f"DGRAPH ERROR: {resp_json['errors']}")
+            raise Exception(f"Dgraph Error: {resp_json['errors']}")
+        return resp_json
         if mood_name:
             entry_node["has_mood"] = {"uid": f"_:{mood_name}_mood"}
         if media_nodes:

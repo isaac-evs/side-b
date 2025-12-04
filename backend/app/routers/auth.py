@@ -85,6 +85,13 @@ async def register(user_data: UserRegister):
     # Create access token
     access_token = create_access_token(data={"sub": user_data.username})
     
+    # Sync user to Dgraph
+    try:
+        from app.databases.dgraph import dgraph_client
+        await dgraph_client.upsert_user(str(created_user["_id"]), created_user["username"])
+    except Exception as e:
+        print(f"Warning: Failed to sync user to Dgraph: {e}")
+    
     return {
         "access_token": access_token,
         "token_type": "bearer",

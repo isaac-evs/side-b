@@ -190,7 +190,7 @@ const Insights = () => {
               <div className="relative h-[400px] w-full overflow-hidden">
                  {/* Simple visualization of entries as bubbles */}
                  <div className="flex flex-wrap gap-4 justify-center items-center h-full content-center">
-                    {data.raw_entries.map((entry, i) => (
+                    {(data.raw_entries || []).map((entry, i) => (
                       <div 
                         key={i}
                         className="rounded-full flex items-center justify-center text-xs font-bold text-white shadow-sm transition-transform hover:scale-110 cursor-default"

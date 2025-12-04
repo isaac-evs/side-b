@@ -24,7 +24,8 @@ async def get_user_insights(user_id: str) -> Dict[str, Any]:
             "graph_data": {
                 "nodes": [],
                 "links": []
-            }
+            },
+            "raw_entries": []
         }
     
     entries = data.get("created_entries", [])
