@@ -17,7 +17,8 @@ import {
   Menu,
   Moon,
   Sun,
-  Activity
+  Activity,
+  Bot
 } from 'lucide-react';
 import useAppStore from '../../store/appStore';
 import { filesAPI, entriesAPI } from '../../services/api';
@@ -133,6 +134,7 @@ const DesktopShell = () => {
   const apps = [
     { id: 'diary-explorer', name: 'Diary', icon: <FolderOpen className="w-6 h-6" />, color: 'text-blue-500' },
     { id: 'insights', name: 'Insights', icon: <Activity className="w-6 h-6" />, color: 'text-indigo-500' },
+    { id: 'ai-assistant', name: 'Side-B AI', icon: <Bot className="w-6 h-6" />, color: 'text-purple-600' },
     { id: 'music-player', name: 'Player', icon: <Music className="w-6 h-6" />, color: 'text-purple-500' },
     { id: 'music-library', name: 'Library', icon: <Library className="w-6 h-6" />, color: 'text-pink-500' },
     { id: 'profile', name: 'Profile', icon: <User className="w-6 h-6" />, color: 'text-green-500' },

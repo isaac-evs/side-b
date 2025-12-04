@@ -3,20 +3,8 @@ import { TrendingUp } from 'lucide-react';
 import useAppStore from '../../../store/appStore';
 
 const ThisMonthWidget = () => {
-  const { entries } = useAppStore();
-
-  // Calculate entries this month
-  const calculateThisMonth = () => {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    
-    return entries.filter(entry => {
-      const entryDate = new Date(entry.date);
-      return entryDate >= startOfMonth;
-    }).length;
-  };
-
-  const thisMonth = calculateThisMonth();
+  const { stats } = useAppStore();
+  const thisMonth = stats?.this_month || 0;
 
   return (
     <div 

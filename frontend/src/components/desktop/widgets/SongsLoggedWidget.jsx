@@ -3,7 +3,8 @@ import { Music } from 'lucide-react';
 import useAppStore from '../../../store/appStore';
 
 const SongsLoggedWidget = () => {
-  const { entries } = useAppStore();
+  const { stats } = useAppStore();
+  const count = stats?.songs_logged || 0;
 
   return (
     <div 
@@ -23,7 +24,7 @@ const SongsLoggedWidget = () => {
           fontFamily: 'Lucida Grande, -apple-system, system-ui, sans-serif'
         }}
       >
-        {entries.length}
+        {count}
       </div>
       <div 
         className="text-xs mt-1"

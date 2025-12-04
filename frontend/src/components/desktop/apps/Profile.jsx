@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import useAppStore from '../../../store/appStore';
+import { useAuth } from '../../../contexts/AuthContext';
 import { Camera } from 'lucide-react';
 
 const Profile = () => {
-  const { user, updateUser } = useAppStore();
+  const { user, updateUserData } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.name || 'Guest');
 
   const handleSave = () => {
-    updateUser({ name });
+    updateUserData({ name });
     setIsEditing(false);
   };
 

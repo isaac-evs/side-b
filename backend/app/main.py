@@ -1,11 +1,17 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+
 from app.database import create_indexes
 from app.databases.manager import db_manager
 from app.databases.chromadb import chromadb_client
 from app.services.mood_service import mood_service
-from app.routers import users, entries, files, songs, auth, insights
+from app.routers import users, entries, files, songs, auth, insights, ai
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -58,3 +64,4 @@ app.include_router(entries.router, prefix="/entries", tags=["Entries"])
 app.include_router(files.router, prefix="/files", tags=["Files"])
 app.include_router(songs.router, prefix="/songs", tags=["Songs"])
 app.include_router(insights.router, prefix="/insights", tags=["Insights"])
+app.include_router(ai.router, prefix="/ai", tags=["AI Assistant"])

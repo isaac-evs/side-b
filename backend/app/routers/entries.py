@@ -6,6 +6,7 @@ from datetime import datetime
 from app.models import Entry, CreateEntry
 from app.database import entry_collection, file_collection
 from app.databases.cassandra import cassandra_client
+from app.databases.chromadb import chromadb_client
 
 def serialize_mongo_obj(obj):
     if isinstance(obj, ObjectId):
@@ -68,6 +69,26 @@ async def create_entry(entry: CreateEntry = Body(...)):
             entry_id=str(created_entry["_id"]),
             text=entry_dict["text"]
         )
+        
+        # ChromaDB logging (RAG)
+        try:
+            metadata = {
+                "userId": str(entry.userId),
+                "date": entry_dict.get("date", datetime.utcnow()).isoformat(),
+                "mood": entry_dict.get("mood", "neutral")
+            }
+            if entry_dict.get("song"):
+                metadata["song"] = entry_dict["song"].get("title", "")
+                metadata["artist"] = entry_dict["song"].get("artist", "")
+                
+            await chromadb_client.add_entry(
+                entry_id=str(created_entry["_id"]),
+                text=entry_dict["text"],
+                metadata=metadata
+            )
+        except Exception as e:
+            print(f"Warning: Failed to sync entry to ChromaDB: {e}")
+            
     else:
         # If no text field, just increment entry count
         await cassandra_client.increment_entry_count(entry.userId)

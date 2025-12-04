@@ -72,6 +72,11 @@ export const usersAPI = {
     const response = await api.delete(`/users/${userId}`);
     return response.data;
   },
+  
+  getUserStats: async (userId) => {
+    const response = await api.get(`/users/${userId}/stats`);
+    return response.data;
+  },
 };
 
 // Entries API
@@ -110,6 +115,14 @@ export const entriesAPI = {
     const response = await api.get(`/entries/mood/${mood}`);
     return response.data;
   },
+};
+
+// AI API
+export const aiAPI = {
+  chat: async (userId, message) => {
+    const response = await api.post('/ai/chat', { userId, message });
+    return response.data;
+  }
 };
 
 // Files API

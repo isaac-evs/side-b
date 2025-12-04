@@ -48,65 +48,19 @@ async def update_user(id: str, user: UpdateUser = Body(...)):
 
 @router.get("/{id}/stats", response_description="Get user statistics")
 async def get_user_stats(id: str):
-    pipeline = [
-        {
-            "$match": {
-                "userId": ObjectId(id)
-            }
-        },
-        {
-            "$group": {
-                "_id": "$mood",
-                "count": { "$sum": 1 },
-                "entries": { "$push": "$$ROOT" }
-            }
-        },
-        {
-            "$group": {
-                "_id": None,
-                "totalEntries": { "$sum": "$count" },
-                "moodCounts": {
-                    "$push": {
-                        "mood": "$_id",
-                        "count": "$count"
-                    }
-                },
-                "allEntries": { "$push": "$entries" }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "totalEntries": 1,
-                "moodCounts": 1,
-                "totalDaysActive": {
-                    "$size": {
-                        "$setUnion": {
-                            "$reduce": {
-                                "input": "$allEntries",
-                                "initialValue": [],
-                                "in": {
-                                    "$concatArrays": [
-                                        "$$value",
-                                        { "$map": {
-                                            "input": "$$this",
-                                            "as": "entry",
-                                            "in": { "$dateToString": { "format": "%Y-%m-%d", "date": "$$entry.date" } }
-                                        }}
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    # Fetch stats from Cassandra for widgets
+    try:
+        stats = await cassandra_client.get_user_stats(id)
+        return stats
+    except Exception as e:
+        print(f"Error fetching stats from Cassandra: {e}")
+        # Fallback or return empty
+        return {
+            "streak": 0,
+            "songs_logged": 0,
+            "this_month": 0,
+            "this_week": 0
         }
-    ]
-    
-    stats = await entry_collection.aggregate(pipeline).to_list(1)
-    if stats:
-        return stats[0]
-    return {"totalEntries": 0, "moodCounts": [], "totalDaysActive": 0}
 
 #Cassandra. Gets monthly stats and song frequency
 @router.get("/{id}/cassandra-stats", response_description="Get Cassandra statistics")

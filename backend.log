@@ -1,11 +1,29 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [63918] using WatchFiles
+INFO:     Started reloader process [100529] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [63939]
+INFO:     Started server process [100545]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'sync_to_chroma.py', 'app/routers/ai.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [100545]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [100938]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -23,390 +41,28 @@ INFO:     Application startup complete.
 ✓ Cassandra tables initialized
 ✓ Mood anchors already present (28 anchors).
 ✓ ChromaDB initialized
-INFO:     127.0.0.1:58756 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58764 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58756 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58764 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58764 - "OPTIONS /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58756 - "OPTIONS /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58764 - "GET /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58756 - "GET /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-WARNING:  WatchFiles detected changes in 'sync_to_dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [63939]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [64610]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'sync_to_dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [64610]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [65150]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [65150]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [65232]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [65232]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [65537]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [65537]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [65735]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [65735]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [66079]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [66079]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [66457]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [66457]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [66702]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [66702]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [66942]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [66942]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [67444]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [67444]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [67618]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [67618]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [67708]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [67708]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [67932]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [67932]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [68024]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [68024]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [68497]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [68497]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [68588]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [68588]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [68959]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [68959]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [69087]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'sync_to_dgraph.py', 'debug_dgraph.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [69087]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [69443]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-✓ Connected to mongodb
-✓ Connected to cassandra
-✓ Connected to Dgraph
-✓ Connected to dgraph
-✓ Database initialized
-✓ Initialized mongodb
-✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
-✓ Initialized dgraph
-✓ Cassandra tables initialized
-✓ Mood anchors already present (28 anchors).
-✓ ChromaDB initialized
-INFO:     127.0.0.1:45514 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45524 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45514 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45524 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45524 - "OPTIONS /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45514 - "OPTIONS /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45524 - "GET /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45514 - "GET /entries/?userId=6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53274 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
-🔍 Text classified as: joy
-Recommendation requested for text: 'i love life
-...' -> Detected Mood: joy
-🔍 Text classified as: joy
-Recommendation requested for text: 'i love life
-...' -> Detected Mood: joy
-INFO:     127.0.0.1:53274 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "OPTIONS /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53290 - "POST /entries/ HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:43054 - "OPTIONS /insights/6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43060 - "OPTIONS /insights/6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43060 - "GET /insights/6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43054 - "GET /insights/6931efc98fe2e27d14cfd41d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58556 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58570 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58556 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58570 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58570 - "OPTIONS /users/6931fef8faff07629adc57a6/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58556 - "OPTIONS /entries/?userId=6931fef8faff07629adc57a6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58556 - "GET /entries/?userId=6931fef8faff07629adc57a6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58570 - "GET /users/6931fef8faff07629adc57a6/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48460 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: sad
+Recommendation requested for text: 'The Globe rises still, timber ...' -> Detected Mood: sad
+🔍 Text classified as: sad
+Recommendation requested for text: 'The Globe rises still, timber ...' -> Detected Mood: sad
+INFO:     127.0.0.1:48460 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "OPTIONS /songs/mood/sad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48468 - "GET /songs/mood/sad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55496 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55496 - "POST /entries/ HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:38098 - "OPTIONS /ai/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38098 - "POST /ai/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60672 - "POST /ai/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35342 - "POST /ai/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49818 - "POST /ai/chat HTTP/1.1" 200 OK

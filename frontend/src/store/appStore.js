@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { entriesAPI, filesAPI } from '../services/api';
+import { entriesAPI, filesAPI, usersAPI } from '../services/api';
 
 const useAppStore = create((set, get) => ({
   // Theme
@@ -34,10 +34,33 @@ const useAppStore = create((set, get) => ({
   // Trash items
   trashedFiles: [],
   
+  // Stats
+  stats: {
+    streak: 0,
+    songs_logged: 0,
+    this_month: 0,
+    this_week: 0
+  },
+  statsLoading: false,
+  
+  fetchStats: async (userId) => {
+    set({ statsLoading: true });
+    try {
+      const stats = await usersAPI.getUserStats(userId);
+      set({ stats, statsLoading: false });
+    } catch (error) {
+      console.error('Failed to fetch stats:', error);
+      set({ statsLoading: false });
+    }
+  },
+
   // Fetch entries from API
   fetchEntries: async (userId) => {
     set({ entriesLoading: true, entriesError: null });
     try {
+      // Fetch stats in parallel
+      get().fetchStats(userId);
+      
       const entries = await entriesAPI.getAllEntries(userId);
       
       // Rebuild trash from entries with deleted files
@@ -97,6 +120,10 @@ const useAppStore = create((set, get) => ({
       
       const newEntry = await entriesAPI.createEntry(entryData);
       set((state) => ({ entries: [newEntry, ...state.entries] }));
+      
+      // Refresh stats
+      get().fetchStats(userId);
+      
       return newEntry;
     } catch (error) {
       console.error('Failed to add entry:', error);

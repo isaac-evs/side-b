@@ -11,12 +11,13 @@ import Settings from '../components/desktop/apps/Settings';
 import Trash from '../components/desktop/apps/Trash';
 import FileViewer from '../components/desktop/apps/FileViewer';
 import Insights from '../components/desktop/apps/Insights';
-import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp, FileText, Activity } from 'lucide-react';
+import AIAssistant from '../components/desktop/apps/AIAssistant';
+import { FolderOpen, Music, Library, User, Settings as SettingsIcon, Trash2, Flame, Calendar, TrendingUp, FileText, Activity, Bot } from 'lucide-react';
 import useAppStore from '../store/appStore';
 
 const DesktopContent = () => {
   const { openWindow, maximizeWindow, windows } = useDesktop();
-  const { entries } = useAppStore();
+  const { entries, stats } = useAppStore();
 
   // Auto-open Diary Explorer in fullscreen on mount
   useEffect(() => {
@@ -25,41 +26,6 @@ const DesktopContent = () => {
       isMaximized: true
     });
   }, []); // Empty dependency array - only run once on mount
-
-  // Calculate stats for desktop icons
-  const calculateStreak = () => {
-    if (entries.length === 0) return 0;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const sortedDates = [...new Set(entries.map(e => e.date))].sort().reverse();
-    let currentStreak = 0;
-    for (let i = 0; i < sortedDates.length; i++) {
-      const entryDate = new Date(sortedDates[i]);
-      entryDate.setHours(0, 0, 0, 0);
-      const expectedDate = new Date(today);
-      expectedDate.setDate(today.getDate() - i);
-      if (entryDate.getTime() === expectedDate.getTime()) {
-        currentStreak++;
-      } else {
-        break;
-      }
-    }
-    return currentStreak;
-  };
-
-  const calculateThisWeek = () => {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay());
-    startOfWeek.setHours(0, 0, 0, 0);
-    return entries.filter(entry => new Date(entry.date) >= startOfWeek).length;
-  };
-
-  const calculateThisMonth = () => {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    return entries.filter(entry => new Date(entry.date) >= startOfMonth).length;
-  };
 
   const handleStatIconClick = (stat) => {
     // Could open a detailed stats window in the future
@@ -71,31 +37,40 @@ const DesktopContent = () => {
       {/* Desktop Icons - Stats */}
       <DesktopIcon
         icon={<Flame className="w-8 h-8" style={{ color: '#ff6b35' }} />}
-        title={`${calculateStreak()} Days`}
+        title={`${stats?.streak || 0} Days`}
         description="Current Streak"
         position={{ x: 20, y: 20 }}
-        onDoubleClick={() => handleStatIconClick({ title: 'Streak', value: calculateStreak() })}
+        onDoubleClick={() => handleStatIconClick({ title: 'Streak', value: stats?.streak || 0 })}
       />
       <DesktopIcon
         icon={<Music className="w-8 h-8" style={{ color: '#4580d4' }} />}
-        title={`${entries.length} Songs`}
+        title={`${stats?.songs_logged || 0} Songs`}
         description="Total Logged"
         position={{ x: 20, y: 140 }}
-        onDoubleClick={() => handleStatIconClick({ title: 'Songs Logged', value: entries.length })}
+        onDoubleClick={() => handleStatIconClick({ title: 'Songs Logged', value: stats?.songs_logged || 0 })}
       />
       <DesktopIcon
         icon={<Calendar className="w-8 h-8" style={{ color: '#6EC9B1' }} />}
-        title={`${calculateThisWeek()} Entries`}
+        title={`${stats?.this_week || 0} Entries`}
         description="This Week"
         position={{ x: 20, y: 260 }}
-        onDoubleClick={() => handleStatIconClick({ title: 'This Week', value: calculateThisWeek() })}
+        onDoubleClick={() => handleStatIconClick({ title: 'This Week', value: stats?.this_week || 0 })}
       />
       <DesktopIcon
         icon={<TrendingUp className="w-8 h-8" style={{ color: '#F6DD73' }} />}
-        title={`${calculateThisMonth()} Entries`}
+        title={`${stats?.this_month || 0} Entries`}
         description="This Month"
         position={{ x: 20, y: 380 }}
-        onDoubleClick={() => handleStatIconClick({ title: 'This Month', value: calculateThisMonth() })}
+        onDoubleClick={() => handleStatIconClick({ title: 'This Month', value: stats?.this_month || 0 })}
+      />
+
+      {/* AI Assistant Icon */}
+      <DesktopIcon
+        icon={<Bot className="w-8 h-8" style={{ color: '#8b5cf6' }} />}
+        title="Side-B AI"
+        description="Assistant"
+        position={{ x: 120, y: 20 }}
+        onDoubleClick={() => openWindow('ai-assistant')}
       />
 
       {/* Diary Explorer Window */}
@@ -118,6 +93,17 @@ const DesktopContent = () => {
         minHeight={600}
       >
         <Insights />
+      </Window>
+
+      {/* AI Assistant Window */}
+      <Window
+        appId="ai-assistant"
+        title="Side-B Assistant"
+        icon={<Bot className="w-4 h-4" />}
+        minWidth={400}
+        minHeight={600}
+      >
+        <AIAssistant />
       </Window>
 
       {/* Music Player Window */}

@@ -10,7 +10,7 @@ Supports:
 
 import logging
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from cassandra.cluster import Cluster
 
 logger = logging.getLogger("CassandraClient")
@@ -122,64 +122,88 @@ class CassandraClient:
                 PRIMARY KEY (user_id, entry_id)
             )
             """,
+            """
+            CREATE TABLE IF NOT EXISTS journal_entries_timeline (
+                user_id TEXT,
+                created_at TIMESTAMP,
+                entry_id TEXT,
+                PRIMARY KEY (user_id, created_at)
+            ) WITH CLUSTERING ORDER BY (created_at DESC)
+            """,
         ]
         for s in stmts:
             await asyncio.to_thread(self.session.execute, s)
         logger.info("Cassandra schema ensured.")
 
     # Helpers
-    def _year_month(self):
+    def _year_month(self, date_obj=None):
+        if date_obj:
+            return date_obj.strftime("%Y-%m")
         return datetime.utcnow().strftime("%Y-%m")
 
     # WRITE OPERATIONS
-    async def log_journal_text(self, user_id: str, entry_id: str, text: str):
+    async def log_journal_text(self, user_id: str, entry_id: str, text: str, created_at: datetime = None):
         try:
-            now = datetime.utcnow()
+            now = created_at or datetime.utcnow()
+            # Log to main table
             await asyncio.to_thread(
                 self.session.execute,
                 "INSERT INTO journal_entries_by_user (user_id, entry_id, created_at, text) VALUES (%s, %s, %s, %s)",
                 (user_id, entry_id, now, text),
             )
+            # Log to timeline
+            await asyncio.to_thread(
+                self.session.execute,
+                "INSERT INTO journal_entries_timeline (user_id, created_at, entry_id) VALUES (%s, %s, %s)",
+                (user_id, now, entry_id),
+            )
+            
             logger.info(f"Logged journal text for user={user_id}, entry={entry_id}")
-            await self.increment_entry_count(user_id)
+            await self.increment_entry_count(user_id, date_obj=now)
         except Exception as e:
             logger.error(f"Failed to log journal text: {e}")
             raise
 
-    async def log_song_selection(self, user_id: str, entry_id: str, song_id: str, mood: str = None):
-        try:
-            now = datetime.utcnow()
-            ym = self._year_month()
+    async def increment_entry_count(self, user_id: str, date_obj: datetime = None):
+        ym = self._year_month(date_obj)
+        await asyncio.to_thread(
+            self.session.execute,
+            "UPDATE user_monthly_stats SET entries_count = entries_count + 1 WHERE user_id = %s AND year_month = %s",
+            (user_id, ym),
+        )
 
+    async def log_song_selection(self, user_id: str, entry_id: str, song_id: str, mood: str = None, created_at: datetime = None):
+        try:
+            now = created_at or datetime.utcnow()
+            # 1. Log selection event
             await asyncio.to_thread(
                 self.session.execute,
-                "INSERT INTO song_selections_by_user (user_id, selection_timestamp, entry_id, song_id, mood) VALUES (%s, %s, %s, %s, %s)",
-                (user_id, now, entry_id, song_id, mood),
+                """
+                INSERT INTO song_selections_by_user (user_id, selection_timestamp, entry_id, song_id, mood)
+                VALUES (%s, %s, %s, %s, %s)
+                """,
+                (user_id, now, entry_id, song_id, mood or "unknown"),
             )
+            
+            # 2. Update frequency counter
             await asyncio.to_thread(
                 self.session.execute,
                 "UPDATE song_selection_frequency SET selection_count = selection_count + 1 WHERE user_id = %s AND song_id = %s",
                 (user_id, song_id),
             )
-            await asyncio.to_thread(
-                self.session.execute,
-                "INSERT INTO song_selection_timestamps (user_id, song_id, first_selected, last_selected) VALUES (%s, %s, %s, %s) IF NOT EXISTS",
-                (user_id, song_id, now, now),
-            )
-            await asyncio.to_thread(
-                self.session.execute,
-                "UPDATE song_selection_timestamps SET last_selected = %s WHERE user_id = %s AND song_id = %s",
-                (now, user_id, song_id),
-            )
+            
+            # 3. Update monthly stats
+            ym = self._year_month(now)
             await asyncio.to_thread(
                 self.session.execute,
                 "UPDATE user_monthly_stats SET songs_selected_count = songs_selected_count + 1 WHERE user_id = %s AND year_month = %s",
                 (user_id, ym),
             )
-            logger.info(f"Song selection logged for user={user_id}, song={song_id}")
+            
+            logger.info(f"Logged song selection for user={user_id}, song={song_id}")
         except Exception as e:
             logger.error(f"Failed to log song selection: {e}")
-            raise
+            # Don't raise, just log error to avoid blocking main flow
 
     async def log_media_attachment(self, user_id: str, entry_id: str, file_id: str, file_type: str, url: str = None):
         try:
@@ -204,18 +228,6 @@ class CassandraClient:
             logger.error(f"Failed to log media attachment: {e}")
             raise
 
-    async def increment_entry_count(self, user_id: str):
-        try:
-            ym = self._year_month()
-            await asyncio.to_thread(
-                self.session.execute,
-                "UPDATE user_monthly_stats SET entries_count = entries_count + 1 WHERE user_id = %s AND year_month = %s",
-                (user_id, ym),
-            )
-            logger.info(f"Entry count incremented for user={user_id}, month={ym}")
-        except Exception as e:
-            logger.error(f"Failed to increment entry count: {e}")
-            raise
 
     # READ OPERATIONS
     async def get_recent_song_selections(self, user_id: str, limit: int = 10):
@@ -272,6 +284,116 @@ class CassandraClient:
             "first_selected": ts.first_selected if ts else None,
             "last_selected": ts.last_selected if ts else None,
         }
+
+    async def get_user_stats(self, user_id: str):
+        """
+        Fetch stats for widgets:
+        - Streak (calculated from timeline)
+        - Songs Logged (total count)
+        - This Month (entries count)
+        - This Week (calculated from timeline)
+        """
+        try:
+            # 1. Get timeline for streak and week stats
+            # Limit to last 365 entries
+            rows = await asyncio.to_thread(
+                self.session.execute,
+                "SELECT created_at FROM journal_entries_timeline WHERE user_id = %s LIMIT 365",
+                (user_id,)
+            )
+            dates = [r.created_at for r in rows]
+            
+            # Calculate Streak
+            streak = 0
+            this_week_count = 0
+            
+            if dates:
+                # Sort dates descending (should be already sorted by clustering key, but ensure)
+                # dates are datetime objects
+                sorted_dates = sorted(dates, reverse=True)
+                
+                # Streak Logic
+                today = datetime.utcnow().date()
+                current_date = today
+                
+                # Check if latest entry is today or yesterday to start streak
+                latest_entry_date = sorted_dates[0].date()
+                
+                if latest_entry_date == today:
+                    streak = 1
+                    check_date = today
+                elif latest_entry_date == (today - timedelta(days=1)):
+                    streak = 0 # Will be incremented in loop
+                    check_date = today - timedelta(days=1)
+                else:
+                    streak = 0
+                    check_date = None # Streak broken
+                
+                if check_date:
+                    unique_dates = sorted(list(set(d.date() for d in sorted_dates)), reverse=True)
+                    
+                    # If first date is today, we start checking from yesterday
+                    start_idx = 0
+                    if unique_dates[0] == today:
+                        streak = 1
+                        start_idx = 1
+                        check_date = today - timedelta(days=1)
+                    elif unique_dates[0] == (today - timedelta(days=1)):
+                        streak = 1 # Yesterday counts if today is missing? 
+                        # Usually streak includes today if done, or up to yesterday.
+                        # Let's say streak is consecutive days up to today.
+                        # If today is missing, but yesterday exists, streak is active?
+                        # Usually yes.
+                        streak = 1
+                        start_idx = 1
+                        check_date = today - timedelta(days=2)
+                    else:
+                        streak = 0
+                    
+                    # Iterate
+                    for i in range(start_idx, len(unique_dates)):
+                        if unique_dates[i] == check_date:
+                            streak += 1
+                            check_date = check_date - timedelta(days=1)
+                        else:
+                            break
+
+                # This Week Logic
+                start_of_week = today - timedelta(days=today.weekday()) # Monday
+                this_week_count = sum(1 for d in dates if d.date() >= start_of_week)
+
+            # 2. Get Monthly Stats
+            ym = self._year_month()
+            month_row = await asyncio.to_thread(
+                self.session.execute,
+                "SELECT entries_count FROM user_monthly_stats WHERE user_id = %s AND year_month = %s",
+                (user_id, ym)
+            )
+            this_month_count = month_row.one().entries_count if month_row and month_row.one() else 0
+            
+            # 3. Get Total Songs Logged
+            song_rows = await asyncio.to_thread(
+                self.session.execute,
+                "SELECT selection_count FROM song_selection_frequency WHERE user_id = %s",
+                (user_id,)
+            )
+            total_songs = sum(r.selection_count for r in song_rows)
+            
+            return {
+                "streak": streak,
+                "songs_logged": total_songs,
+                "this_month": this_month_count,
+                "this_week": this_week_count
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to get user stats: {e}")
+            return {
+                "streak": 0,
+                "songs_logged": 0,
+                "this_month": 0,
+                "this_week": 0
+            }
 
     # DELETE
     async def delete_user_all_data(self, user_id: str):

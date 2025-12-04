@@ -3,22 +3,8 @@ import { Calendar } from 'lucide-react';
 import useAppStore from '../../../store/appStore';
 
 const ThisWeekWidget = () => {
-  const { entries } = useAppStore();
-
-  // Calculate entries this week
-  const calculateThisWeek = () => {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay());
-    startOfWeek.setHours(0, 0, 0, 0);
-    
-    return entries.filter(entry => {
-      const entryDate = new Date(entry.date);
-      return entryDate >= startOfWeek;
-    }).length;
-  };
-
-  const thisWeek = calculateThisWeek();
+  const { stats } = useAppStore();
+  const thisWeek = stats?.this_week || 0;
 
   return (
     <div 

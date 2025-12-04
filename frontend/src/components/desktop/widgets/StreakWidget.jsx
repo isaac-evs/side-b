@@ -3,35 +3,8 @@ import { Flame } from 'lucide-react';
 import useAppStore from '../../../store/appStore';
 
 const StreakWidget = () => {
-  const { entries } = useAppStore();
-
-  // Calculate streak
-  const calculateStreak = () => {
-    if (entries.length === 0) return 0;
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const sortedDates = [...new Set(entries.map(e => e.date))].sort().reverse();
-    let currentStreak = 0;
-    
-    for (let i = 0; i < sortedDates.length; i++) {
-      const entryDate = new Date(sortedDates[i]);
-      entryDate.setHours(0, 0, 0, 0);
-      const expectedDate = new Date(today);
-      expectedDate.setDate(today.getDate() - i);
-      
-      if (entryDate.getTime() === expectedDate.getTime()) {
-        currentStreak++;
-      } else {
-        break;
-      }
-    }
-    
-    return currentStreak;
-  };
-
-  const streak = calculateStreak();
+  const { stats } = useAppStore();
+  const streak = stats?.streak || 0;
 
   return (
     <div 
