@@ -64,17 +64,29 @@ class ChromaDBClient:
     async def query_songs(self, query_text: str, mood: str = None, n_results: int = 8):
         if not self.songs_collection:
             await self.initialize()
+        
+        print(f"🔍 ChromaDB query_songs called with:")
+        print(f"   - query_text: '{query_text[:50]}...'")
+        print(f"   - mood: {mood}")
+        print(f"   - n_results: {n_results}")
             
         where_clause = {}
         if mood:
             where_clause["mood"] = mood
             
-        results = self.songs_collection.query(
-            query_texts=[query_text],
-            n_results=n_results,
-            where=where_clause
-        )
-        return results
+        print(f"   - where_clause: {where_clause}")
+        
+        try:
+            results = self.songs_collection.query(
+                query_texts=[query_text],
+                n_results=n_results,
+                where=where_clause if where_clause else None
+            )
+            print(f"✅ ChromaDB returned: {len(results.get('ids', [[]])[0])} results")
+            return results
+        except Exception as e:
+            print(f"❌ ChromaDB query error: {e}")
+            raise
 
     def get_collection(self, name: str):
         if self.client:

@@ -3,6 +3,10 @@ import os
 import requests
 import time
 from motor.motor_asyncio import AsyncIOMotorClient
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # MongoDB Connection
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
@@ -189,10 +193,72 @@ async def fetch_and_seed():
     await db["songs"].delete_many({})
     
     print(f"💿 Inserting {len(final_songs)} songs into database...")
-    await db["songs"].insert_many(final_songs)
+    result = await db["songs"].insert_many(final_songs)
     
     print("\n✅ SUCCESS! Database seeded with 100 songs.")
+    
+    # ---------------------------------------------------------
+    # 4. SYNC TO CHROMADB IMMEDIATELY
+    # ---------------------------------------------------------
+    print("\n🔄 Syncing to ChromaDB...")
+    from app.databases.chromadb import chromadb_client
+    
+    try:
+        print("[ChromaDB] INFO - Connecting to ChromaDB...")
+        await chromadb_client.connect()
+        await chromadb_client.initialize()
+        print("[ChromaDB] INFO - Connected.")
+        
+        # Clear existing songs collection to avoid duplicates
+        try:
+            chromadb_client.client.delete_collection(name="songs")
+            print("✓ Deleted existing 'songs' collection.")
+        except Exception as e:
+            print(f"Note: Could not delete songs collection: {e}")
+        
+        # Reinitialize to create fresh collection
+        await chromadb_client.initialize()
+        
+        print(f"🎵 Syncing {len(final_songs)} songs to ChromaDB...")
+        
+        # Get the inserted song IDs
+        inserted_ids = result.inserted_ids
+        songs_with_ids = await db["songs"].find({"_id": {"$in": inserted_ids}}).to_list(length=None)
+        
+        for song in songs_with_ids:
+            song_id = str(song["_id"])
+            title = song.get("title", "Unknown Title")
+            description = song.get("description", "")
+            mood = song.get("mood", "neutral")
+            
+            # If no description, use title + artist + mood as fallback
+            if not description:
+                artist = song.get("artist", "Unknown Artist")
+                description = f"{title} by {artist}. A {mood} song."
+                
+            metadata = {
+                "title": title,
+                "artist": song.get("artist", ""),
+                "mood": mood,
+                "album": song.get("album", "")
+            }
+            
+            await chromadb_client.add_song(
+                song_id=song_id,
+                description=description,
+                metadata=metadata
+            )
+        
+        print("✅ ChromaDB sync complete!")
+        await chromadb_client.disconnect()
+        
+    except Exception as e:
+        print(f"❌ ChromaDB sync failed: {e}")
+        import traceback
+        traceback.print_exc()
+    
     client.close()
+    print("\n🎉 All done! Songs are in MongoDB and ChromaDB.")
 
 if __name__ == "__main__":
     asyncio.run(fetch_and_seed())

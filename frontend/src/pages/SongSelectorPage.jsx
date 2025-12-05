@@ -113,36 +113,25 @@ const SongSelectorPage = () => {
 
     const fetchSongs = async () => {
       try {
-        let moodSongs = [];
-        
-        if (currentEntry.mood) {
-          // If mood is already set (e.g. manual selection or already classified), fetch by mood
-          console.log("Fetching songs for mood:", currentEntry.mood);
-          moodSongs = await songsAPI.getSongsByMood(currentEntry.mood);
-        } else {
-          // If no mood set, use AI recommendation based on text
-          console.log("Fetching recommendations for text:", currentEntry.text);
-          moodSongs = await songsAPI.recommendSongs(currentEntry.text);
-          
-          // If we got songs, update the mood in the store to match the detected mood
-          if (moodSongs.length > 0 && moodSongs[0].mood) {
-            console.log("AI detected mood:", moodSongs[0].mood);
-            setEntryMood(moodSongs[0].mood);
-            // Note: Setting mood will trigger this effect again, which will fall into the 'if (currentEntry.mood)' block
-            // This ensures consistency and updates the UI background
-          }
-        }
+        // Always use AI recommendation based on text for semantic search
+        console.log("Fetching recommendations for text:", currentEntry.text);
+        const moodSongs = await songsAPI.recommendSongs(currentEntry.text);
         
         console.log("Fetched songs:", moodSongs);
         setSongs(moodSongs);
+        
+        // Update the mood in the store based on the first song's mood (if not already set)
+        if (moodSongs.length > 0 && moodSongs[0].mood && !currentEntry.mood) {
+          console.log("AI detected mood:", moodSongs[0].mood);
+          setEntryMood(moodSongs[0].mood);
+        }
       } catch (error) {
         console.error("Failed to fetch songs:", error);
       }
     };
 
     fetchSongs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentEntry.text, navigate, setEntryMood]);
+  }, [currentEntry.text, navigate]); // Removed currentEntry.mood and setEntryMood from dependencies
 
   const handleShuffle = () => {
     // Shuffle the current songs array

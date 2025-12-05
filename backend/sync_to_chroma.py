@@ -78,6 +78,16 @@ async def sync_chroma():
     songs_collection = db.songs
     songs = await songs_collection.find({}).to_list(length=None)
     print(f"Found {len(songs)} songs to sync.")
+    
+    # Clear existing songs collection to avoid duplicates
+    try:
+        chromadb_client.client.delete_collection(name="songs")
+        print("✓ Deleted existing 'songs' collection.")
+    except Exception as e:
+        print(f"Note: Could not delete songs collection (may not exist): {e}")
+    
+    # Reinitialize to create fresh collection
+    await chromadb_client.initialize()
 
     for song in songs:
         song_id = str(song["_id"])
