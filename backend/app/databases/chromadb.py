@@ -88,6 +88,19 @@ class ChromaDBClient:
             print(f"❌ ChromaDB query error: {e}")
             raise
 
+    async def delete_entries_by_user(self, user_id: str):
+        if not self.entries_collection:
+            await self.initialize()
+        
+        try:
+            self.entries_collection.delete(
+                where={"userId": user_id}
+            )
+            print(f"✅ Deleted ChromaDB entries for user {user_id}")
+        except Exception as e:
+            print(f"❌ Failed to delete ChromaDB entries for user {user_id}: {e}")
+            raise
+
     def get_collection(self, name: str):
         if self.client:
             return self.client.get_or_create_collection(name=name)

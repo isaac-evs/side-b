@@ -87,11 +87,14 @@ const SongSelectorPage = () => {
           await fetchEntries(user.id);
         }
         
-        // Check if there's an entry from today
-        const today = new Date().toISOString().split('T')[0];
+        // Check if there's an entry from today (using local timezone)
+        const today = new Date();
+        const todayDateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        
         const todayEntry = entries.find(entry => {
-          const entryDate = new Date(entry.date).toISOString().split('T')[0];
-          return entryDate === today;
+          const entryDate = new Date(entry.date);
+          const entryDateString = `${entryDate.getFullYear()}-${String(entryDate.getMonth() + 1).padStart(2, '0')}-${String(entryDate.getDate()).padStart(2, '0')}`;
+          return entryDateString === todayDateString;
         });
 
         if (todayEntry) {
@@ -118,12 +121,19 @@ const SongSelectorPage = () => {
         const moodSongs = await songsAPI.recommendSongs(currentEntry.text);
         
         console.log("Fetched songs:", moodSongs);
-        setSongs(moodSongs);
+        
+        // Remove duplicates by _id
+        const uniqueSongs = Array.from(
+          new Map(moodSongs.map(song => [song._id || song.id, song])).values()
+        );
+        
+        console.log("Unique songs:", uniqueSongs);
+        setSongs(uniqueSongs);
         
         // Update the mood in the store based on the first song's mood (if not already set)
-        if (moodSongs.length > 0 && moodSongs[0].mood && !currentEntry.mood) {
-          console.log("AI detected mood:", moodSongs[0].mood);
-          setEntryMood(moodSongs[0].mood);
+        if (uniqueSongs.length > 0 && uniqueSongs[0].mood && !currentEntry.mood) {
+          console.log("AI detected mood:", uniqueSongs[0].mood);
+          setEntryMood(uniqueSongs[0].mood);
         }
       } catch (error) {
         console.error("Failed to fetch songs:", error);
@@ -444,7 +454,7 @@ const SongSelectorPage = () => {
         <main className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 w-full max-w-5xl">
           {songs.map((song, index) => (
             <div
-              key={song.id || song._id}
+              key={`${song._id || song.id}-${index}`}
               onClick={() => handleSelectSong(song, index)}
               className="relative w-full aspect-square cursor-pointer group"
             >

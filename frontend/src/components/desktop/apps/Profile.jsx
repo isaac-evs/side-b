@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import { Camera } from 'lucide-react';
+import { Camera, Monitor } from 'lucide-react';
 
 const Profile = () => {
   const { user, updateUserData } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.name || 'Guest');
+  const [profilePhoto, setProfilePhoto] = useState(user?.profilePhoto || '');
 
   const handleSave = () => {
-    updateUserData({ name });
+    updateUserData({ name, profilePhoto });
     setIsEditing(false);
   };
 
@@ -19,9 +20,13 @@ const Profile = () => {
         <div className="relative group mb-4">
           <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden shadow-inner border-4 border-white">
              {/* Placeholder or User Image */}
-             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-400 to-gray-500 text-white text-4xl font-medium select-none">
-                {name?.charAt(0).toUpperCase() || 'U'}
-             </div>
+             {profilePhoto ? (
+               <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+             ) : (
+               <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-400 to-gray-500 text-white text-4xl font-medium select-none">
+                  {name?.charAt(0).toUpperCase() || 'U'}
+               </div>
+             )}
           </div>
         </div>
 
@@ -31,13 +36,22 @@ const Profile = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
               className="px-2 py-1 text-lg text-center bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none w-48"
               autoFocus
+            />
+            <input
+              type="text"
+              value={profilePhoto}
+              onChange={(e) => setProfilePhoto(e.target.value)}
+              placeholder="Image URL"
+              className="px-2 py-1 text-sm text-center bg-white border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none w-64"
             />
             <div className="flex gap-2 mt-1">
               <button
                 onClick={() => {
                   setName(user?.name || 'Guest');
+                  setProfilePhoto(user?.profilePhoto || '');
                   setIsEditing(false);
                 }}
                 className="px-3 py-0.5 text-sm bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50"
@@ -72,7 +86,7 @@ const Profile = () => {
            {/* Icon */}
            <div className="w-32 flex-shrink-0 flex flex-col items-center">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-200 to-gray-400 flex items-center justify-center shadow-lg mb-4 border border-gray-300 select-none">
-                 <span className="text-4xl">🍎</span>
+                 <Monitor className="w-12 h-12 text-gray-700" />
               </div>
            </div>
 

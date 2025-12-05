@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, Repeat, Shuffle } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, Repeat, Shuffle, Music } from 'lucide-react';
 import useAppStore from '../../../store/appStore';
 
 const MusicPlayer = () => {
-  const { entries } = useAppStore();
+  const { entries, musicState, setMusicState, playSong, pauseSong } = useAppStore();
+  const { currentSong, isPlaying, volume, progress } = musicState;
   const [songs, setSongs] = useState([]);
-  const [currentSong, setCurrentSong] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(75);
-  const [progress, setProgress] = useState(0);
   const audioRef = useRef(new Audio());
 
   useEffect(() => {
@@ -24,7 +21,7 @@ const MusicPlayer = () => {
     
     // Set initial song if none selected and songs exist
     if (uniqueSongs.length > 0 && !currentSong) {
-      setCurrentSong(uniqueSongs[0]);
+      setMusicState({ currentSong: uniqueSongs[0] });
     }
   }, [entries]);
 
@@ -35,44 +32,32 @@ const MusicPlayer = () => {
     }
   }, [volume]);
 
-  // Handle Song Change
+  // Handle Song Change & Play/Pause
   useEffect(() => {
     const audio = audioRef.current;
+    
     if (currentSong) {
-      if (currentSong.previewUrl) {
-        audio.src = currentSong.previewUrl;
-        if (isPlaying) {
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error("Playback failed:", error);
-              setIsPlaying(false);
-            });
-          }
+      if (audio.src !== currentSong.previewUrl) {
+        if (currentSong.previewUrl) {
+            audio.src = currentSong.previewUrl;
+        } else {
+            audio.src = '';
+        }
+      }
+
+      if (isPlaying) {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error("Playback failed:", error);
+            pauseSong();
+          });
         }
       } else {
         audio.pause();
-        audio.src = '';
-        setIsPlaying(false);
       }
     }
-  }, [currentSong]);
-
-  // Handle Play/Pause State
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (isPlaying && audio.src) {
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
-          console.error("Playback failed:", error);
-          setIsPlaying(false);
-        });
-      }
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying]);
+  }, [currentSong, isPlaying]);
 
   // Handle Progress and Auto-Next
   useEffect(() => {
@@ -80,7 +65,7 @@ const MusicPlayer = () => {
     
     const updateProgress = () => {
       if (audio.duration) {
-        setProgress((audio.currentTime / audio.duration) * 100);
+        setMusicState({ progress: (audio.currentTime / audio.duration) * 100 });
       }
     };
 
@@ -103,28 +88,30 @@ const MusicPlayer = () => {
         alert("No preview available for this song.");
         return;
     }
-    setIsPlaying(!isPlaying);
+    if (isPlaying) {
+        pauseSong();
+    } else {
+        playSong(currentSong);
+    }
   };
 
   const handleNext = () => {
     if (!songs.length) return;
     const currentIndex = songs.findIndex(s => (s.id || s._id) === (currentSong?.id || currentSong?._id));
     const nextIndex = (currentIndex + 1) % songs.length;
-    setCurrentSong(songs[nextIndex]);
-    setIsPlaying(true);
+    playSong(songs[nextIndex]);
   };
 
   const handlePrevious = () => {
     if (!songs.length) return;
     const currentIndex = songs.findIndex(s => (s.id || s._id) === (currentSong?.id || currentSong?._id));
     const prevIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
-    setCurrentSong(songs[prevIndex]);
-    setIsPlaying(true);
+    playSong(songs[prevIndex]);
   };
 
   const handleSeek = (e) => {
     const newProgress = parseInt(e.target.value);
-    setProgress(newProgress);
+    setMusicState({ progress: newProgress });
     const audio = audioRef.current;
     if (audio.duration) {
       audio.currentTime = (newProgress / 100) * audio.duration;
@@ -205,8 +192,8 @@ const MusicPlayer = () => {
                 }}
             />
             <div className="flex justify-between text-[10px] text-gray-400 mt-1 font-medium">
-                <span>0:00</span>
-                <span>-3:45</span>
+                <span>{Math.floor((progress / 100) * 30)}:{(Math.floor(((progress / 100) * 30) % 60)).toString().padStart(2, '0')}</span>
+                <span>0:30</span>
             </div>
         </div>
 
@@ -246,7 +233,7 @@ const MusicPlayer = () => {
               min="0"
               max="100"
               value={volume}
-              onChange={(e) => setVolume(parseInt(e.target.value))}
+              onChange={(e) => setMusicState({ volume: parseInt(e.target.value) })}
               className="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-full appearance-none cursor-pointer accent-gray-500"
           />
         </div>

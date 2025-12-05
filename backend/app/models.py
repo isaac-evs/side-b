@@ -39,6 +39,7 @@ class UserSettings(BaseModel):
     soundEffects: bool = True
     Notifications: bool = True
     backgroundImage: Optional[str] = None
+    iconColor: Optional[str] = None
 
 class User(MongoBaseModel):
     username: str

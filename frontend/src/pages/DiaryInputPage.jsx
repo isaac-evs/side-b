@@ -27,11 +27,14 @@ const DiaryInputPage = () => {
           await fetchEntries(user.id);
         }
         
-        // Check if there's an entry from today
-        const today = new Date().toISOString().split('T')[0];
+        // Check if there's an entry from today (using local timezone)
+        const today = new Date();
+        const todayDateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        
         const todayEntry = entries.find(entry => {
-          const entryDate = new Date(entry.date).toISOString().split('T')[0];
-          return entryDate === today;
+          const entryDate = new Date(entry.date);
+          const entryDateString = `${entryDate.getFullYear()}-${String(entryDate.getMonth() + 1).padStart(2, '0')}-${String(entryDate.getDate()).padStart(2, '0')}`;
+          return entryDateString === todayDateString;
         });
 
         if (todayEntry) {

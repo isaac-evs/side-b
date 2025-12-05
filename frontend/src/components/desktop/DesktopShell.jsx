@@ -35,6 +35,8 @@ const DesktopShell = () => {
   const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   const [musicControlsOpen, setMusicControlsOpen] = useState(false);
   const [helpModalOpen, setHelpModalOpen] = useState(false);
+  
+  const iconColor = user?.settings?.iconColor;
 
   // Check if any window is maximized
   const hasMaximizedWindow = Object.values(windows).some(w => w.isOpen && w.isMaximized);
@@ -56,9 +58,11 @@ const DesktopShell = () => {
   };
 
   const handleShutdown = () => {
-    // Logout and navigate to landing page
-    logout();
+    // Navigate to landing page first, then logout to avoid ProtectedRoute redirecting to /auth
     navigate('/');
+    setTimeout(() => {
+      logout();
+    }, 100);
   };
 
   const handleAddFile = async (file) => {
@@ -76,14 +80,23 @@ const DesktopShell = () => {
     // Get updated entries after fetch
     const updatedEntries = useAppStore.getState().entries;
     
-    // Find today's entry - be more lenient with date comparison
+    // Find today's entry - use local timezone, not UTC
     const today = new Date();
+    // Get local date string (not UTC)
+    const todayDateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    
     const todayEntry = updatedEntries.find(entry => {
       const entryDate = new Date(entry.date);
-      // Compare year, month, and day only (ignore time)
-      return entryDate.getFullYear() === today.getFullYear() &&
-             entryDate.getMonth() === today.getMonth() &&
-             entryDate.getDate() === today.getDate();
+      // Get local date string from entry (not UTC)
+      const entryDateString = `${entryDate.getFullYear()}-${String(entryDate.getMonth() + 1).padStart(2, '0')}-${String(entryDate.getDate()).padStart(2, '0')}`;
+      
+      console.log('Comparing:', {
+        todayDateString,
+        entryDateString,
+        match: entryDateString === todayDateString
+      });
+      
+      return entryDateString === todayDateString;
     });
     
     console.log('Today\'s entry:', todayEntry);
@@ -305,7 +318,12 @@ const DesktopShell = () => {
                   }}
                   aria-label={app.name}
                 >
-                  <span className={app.color}>{app.icon}</span>
+                  <span 
+                    className={!iconColor ? app.color : ''} 
+                    style={iconColor ? { color: iconColor } : {}}
+                  >
+                    {app.icon}
+                  </span>
                 </button>
                 
                 {/* Dot indicator for open apps */}
@@ -344,7 +362,10 @@ const DesktopShell = () => {
         isOpen={addFileModalOpen}
         onClose={() => setAddFileModalOpen(false)}
         onAddFile={handleAddFile}
-        currentDate={new Date().toISOString().split('T')[0]}
+        currentDate={(() => {
+          const now = new Date();
+          return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        })()}
       />
 
       {/* Music Controls Modal */}

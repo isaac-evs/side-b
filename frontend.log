@@ -13,10 +13,9 @@
 ≈ tailwindcss v4.1.14
 
 
-  VITE v7.1.10  ready in 108 ms
+  VITE v7.1.10  ready in 110 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-Done in 177ms
-9:24:00 PM [vite] (client) hmr update /src/pages/SongSelectorPage.jsx
-9:24:08 PM [vite] (client) hmr update /src/pages/SongSelectorPage.jsx
+10:30:30 PM [vite] (client) hmr update /src/components/desktop/DesktopShell.jsx
+10:30:30 PM [vite] (client) hmr update /src/pages/Desktop.jsx

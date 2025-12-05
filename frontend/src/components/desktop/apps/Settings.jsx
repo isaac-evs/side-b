@@ -1,9 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useAppStore from '../../../store/appStore';
-import { Moon, Sun, Bell, Volume2, Wifi, Monitor } from 'lucide-react';
+import { useAuth } from '../../../contexts/AuthContext';
+import { usersAPI } from '../../../services/api';
+import { Moon, Sun, Bell, Image as ImageIcon, Trash2, Monitor, Wifi } from 'lucide-react';
 
 const Settings = () => {
   const { theme, toggleTheme } = useAppStore();
+  const { user, updateUserData, logout } = useAuth();
+  const [bgImage, setBgImage] = useState(user?.settings?.backgroundImage || 'https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?_gl=1*3jir2t*_ga*MTE2NzEzMzk3OC4xNzY0ODk4MTIy*_ga_8JE65Q40S6*czE3NjQ4OTgxMjEkbzEkZzEkdDE3NjQ4OTgxMjQkajU3JGwwJGgw');
+
+  const handleIconColorChange = (color) => {
+    updateUserData({ settings: { ...user.settings, iconColor: color } });
+  };
+
+  const handleBgImageSave = () => {
+    updateUserData({ settings: { ...user.settings, backgroundImage: bgImage } });
+  };
+
+  const handleDeleteData = async (deleteUser) => {
+    if (!confirm(deleteUser ? "Are you sure you want to delete your account and all data? This cannot be undone." : "Are you sure you want to delete all your data? This cannot be undone.")) return;
+    
+    try {
+      if (deleteUser) {
+        await usersAPI.deleteUser(user.id || user._id);
+        logout();
+      } else {
+        await usersAPI.deleteUserData(user.id || user._id);
+        alert("Data deleted successfully.");
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete data.");
+    }
+  };
   
   const Checkbox = ({ label, checked, onChange }) => (
     <div className="flex items-center gap-2 mb-2">
@@ -57,15 +86,15 @@ const Settings = () => {
                  </div>
                  
                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Background Color:</span>
+                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Icon Color:</span>
                     <div className="flex gap-1.5">
                        {['#007aff', '#a650c2', '#ff2d55', '#ff9500', '#ffcc00', '#4cd964'].map(c => (
                           <div 
                             key={c} 
-                            className="w-4 h-4 rounded-full shadow-sm cursor-pointer border border-black/5 hover:scale-110 transition-transform" 
+                            className={`w-4 h-4 rounded-full shadow-sm cursor-pointer border border-black/5 hover:scale-110 transition-transform ${user?.settings?.iconColor === c ? 'ring-2 ring-offset-1 ring-gray-400' : ''}`}
                             style={{ backgroundColor: c }} 
-                            onClick={() => alert('Future update')}
-                            title="Future update"
+                            onClick={() => handleIconColorChange(c)}
+                            title="Change Icon Color"
                           />
                        ))}
                     </div>
@@ -90,41 +119,66 @@ const Settings = () => {
               </div>
            </div>
 
-           {/* Sound Pane */}
-           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm opacity-75">
+           {/* Background Image Pane (Replaces Sound) */}
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
               <div className="flex items-center gap-3 mb-4">
                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
-                    <Volume2 size={20} />
+                    <ImageIcon size={20} />
                  </div>
-                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Sound (Future Update)</span>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Background Image</span>
               </div>
               
-              <div className="pl-2 space-y-3 pointer-events-none">
+              <div className="pl-2 space-y-3">
                  <div>
-                    <span className="text-xs text-gray-500 block mb-1" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Output Volume</span>
-                    <input type="range" className="w-full h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-gray-500" />
+                    <span className="text-xs text-gray-500 block mb-1" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Image URL</span>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={bgImage}
+                        onChange={(e) => setBgImage(e.target.value)}
+                        className="flex-1 px-2 py-1 text-sm border border-gray-300 rounded"
+                        placeholder="https://..."
+                      />
+                      <button 
+                        onClick={handleBgImageSave}
+                        className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                      >
+                        Save
+                      </button>
+                    </div>
                  </div>
-                 <Checkbox label="Play user interface sound effects" checked={true} onChange={() => {}} />
-                 <Checkbox label="Play feedback when volume is changed" checked={false} onChange={() => {}} />
+                 <div className="h-20 w-full bg-gray-200 rounded overflow-hidden relative">
+                    <img src={bgImage} alt="Preview" className="w-full h-full object-cover" onError={(e) => e.target.style.display = 'none'} />
+                    <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-500 pointer-events-none">Preview</span>
+                 </div>
               </div>
            </div>
 
-           {/* Network Pane */}
+           {/* Delete Data Pane (Replaces Network) */}
            <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
               <div className="flex items-center gap-3 mb-4">
-                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-inner">
-                    <Wifi size={20} />
+                 <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white shadow-inner">
+                    <Trash2 size={20} />
                  </div>
-                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Network</span>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Delete Data</span>
               </div>
               
-              <div className="pl-2">
-                 <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_4px_rgba(34,197,94,0.6)]"></div>
-                    <span className="text-sm text-gray-700" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Wi-Fi is connected</span>
+              <div className="pl-2 space-y-3">
+                 <p className="text-xs text-gray-600">Manage your data stored in the 4 databases.</p>
+                 <div className="flex flex-col gap-2">
+                    <button 
+                      onClick={() => handleDeleteData(false)}
+                      className="px-3 py-1.5 text-xs bg-white border border-red-300 text-red-600 rounded hover:bg-red-50 text-left"
+                    >
+                      Delete Data (Keep User)
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteData(true)}
+                      className="px-3 py-1.5 text-xs bg-red-600 text-white rounded hover:bg-red-700 text-left"
+                    >
+                      Delete All (Including User)
+                    </button>
                  </div>
-                 <Checkbox label="Ask to join new networks" checked={true} onChange={() => {}} />
-                 <Checkbox label="Show Wi-Fi status in menu bar" checked={true} onChange={() => {}} />
               </div>
            </div>
 

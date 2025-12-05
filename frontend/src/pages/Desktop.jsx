@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { DesktopProvider, useDesktop } from '../contexts/DesktopContext';
+import { useAuth } from '../contexts/AuthContext';
 import DesktopShell from '../components/desktop/DesktopShell';
 import Window from '../components/desktop/Window';
 import DesktopIcon from '../components/desktop/DesktopIcon';
@@ -18,6 +19,8 @@ import useAppStore from '../store/appStore';
 const DesktopContent = () => {
   const { openWindow, maximizeWindow, windows } = useDesktop();
   const { entries, stats } = useAppStore();
+  const { user } = useAuth();
+  const iconColor = user?.settings?.iconColor;
 
   // Auto-open Diary Explorer in fullscreen on mount
   useEffect(() => {
@@ -36,28 +39,28 @@ const DesktopContent = () => {
     <>
       {/* Desktop Icons - Stats */}
       <DesktopIcon
-        icon={<Flame className="w-8 h-8" style={{ color: '#ff6b35' }} />}
+        icon={<Flame className="w-8 h-8" style={{ color: iconColor || '#ff6b35' }} />}
         title={`${stats?.streak || 0} Days`}
         description="Current Streak"
         position={{ x: 20, y: 20 }}
         onDoubleClick={() => handleStatIconClick({ title: 'Streak', value: stats?.streak || 0 })}
       />
       <DesktopIcon
-        icon={<Music className="w-8 h-8" style={{ color: '#4580d4' }} />}
+        icon={<Music className="w-8 h-8" style={{ color: iconColor || '#4580d4' }} />}
         title={`${stats?.songs_logged || 0} Songs`}
         description="Total Logged"
         position={{ x: 20, y: 140 }}
         onDoubleClick={() => handleStatIconClick({ title: 'Songs Logged', value: stats?.songs_logged || 0 })}
       />
       <DesktopIcon
-        icon={<Calendar className="w-8 h-8" style={{ color: '#6EC9B1' }} />}
+        icon={<Calendar className="w-8 h-8" style={{ color: iconColor || '#6EC9B1' }} />}
         title={`${stats?.this_week || 0} Entries`}
         description="This Week"
         position={{ x: 20, y: 260 }}
         onDoubleClick={() => handleStatIconClick({ title: 'This Week', value: stats?.this_week || 0 })}
       />
       <DesktopIcon
-        icon={<TrendingUp className="w-8 h-8" style={{ color: '#F6DD73' }} />}
+        icon={<TrendingUp className="w-8 h-8" style={{ color: iconColor || '#F6DD73' }} />}
         title={`${stats?.this_month || 0} Entries`}
         description="This Month"
         position={{ x: 20, y: 380 }}
@@ -66,7 +69,7 @@ const DesktopContent = () => {
 
       {/* AI Assistant Icon */}
       <DesktopIcon
-        icon={<Bot className="w-8 h-8" style={{ color: '#8b5cf6' }} />}
+        icon={<Bot className="w-8 h-8" style={{ color: iconColor || '#8b5cf6' }} />}
         title="Side-B AI"
         description="Assistant"
         position={{ x: 120, y: 20 }}
@@ -188,9 +191,22 @@ const DesktopContent = () => {
 };
 
 const Desktop = () => {
+  const { user } = useAuth();
+  const bgImage = user?.settings?.backgroundImage;
+
   return (
     <DesktopProvider>
-      <div className="h-screen bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600 overflow-hidden relative">
+      <div 
+        className="h-screen overflow-hidden relative bg-no-repeat bg-center transition-all duration-500"
+        style={{
+           backgroundImage: bgImage ? `url(${bgImage})` : undefined,
+           backgroundSize: bgImage ? '100% 100%' : undefined
+        }}
+      >
+        {!bgImage && (
+           <div className="absolute inset-0 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600" />
+        )}
+        
         {/* Aqua texture overlay */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{
           backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(255,255,255,0.03) 1px, rgba(255,255,255,0.03) 2px)',

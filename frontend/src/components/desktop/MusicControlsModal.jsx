@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { X, Play, Pause, SkipBack, SkipForward, Volume2, Shuffle, Repeat } from 'lucide-react';
+import React from 'react';
+import { X, Play, Pause, SkipBack, SkipForward, Volume2, Shuffle, Repeat, Music } from 'lucide-react';
+import useAppStore from '../../store/appStore';
 
 const MusicControlsModal = ({ isOpen, onClose }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(50);
-  const [progress, setProgress] = useState(30);
-  const [currentSong] = useState({
-    title: 'Sunshine Rhythm',
-    artist: 'The Bright Notes',
-    album: 'Golden Days',
-    duration: '3:45',
-    currentTime: '1:23'
-  });
+  const { musicState, setMusicState, pauseSong, resumeSong } = useAppStore();
+  const { currentSong, isPlaying, volume, progress } = musicState;
 
   if (!isOpen) return null;
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      pauseSong();
+    } else {
+      resumeSong();
+    }
+  };
 
   return (
     <div 
@@ -68,12 +69,18 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
         <div className="p-6 bg-white/80 backdrop-blur-xl">
           {/* Album Art */}
           <div 
-            className="w-48 h-48 mx-auto rounded-lg mb-6 shadow-lg transition-transform hover:scale-105 duration-500"
+            className="w-48 h-48 mx-auto rounded-lg mb-6 shadow-lg transition-transform hover:scale-105 duration-500 overflow-hidden relative flex items-center justify-center"
             style={{
               background: 'linear-gradient(135deg, #FFD93D 0%, #FF6B35 100%)',
               boxShadow: '0 10px 30px rgba(255, 107, 53, 0.3)'
             }}
-          />
+          >
+             {currentSong?.coverUrl ? (
+               <img src={currentSong.coverUrl} alt="Album Art" className="w-full h-full object-cover" />
+             ) : (
+               <Music className="w-16 h-16 text-white opacity-50" />
+             )}
+          </div>
 
           {/* Song Info */}
           <div className="text-center mb-6">
@@ -81,13 +88,13 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
               className="text-lg font-semibold mb-1 text-gray-900"
               style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}
             >
-              {currentSong.title}
+              {currentSong?.title || 'No Song Selected'}
             </h3>
             <p 
               className="text-sm text-pink-500 font-medium"
               style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}
             >
-              {currentSong.artist} — {currentSong.album}
+              {currentSong?.artist || 'Unknown Artist'} {currentSong?.album ? `— ${currentSong.album}` : ''}
             </p>
           </div>
 
@@ -99,7 +106,9 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const newProgress = (x / rect.width) * 100;
-                setProgress(newProgress);
+                setMusicState({ progress: newProgress });
+                // Note: Seeking logic is in MusicPlayer, this just updates UI state which might be overwritten by player update
+                // Ideally we dispatch a seek action
               }}
             >
               <div
@@ -111,8 +120,8 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
               className="flex justify-between text-[10px] font-medium text-gray-400 uppercase tracking-wider"
               style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}
             >
-              <span>{currentSong.currentTime}</span>
-              <span>{currentSong.duration}</span>
+              <span>{Math.floor((progress / 100) * 30)}:{(Math.floor(((progress / 100) * 30) % 60)).toString().padStart(2, '0')}</span>
+              <span>0:30</span>
             </div>
           </div>
 
@@ -122,8 +131,9 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
               <SkipBack className="w-6 h-6 fill-current" />
             </button>
             <button
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={handlePlayPause}
               className="p-0 transition-transform active:scale-95"
+              disabled={!currentSong}
             >
               {isPlaying ? (
                 <Pause className="w-10 h-10 text-gray-800 fill-current" />
@@ -144,7 +154,7 @@ const MusicControlsModal = ({ isOpen, onClose }) => {
               min="0"
               max="100"
               value={volume}
-              onChange={(e) => setVolume(e.target.value)}
+              onChange={(e) => setMusicState({ volume: parseInt(e.target.value) })}
               className="flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-500"
             />
           </div>

@@ -396,6 +396,26 @@ const useAppStore = create((set, get) => ({
   selectedEntryId: null,
   setSelectedEntry: (id) => set({ selectedEntryId: id }),
 
+  // Music Player State
+  musicState: {
+    currentSong: null,
+    isPlaying: false,
+    volume: 75,
+    progress: 0,
+  },
+  setMusicState: (newState) => set((state) => ({ 
+    musicState: { ...state.musicState, ...newState } 
+  })),
+  playSong: (song) => set((state) => ({
+    musicState: { ...state.musicState, currentSong: song, isPlaying: true }
+  })),
+  pauseSong: () => set((state) => ({
+    musicState: { ...state.musicState, isPlaying: false }
+  })),
+  resumeSong: () => set((state) => ({
+    musicState: { ...state.musicState, isPlaying: true }
+  })),
+
   // Stats (calculated from entries)
   getStats: () => {
     const entries = get().entries;

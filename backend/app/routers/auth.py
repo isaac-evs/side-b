@@ -73,7 +73,8 @@ async def register(user_data: UserRegister):
             "theme": False,
             "soundEffects": True,
             "Notifications": True,
-            "backgroundImage": None
+            "backgroundImage": "https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg",
+            "accentColor": "#007aff"
         },
         "createdAt": datetime.utcnow(),
         "updatedAt": datetime.utcnow()

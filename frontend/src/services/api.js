@@ -73,6 +73,11 @@ export const usersAPI = {
     return response.data;
   },
   
+  deleteUserData: async (userId) => {
+    const response = await api.delete(`/users/${userId}/data`);
+    return response.data;
+  },
+  
   getUserStats: async (userId) => {
     const response = await api.get(`/users/${userId}/stats`);
     return response.data;

@@ -278,21 +278,21 @@ const DiaryExplorer = () => {
             {entries.length === 0 ? (
               <p className="text-xs text-gray-500 px-2">No entries yet</p>
             ) : (
-              entries.map((entry) => (
+              entries.map((entry, index) => (
                 <button
-                  key={entry.id}
+                  key={`${entry._id || entry.id}-${index}`}
                   onClick={() => {
                     setSelectedEntry(entry);
                   }}
                   className={`w-full text-left px-2 py-1 rounded flex items-center space-x-2 transition-colors ${
-                    selectedEntry?.id === entry.id 
+                    (selectedEntry?.id || selectedEntry?._id) === (entry.id || entry._id)
                       ? 'text-gray-900' 
                       : 'text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
                 >
                   <Calendar className="w-4 h-4 text-gray-500" />
                   <div className="flex-1 min-w-0">
-                    <div className={`truncate text-xs ${selectedEntry?.id === entry.id ? 'font-bold' : 'font-medium'}`}>
+                    <div className={`truncate text-xs ${(selectedEntry?.id || selectedEntry?._id) === (entry.id || entry._id) ? 'font-bold' : 'font-medium'}`}>
                       {new Date(entry.date).toLocaleDateString()}
                     </div>
                   </div>

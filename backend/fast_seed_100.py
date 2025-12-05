@@ -69,6 +69,14 @@ SONGS_DATA = [
     {"query": "Ben E. King - Stand by Me", "mood": "calm", "description": "Classic soul comfort."},
     {"query": "Bob Marley - Three Little Birds", "mood": "calm", "description": "Don't worry about a thing."},
     {"query": "Israel Kamakawiwo'ole - Somewhere Over the Rainbow", "mood": "calm", "description": "Gentle ukulele magic."},
+    {"query": "Men I Trust - Seven", "mood": "calm", "description": "Dreamy indie pop with smooth vocals."},
+    {"query": "800 Cherries - Romantico", "mood": "calm", "description": "Romantic and soothing atmosphere."},
+    {"query": "Hiroshi Yoshimura - 9", "mood": "calm", "description": "Ambient Japanese minimalism."},
+    {"query": "Nujabes - Luvsic Part 2", "mood": "calm", "description": "Jazz hip-hop with peaceful vibes."},
+    {"query": "Mitski - Lush", "mood": "calm", "description": "Ambient indie atmosphere."},
+    {"query": "Brian Eno - Ambient 1", "mood": "calm", "description": "Pioneering ambient soundscapes."},
+    {"query": "Lily Chou-Chou - Arabesque", "mood": "calm", "description": "Ethereal J-pop serenity."},
+    {"query": "Antonio Carlos Jobim - Wave", "mood": "calm", "description": "Bossa nova classic tranquility."},
 
     # --- SAD ---
     {"query": "Adele - Someone Like You", "mood": "sad", "description": "Heartbreak poured into a piano ballad."},

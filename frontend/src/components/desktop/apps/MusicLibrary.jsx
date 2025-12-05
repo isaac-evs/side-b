@@ -135,7 +135,7 @@ const MusicLibrary = () => {
             <div className="space-y-1">
               {filteredSongs.map((song, index) => (
                 <div
-                  key={song.id || song._id}
+                  key={`${song._id || song.id}-${index}`}
                   className="flex items-center p-2 rounded hover:bg-white/60 transition-colors cursor-pointer group"
                 >
                   <div className="w-8 text-xs text-center" style={{ color: '#999' }}>
@@ -203,9 +203,9 @@ const MusicLibrary = () => {
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-4">
-              {filteredSongs.map((song) => (
+              {filteredSongs.map((song, index) => (
                 <div
-                  key={song.id || song._id}
+                  key={`${song._id || song.id}-${index}`}
                   className="cursor-pointer group"
                 >
                   <div 

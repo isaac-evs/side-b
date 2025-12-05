@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import { authAPI, usersAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -95,9 +95,19 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
-  const updateUserData = (userData) => {
-    setUser(prev => ({ ...prev, ...userData }));
-    localStorage.setItem('user', JSON.stringify({ ...user, ...userData }));
+  const updateUserData = async (userData) => {
+    try {
+      // Optimistic update
+      const updatedUser = { ...user, ...userData };
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      if (user && (user.id || user._id)) {
+        await usersAPI.updateUser(user.id || user._id, userData);
+      }
+    } catch (error) {
+      console.error("Failed to update user data:", error);
+    }
   };
 
   const value = {

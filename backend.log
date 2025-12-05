@@ -1,11 +1,11 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [255043] using WatchFiles
+INFO:     Started reloader process [286081] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [255064]
+INFO:     Started server process [286111]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -23,112 +23,98 @@ INFO:     Application startup complete.
 ✓ Cassandra tables initialized
 ✓ Mood anchors already present (34 anchors).
 ✓ ChromaDB initialized
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
+INFO:     127.0.0.1:51272 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51286 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51272 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:51286 - "GET /auth/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:32800 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32806 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: sad
+Recommendation requested for text: 'Im feel so depressed and lonel...' -> Detected Mood: sad
+🔍 Querying ChromaDB for songs with mood=sad and text='Im feel so depressed and lonely today...'
 🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
+   - query_text: 'Im feel so depressed and lonely today...'
+   - mood: sad
    - n_results: 8
-   - where_clause: {'mood': 'joy'}
+   - where_clause: {'mood': 'sad'}
 ✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'title': 'Uptown Funk (feat. Bruno Mars)', 'album': 'Uptown Special', 'mood': 'joy', 'artist': 'Mark Ronson'}, {'artist': 'Avicii', 'album': 'True', 'title': 'Wake Me Up', 'mood': 'joy'}, {'artist': 'ABBA', 'mood': 'joy', 'title': 'Dancing Queen', 'album': 'ABBA Gold'}, {'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy', 'artist': 'Daft Punk', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)'}, {'title': 'September', 'artist': 'Earth, Wind & Fire', 'mood': 'joy', 'album': 'September'}, {'mood': 'joy', 'title': 'Good as Hell (feat. Ariana Grande)', 'album': 'Cuz I Love You (Super Deluxe)', 'artist': 'Lizzo'}, {'album': 'Something Special', 'artist': 'Kool & The Gang', 'mood': 'joy', 'title': 'Get Down On It'}, {'album': 'Please Please Me (Remastered)', 'mood': 'joy', 'title': 'Twist And Shout (Remastered 2009)', 'artist': 'The Beatles'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217', '693253cc0e8a8580342af214', '693253cc0e8a8580342af224', '693253cc0e8a8580342af220', '693253cc0e8a8580342af226', '693253cc0e8a8580342af222']], 'embeddings': None, 'documents': [['Soulful longing and loneliness.', 'The loneliness of being too much.', 'Deeply personal and moving grief.', 'Quiet, haunting melancholy.', 'Ideally sad and comforting.', 'Desperation and helplessness.', 'A somber look at the world.', 'Rock ballad of loss.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'album': 'In The Lonely Hour (Drowning Shadows Edition)', 'mood': 'sad', 'title': 'Stay With Me', 'artist': 'Sam Smith'}, {'mood': 'sad', 'title': 'Liability', 'album': 'Melodrama', 'artist': 'Lorde'}, {'album': 'Unplugged (Live)', 'artist': 'Eric Clapton', 'mood': 'sad', 'title': 'Tears in Heaven (Acoustic Live)'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'artist': 'Billie Eilish', 'mood': 'sad', 'title': "when the party's over"}, {'album': 'Surfacing', 'artist': 'Sarah McLachlan', 'mood': 'sad', 'title': 'Angel'}, {'mood': 'sad', 'artist': 'The Fray', 'title': 'How to Save a Life', 'album': 'How To Save A Life'}, {'title': 'Mad World', 'artist': 'Michael Andrews', 'mood': 'sad', 'album': 'Donnie Darko (Original Motion Picture Soundtrack)'}, {'artist': 'Green Day', 'title': 'Wake Me up When September Ends', 'mood': 'sad', 'album': 'American Idiot (Deluxe)'}]], 'distances': [[1.1405231952667236, 1.237744927406311, 1.4031310081481934, 1.4128592014312744, 1.4798718690872192, 1.49152672290802, 1.4958150386810303, 1.549816608428955]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217']...
+📏 Similarity distances: [1.1405231952667236, 1.237744927406311, 1.4031310081481934]...
 🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af224'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af226'), ObjectId('693253cc0e8a8580342af222')]}}
+🔍 Text classified as: sad
+Recommendation requested for text: 'Im feel so depressed and lonel...' -> Detected Mood: sad
+🔍 Querying ChromaDB for songs with mood=sad and text='Im feel so depressed and lonely today...'
 🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
+   - query_text: 'Im feel so depressed and lonely today...'
+   - mood: sad
    - n_results: 8
-   - where_clause: {'mood': 'joy'}
+   - where_clause: {'mood': 'sad'}
 ✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'mood': 'joy', 'album': 'Uptown Special', 'title': 'Uptown Funk (feat. Bruno Mars)', 'artist': 'Mark Ronson'}, {'title': 'Wake Me Up', 'album': 'True', 'artist': 'Avicii', 'mood': 'joy'}, {'title': 'Dancing Queen', 'artist': 'ABBA', 'album': 'ABBA Gold', 'mood': 'joy'}, {'artist': 'Daft Punk', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy'}, {'artist': 'Earth, Wind & Fire', 'mood': 'joy', 'title': 'September', 'album': 'September'}, {'mood': 'joy', 'artist': 'Lizzo', 'title': 'Good as Hell (feat. Ariana Grande)', 'album': 'Cuz I Love You (Super Deluxe)'}, {'title': 'Get Down On It', 'artist': 'Kool & The Gang', 'album': 'Something Special', 'mood': 'joy'}, {'artist': 'The Beatles', 'title': 'Twist And Shout (Remastered 2009)', 'album': 'Please Please Me (Remastered)', 'mood': 'joy'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217', '693253cc0e8a8580342af214', '693253cc0e8a8580342af224', '693253cc0e8a8580342af220', '693253cc0e8a8580342af226', '693253cc0e8a8580342af222']], 'embeddings': None, 'documents': [['Soulful longing and loneliness.', 'The loneliness of being too much.', 'Deeply personal and moving grief.', 'Quiet, haunting melancholy.', 'Ideally sad and comforting.', 'Desperation and helplessness.', 'A somber look at the world.', 'Rock ballad of loss.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'title': 'Stay With Me', 'artist': 'Sam Smith', 'album': 'In The Lonely Hour (Drowning Shadows Edition)', 'mood': 'sad'}, {'title': 'Liability', 'mood': 'sad', 'artist': 'Lorde', 'album': 'Melodrama'}, {'artist': 'Eric Clapton', 'title': 'Tears in Heaven (Acoustic Live)', 'mood': 'sad', 'album': 'Unplugged (Live)'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'artist': 'Billie Eilish', 'title': "when the party's over", 'mood': 'sad'}, {'title': 'Angel', 'mood': 'sad', 'album': 'Surfacing', 'artist': 'Sarah McLachlan'}, {'album': 'How To Save A Life', 'artist': 'The Fray', 'title': 'How to Save a Life', 'mood': 'sad'}, {'mood': 'sad', 'title': 'Mad World', 'artist': 'Michael Andrews', 'album': 'Donnie Darko (Original Motion Picture Soundtrack)'}, {'artist': 'Green Day', 'title': 'Wake Me up When September Ends', 'album': 'American Idiot (Deluxe)', 'mood': 'sad'}]], 'distances': [[1.1405231952667236, 1.237744927406311, 1.4031310081481934, 1.4128592014312744, 1.4798718690872192, 1.49152672290802, 1.4958150386810303, 1.549816608428955]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217']...
+📏 Similarity distances: [1.1405231952667236, 1.237744927406311, 1.4031310081481934]...
 🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af224'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af226'), ObjectId('693253cc0e8a8580342af222')]}}
 📦 MongoDB returned 8 songs
 ✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:37156 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32806 - "POST /songs/recommend HTTP/1.1" 200 OK
 📦 MongoDB returned 8 songs
 ✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:37160 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37160 - "GET /songs/mood/joy HTTP/1.1" 200 OK
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
-🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
-   - n_results: 8
-   - where_clause: {'mood': 'joy'}
-✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'album': 'Uptown Special', 'artist': 'Mark Ronson', 'mood': 'joy', 'title': 'Uptown Funk (feat. Bruno Mars)'}, {'title': 'Wake Me Up', 'artist': 'Avicii', 'mood': 'joy', 'album': 'True'}, {'title': 'Dancing Queen', 'mood': 'joy', 'album': 'ABBA Gold', 'artist': 'ABBA'}, {'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'artist': 'Daft Punk'}, {'mood': 'joy', 'album': 'September', 'artist': 'Earth, Wind & Fire', 'title': 'September'}, {'album': 'Cuz I Love You (Super Deluxe)', 'title': 'Good as Hell (feat. Ariana Grande)', 'artist': 'Lizzo', 'mood': 'joy'}, {'artist': 'Kool & The Gang', 'mood': 'joy', 'album': 'Something Special', 'title': 'Get Down On It'}, {'title': 'Twist And Shout (Remastered 2009)', 'artist': 'The Beatles', 'mood': 'joy', 'album': 'Please Please Me (Remastered)'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
-🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
-📦 MongoDB returned 8 songs
-✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:48674 - "POST /songs/recommend HTTP/1.1" 200 OK
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
-🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
-   - n_results: 8
-   - where_clause: {'mood': 'joy'}
-✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'title': 'Uptown Funk (feat. Bruno Mars)', 'album': 'Uptown Special', 'mood': 'joy', 'artist': 'Mark Ronson'}, {'title': 'Wake Me Up', 'mood': 'joy', 'artist': 'Avicii', 'album': 'True'}, {'mood': 'joy', 'artist': 'ABBA', 'album': 'ABBA Gold', 'title': 'Dancing Queen'}, {'mood': 'joy', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'artist': 'Daft Punk', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)'}, {'artist': 'Earth, Wind & Fire', 'mood': 'joy', 'album': 'September', 'title': 'September'}, {'title': 'Good as Hell (feat. Ariana Grande)', 'artist': 'Lizzo', 'mood': 'joy', 'album': 'Cuz I Love You (Super Deluxe)'}, {'mood': 'joy', 'title': 'Get Down On It', 'artist': 'Kool & The Gang', 'album': 'Something Special'}, {'album': 'Please Please Me (Remastered)', 'mood': 'joy', 'artist': 'The Beatles', 'title': 'Twist And Shout (Remastered 2009)'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
-🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
-📦 MongoDB returned 8 songs
-✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:39484 - "POST /songs/recommend HTTP/1.1" 200 OK
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
-🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
-   - n_results: 8
-   - where_clause: {'mood': 'joy'}
-✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'artist': 'Mark Ronson', 'mood': 'joy', 'title': 'Uptown Funk (feat. Bruno Mars)', 'album': 'Uptown Special'}, {'album': 'True', 'mood': 'joy', 'title': 'Wake Me Up', 'artist': 'Avicii'}, {'artist': 'ABBA', 'album': 'ABBA Gold', 'title': 'Dancing Queen', 'mood': 'joy'}, {'mood': 'joy', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'artist': 'Daft Punk', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)'}, {'mood': 'joy', 'title': 'September', 'album': 'September', 'artist': 'Earth, Wind & Fire'}, {'title': 'Good as Hell (feat. Ariana Grande)', 'artist': 'Lizzo', 'mood': 'joy', 'album': 'Cuz I Love You (Super Deluxe)'}, {'album': 'Something Special', 'mood': 'joy', 'artist': 'Kool & The Gang', 'title': 'Get Down On It'}, {'artist': 'The Beatles', 'album': 'Please Please Me (Remastered)', 'title': 'Twist And Shout (Remastered 2009)', 'mood': 'joy'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
-🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
-🔍 Text classified as: joy
-Recommendation requested for text: 'I want to dance tonight...' -> Detected Mood: joy
-🔍 Querying ChromaDB for songs with mood=joy and text='I want to dance tonight...'
-🔍 ChromaDB query_songs called with:
-   - query_text: 'I want to dance tonight...'
-   - mood: joy
-   - n_results: 8
-   - where_clause: {'mood': 'joy'}
-✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f', '69324f9c171cad2c70de413a', '69324f9c171cad2c70de412d', '69324f9c171cad2c70de4136', '69324f9c171cad2c70de412e', '69324f9c171cad2c70de412b']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'A disco classic that never fails to lift spirits.', 'Self-love anthem to boost your mood.', 'The soundtrack to every good time.', 'Timeless rock and roll joy.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'mood': 'joy', 'artist': 'Mark Ronson', 'album': 'Uptown Special', 'title': 'Uptown Funk (feat. Bruno Mars)'}, {'artist': 'Avicii', 'mood': 'joy', 'title': 'Wake Me Up', 'album': 'True'}, {'title': 'Dancing Queen', 'album': 'ABBA Gold', 'artist': 'ABBA', 'mood': 'joy'}, {'artist': 'Daft Punk', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy'}, {'mood': 'joy', 'artist': 'Earth, Wind & Fire', 'album': 'September', 'title': 'September'}, {'artist': 'Lizzo', 'title': 'Good as Hell (feat. Ariana Grande)', 'mood': 'joy', 'album': 'Cuz I Love You (Super Deluxe)'}, {'artist': 'Kool & The Gang', 'title': 'Get Down On It', 'mood': 'joy', 'album': 'Something Special'}, {'title': 'Twist And Shout (Remastered 2009)', 'mood': 'joy', 'artist': 'The Beatles', 'album': 'Please Please Me (Remastered)'}]], 'distances': [[0.8942264318466187, 1.0600850582122803, 1.0995045900344849, 1.1429693698883057, 1.3954260349273682, 1.4294136762619019, 1.4637093544006348, 1.5039327144622803]]}
-🎵 Found 8 song IDs from ChromaDB: ['69324f9c171cad2c70de4127', '69324f9c171cad2c70de413b', '69324f9c171cad2c70de412f']...
-📏 Similarity distances: [0.8942264318466187, 1.0600850582122803, 1.0995045900344849]...
-🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('69324f9c171cad2c70de4127'), ObjectId('69324f9c171cad2c70de413b'), ObjectId('69324f9c171cad2c70de412f'), ObjectId('69324f9c171cad2c70de413a'), ObjectId('69324f9c171cad2c70de412d'), ObjectId('69324f9c171cad2c70de4136'), ObjectId('69324f9c171cad2c70de412e'), ObjectId('69324f9c171cad2c70de412b')]}}
-📦 MongoDB returned 8 songs
-✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:38702 - "POST /songs/recommend HTTP/1.1" 200 OK
-📦 MongoDB returned 8 songs
-✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:38708 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32800 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54622 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54622 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:54622 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged journal text for user=69325f7b2c61ed81c1f75e6a, entry=69325f7b2c61ed81c1f75e6b
+DEBUG: Entry 69325f7b2c61ed81c1f75e6b -> User 69325f7b2c61ed81c1f75e6a resolved to UID 0x4e62
+INFO:     127.0.0.1:54638 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54640 - "OPTIONS /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54640 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged song selection for user=69325f7b2c61ed81c1f75e6a, song=693253cc0e8a8580342af228
+INFO:     127.0.0.1:54622 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54638 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54638 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47200 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47198 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47198 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47200 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47198 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47200 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47198 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47200 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47194 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45152 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45140 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45148 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45154 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45162 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45162 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45154 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45154 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45162 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50980 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a/data HTTP/1.1" 200 OK
+[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 69325f7b2c61ed81c1f75e6a
+Error deleting Cassandra data: Error from server: code=2200 [Invalid query] message="SELECT DISTINCT queries must request all the partition key columns (missing user_id)"
+✅ Deleted ChromaDB entries for user 69325f7b2c61ed81c1f75e6a
+INFO:     127.0.0.1:50980 - "DELETE /users/69325f7b2c61ed81c1f75e6a/data HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56170 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56184 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56170 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56184 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56170 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56184 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
+[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 69325f7b2c61ed81c1f75e6a
+Error deleting Cassandra data: Error from server: code=2200 [Invalid query] message="SELECT DISTINCT queries must request all the partition key columns (missing user_id)"
+✅ Deleted ChromaDB entries for user 69325f7b2c61ed81c1f75e6a
+Error deleting Dgraph user: 'DgraphClient' object has no attribute 'delete_user'
+INFO:     127.0.0.1:47498 - "DELETE /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
