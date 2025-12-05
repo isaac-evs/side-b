@@ -399,25 +399,48 @@ class CassandraClient:
     async def delete_user_all_data(self, user_id: str):
         logger.warning(f"[DELETE] Removing ALL Cassandra data for user {user_id}")
         
+        # 1. Get entry_ids from journal_entries_by_user (efficient)
+        try:
+            rows = await asyncio.to_thread(self.session.execute, "SELECT entry_id FROM journal_entries_by_user WHERE user_id = %s", (user_id,))
+            entry_ids = [row.entry_id for row in rows]
+            
+            # 2. Delete from media_attachments_log using entry_ids
+            for entry_id in entry_ids:
+                await asyncio.to_thread(self.session.execute, "DELETE FROM media_attachments_log WHERE user_id = %s AND entry_id = %s", (user_id, entry_id))
+        except Exception as e:
+            logger.error(f"Error deleting media_attachments_log: {e}")
+
         await asyncio.to_thread(self.session.execute, "DELETE FROM song_selections_by_user WHERE user_id = %s", (user_id,))
         
         # Counter tables need full partition key
-        for row in await asyncio.to_thread(self.session.execute, "SELECT song_id FROM song_selection_frequency WHERE user_id = %s", (user_id,)):
-            await asyncio.to_thread(self.session.execute, "DELETE FROM song_selection_frequency WHERE user_id = %s AND song_id = %s", (user_id, row.song_id))
+        try:
+            for row in await asyncio.to_thread(self.session.execute, "SELECT song_id FROM song_selection_frequency WHERE user_id = %s", (user_id,)):
+                await asyncio.to_thread(self.session.execute, "DELETE FROM song_selection_frequency WHERE user_id = %s AND song_id = %s", (user_id, row.song_id))
+        except Exception as e:
+            logger.error(f"Error deleting song_selection_frequency: {e}")
         
         await asyncio.to_thread(self.session.execute, "DELETE FROM song_selection_timestamps WHERE user_id = %s", (user_id,))
         
-        for row in await asyncio.to_thread(self.session.execute, "SELECT year_month FROM user_monthly_stats WHERE user_id = %s", (user_id,)):
-            await asyncio.to_thread(self.session.execute, "DELETE FROM user_monthly_stats WHERE user_id = %s AND year_month = %s", (user_id, row.year_month))
+        try:
+            for row in await asyncio.to_thread(self.session.execute, "SELECT year_month FROM user_monthly_stats WHERE user_id = %s", (user_id,)):
+                await asyncio.to_thread(self.session.execute, "DELETE FROM user_monthly_stats WHERE user_id = %s AND year_month = %s", (user_id, row.year_month))
+        except Exception as e:
+            logger.error(f"Error deleting user_monthly_stats: {e}")
         
-        for row in await asyncio.to_thread(self.session.execute, "SELECT DISTINCT entry_id FROM media_attachments_log WHERE user_id = %s ALLOW FILTERING", (user_id,)):
-            await asyncio.to_thread(self.session.execute, "DELETE FROM media_attachments_log WHERE user_id = %s AND entry_id = %s", (user_id, row.entry_id))
-        
-        for row in await asyncio.to_thread(self.session.execute, "SELECT media_type FROM media_attachment_type_counts WHERE user_id = %s", (user_id,)):
-            await asyncio.to_thread(self.session.execute, "DELETE FROM media_attachment_type_counts WHERE user_id = %s AND media_type = %s", (user_id, row.media_type))
+        try:
+            for row in await asyncio.to_thread(self.session.execute, "SELECT media_type FROM media_attachment_type_counts WHERE user_id = %s", (user_id,)):
+                await asyncio.to_thread(self.session.execute, "DELETE FROM media_attachment_type_counts WHERE user_id = %s AND media_type = %s", (user_id, row.media_type))
+        except Exception as e:
+            logger.error(f"Error deleting media_attachment_type_counts: {e}")
         
         await asyncio.to_thread(self.session.execute, "DELETE FROM journal_entries_by_user WHERE user_id = %s", (user_id,))
         
+        # Also delete from timeline if it exists
+        try:
+             await asyncio.to_thread(self.session.execute, "DELETE FROM journal_entries_timeline WHERE user_id = %s", (user_id,))
+        except:
+             pass
+
         logger.warning(f"[DELETE] Completed removal for user {user_id}")
 
     async def delete_entry_data(self, user_id: str, entry_id: str):

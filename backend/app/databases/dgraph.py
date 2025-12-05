@@ -473,4 +473,37 @@ class DgraphClient:
             print(f"Error fetching insights: {e}")
             return None
 
+    async def delete_user(self, user_id: str):
+        client = await self._get_client()
+        
+        # 1. Find user UID and created entries
+        query = f"""
+        {{
+            u(func: eq(user_id, "{user_id}")) {{
+                uid
+                created_entries {{
+                    uid
+                }}
+            }}
+        }}
+        """
+        res = await client.post(self.query_url, json={"query": query})
+        data = res.json().get("data", {}).get("u", [])
+        
+        if not data:
+            return
+            
+        user_uid = data[0]["uid"]
+        entry_uids = [e["uid"] for e in data[0].get("created_entries", [])]
+        
+        # 2. Delete
+        delete_payload = [{"uid": user_uid}]
+        for uid in entry_uids:
+            delete_payload.append({"uid": uid})
+            
+        mutation = {"delete": delete_payload}
+        headers = {"Content-Type": JSON_CT}
+        await client.post(self.mutate_url, json=mutation, headers=headers)
+
+# Global instance
 dgraph_client = DgraphClient()

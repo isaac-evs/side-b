@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAppStore from '../../../store/appStore';
 import { useAuth } from '../../../contexts/AuthContext';
 import { usersAPI } from '../../../services/api';
 import { Moon, Sun, Bell, Image as ImageIcon, Trash2, Monitor, Wifi } from 'lucide-react';
 
 const Settings = () => {
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useAppStore();
   const { user, updateUserData, logout } = useAuth();
   const [bgImage, setBgImage] = useState(user?.settings?.backgroundImage || 'https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?_gl=1*3jir2t*_ga*MTE2NzEzMzk3OC4xNzY0ODk4MTIy*_ga_8JE65Q40S6*czE3NjQ4OTgxMjEkbzEkZzEkdDE3NjQ4OTgxMjQkajU3JGwwJGgw');
@@ -23,7 +25,10 @@ const Settings = () => {
     try {
       if (deleteUser) {
         await usersAPI.deleteUser(user.id || user._id);
-        logout();
+        navigate('/');
+        setTimeout(() => {
+            logout();
+        }, 100);
       } else {
         await usersAPI.deleteUserData(user.id || user._id);
         alert("Data deleted successfully.");

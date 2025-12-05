@@ -127,9 +127,6 @@ const DesktopShell = () => {
           }
         });
         
-        // Update local state
-        addFileToEntry(entryId, file);
-        
         // Refresh entries to get the updated data from backend
         if (userId) {
           await fetchEntries(userId);

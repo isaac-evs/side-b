@@ -1,11 +1,64 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [286081] using WatchFiles
+INFO:     Started reloader process [290904] using WatchFiles
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/_compat.py", line 60, in asyncio_run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/home/isaac/Documents/code/side-b/backend/app/main.py", line 11, in <module>
+    from app.databases.manager import db_manager
+  File "/home/isaac/Documents/code/side-b/backend/app/databases/__init__.py", line 15, in <module>
+    from .dgraph import dgraph_client
+ImportError: cannot import name 'dgraph_client' from 'app.databases.dgraph' (/home/isaac/Documents/code/side-b/backend/app/databases/dgraph.py)
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [286111]
+INFO:     Started server process [291326]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/databases/dgraph.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [291326]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [291654]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -23,98 +76,128 @@ INFO:     Application startup complete.
 ✓ Cassandra tables initialized
 ✓ Mood anchors already present (34 anchors).
 ✓ ChromaDB initialized
-INFO:     127.0.0.1:51272 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51286 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51272 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:51286 - "GET /auth/me HTTP/1.1" 401 Unauthorized
-INFO:     127.0.0.1:32800 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32806 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
-🔍 Text classified as: sad
-Recommendation requested for text: 'Im feel so depressed and lonel...' -> Detected Mood: sad
-🔍 Querying ChromaDB for songs with mood=sad and text='Im feel so depressed and lonely today...'
+INFO:     127.0.0.1:40240 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40254 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so energetic and happy,...' -> Detected Mood: joy
+🔍 Querying ChromaDB for songs with mood=joy and text='I feel so energetic and happy, i want to dance all...'
 🔍 ChromaDB query_songs called with:
-   - query_text: 'Im feel so depressed and lonely today...'
+   - query_text: 'I feel so energetic and happy, i want to dance all...'
+   - mood: joy
+   - n_results: 8
+   - where_clause: {'mood': 'joy'}
+✅ ChromaDB returned: 8 results
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af1d8', '693253cc0e8a8580342af1ec', '693253cc0e8a8580342af1e0', '693253cc0e8a8580342af1eb', '693253cc0e8a8580342af1e7', '693253cc0e8a8580342af1d7', '693253cc0e8a8580342af1e4', '693253cc0e8a8580342af1e8']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'Self-love anthem to boost your mood.', 'Instant energy booster that feels like summer.', 'Soulful joy that hits the spot.', 'Sweet, summery, and effortlessly cool.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'title': 'Uptown Funk (feat. Bruno Mars)', 'artist': 'Mark Ronson', 'album': 'Uptown Special', 'mood': 'joy'}, {'album': 'True', 'mood': 'joy', 'artist': 'Avicii', 'title': 'Wake Me Up'}, {'title': 'Dancing Queen', 'artist': 'ABBA', 'mood': 'joy', 'album': 'ABBA Gold'}, {'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'artist': 'Daft Punk'}, {'mood': 'joy', 'artist': 'Lizzo', 'album': 'Cuz I Love You (Super Deluxe)', 'title': 'Good as Hell (feat. Ariana Grande)'}, {'album': 'Katrina & The Waves', 'mood': 'joy', 'title': 'Walking On Sunshine', 'artist': 'Katrina & The Waves'}, {'artist': 'Stevie Wonder', 'album': 'Signed Sealed And Delivered', 'title': "Signed, Sealed, Delivered (I'm Yours)", 'mood': 'joy'}, {'album': 'Fine Line', 'mood': 'joy', 'artist': 'Harry Styles', 'title': 'Watermelon Sugar'}]], 'distances': [[1.011493444442749, 1.081334114074707, 1.2164967060089111, 1.3145321607589722, 1.3524450063705444, 1.4389708042144775, 1.4546689987182617, 1.459316611289978]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af1d8', '693253cc0e8a8580342af1ec', '693253cc0e8a8580342af1e0']...
+📏 Similarity distances: [1.011493444442749, 1.081334114074707, 1.2164967060089111]...
+🔍 Converting song IDs to ObjectId format...
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af1d8'), ObjectId('693253cc0e8a8580342af1ec'), ObjectId('693253cc0e8a8580342af1e0')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af1d8'), ObjectId('693253cc0e8a8580342af1ec'), ObjectId('693253cc0e8a8580342af1e0'), ObjectId('693253cc0e8a8580342af1eb'), ObjectId('693253cc0e8a8580342af1e7'), ObjectId('693253cc0e8a8580342af1d7'), ObjectId('693253cc0e8a8580342af1e4'), ObjectId('693253cc0e8a8580342af1e8')]}}
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so energetic and happy,...' -> Detected Mood: joy
+🔍 Querying ChromaDB for songs with mood=joy and text='I feel so energetic and happy, i want to dance all...'
+🔍 ChromaDB query_songs called with:
+   - query_text: 'I feel so energetic and happy, i want to dance all...'
+   - mood: joy
+   - n_results: 8
+   - where_clause: {'mood': 'joy'}
+✅ ChromaDB returned: 8 results
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af1d8', '693253cc0e8a8580342af1ec', '693253cc0e8a8580342af1e0', '693253cc0e8a8580342af1eb', '693253cc0e8a8580342af1e7', '693253cc0e8a8580342af1d7', '693253cc0e8a8580342af1e4', '693253cc0e8a8580342af1e8']], 'embeddings': None, 'documents': [['Funky, fresh, and impossible not to dance to.', 'Uplifting blend of folk and dance.', 'Pure pop perfection for the dance floor.', 'Smooth disco grooves for a good night.', 'Self-love anthem to boost your mood.', 'Instant energy booster that feels like summer.', 'Soulful joy that hits the spot.', 'Sweet, summery, and effortlessly cool.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'artist': 'Mark Ronson', 'title': 'Uptown Funk (feat. Bruno Mars)', 'mood': 'joy', 'album': 'Uptown Special'}, {'mood': 'joy', 'album': 'True', 'artist': 'Avicii', 'title': 'Wake Me Up'}, {'album': 'ABBA Gold', 'mood': 'joy', 'title': 'Dancing Queen', 'artist': 'ABBA'}, {'artist': 'Daft Punk', 'album': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)', 'mood': 'joy', 'title': 'Get Lucky (Radio Edit - feat. Pharrell Williams and Nile Rodgers)'}, {'title': 'Good as Hell (feat. Ariana Grande)', 'mood': 'joy', 'album': 'Cuz I Love You (Super Deluxe)', 'artist': 'Lizzo'}, {'artist': 'Katrina & The Waves', 'title': 'Walking On Sunshine', 'album': 'Katrina & The Waves', 'mood': 'joy'}, {'title': "Signed, Sealed, Delivered (I'm Yours)", 'artist': 'Stevie Wonder', 'mood': 'joy', 'album': 'Signed Sealed And Delivered'}, {'artist': 'Harry Styles', 'title': 'Watermelon Sugar', 'album': 'Fine Line', 'mood': 'joy'}]], 'distances': [[1.011493444442749, 1.081334114074707, 1.2164967060089111, 1.3145321607589722, 1.3524450063705444, 1.4389708042144775, 1.4546689987182617, 1.459316611289978]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af1d8', '693253cc0e8a8580342af1ec', '693253cc0e8a8580342af1e0']...
+📏 Similarity distances: [1.011493444442749, 1.081334114074707, 1.2164967060089111]...
+🔍 Converting song IDs to ObjectId format...
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af1d8'), ObjectId('693253cc0e8a8580342af1ec'), ObjectId('693253cc0e8a8580342af1e0')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af1d8'), ObjectId('693253cc0e8a8580342af1ec'), ObjectId('693253cc0e8a8580342af1e0'), ObjectId('693253cc0e8a8580342af1eb'), ObjectId('693253cc0e8a8580342af1e7'), ObjectId('693253cc0e8a8580342af1d7'), ObjectId('693253cc0e8a8580342af1e4'), ObjectId('693253cc0e8a8580342af1e8')]}}
+📦 MongoDB returned 8 songs
+✅ Returning 8 semantically matched songs
+INFO:     127.0.0.1:40240 - "POST /songs/recommend HTTP/1.1" 200 OK
+📦 MongoDB returned 8 songs
+✅ Returning 8 semantically matched songs
+INFO:     127.0.0.1:40254 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42498 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42498 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:42498 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+DEBUG: Entry 69326259747b99e27e317585 -> User 69326259747b99e27e317584 resolved to UID 0x4e65
+INFO:     127.0.0.1:42504 - "OPTIONS /users/69326259747b99e27e317584/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42518 - "OPTIONS /entries/?userId=69326259747b99e27e317584 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42518 - "GET /entries/?userId=69326259747b99e27e317584 HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged journal text for user=69326259747b99e27e317584, entry=69326259747b99e27e317585
+INFO:     127.0.0.1:42504 - "GET /users/69326259747b99e27e317584/stats HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged song selection for user=69326259747b99e27e317584, song=693253cc0e8a8580342af1e0
+INFO:     127.0.0.1:42498 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42498 - "GET /users/69326259747b99e27e317584/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34180 - "OPTIONS /insights/69326259747b99e27e317584 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34184 - "OPTIONS /insights/69326259747b99e27e317584 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34184 - "GET /insights/69326259747b99e27e317584 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34180 - "GET /insights/69326259747b99e27e317584 HTTP/1.1" 200 OK
+🔍 Text classified as: sad
+Recommendation requested for text: 'i hate life...' -> Detected Mood: sad
+🔍 Querying ChromaDB for songs with mood=sad and text='i hate life...'
+🔍 ChromaDB query_songs called with:
+   - query_text: 'i hate life...'
    - mood: sad
    - n_results: 8
    - where_clause: {'mood': 'sad'}
 ✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217', '693253cc0e8a8580342af214', '693253cc0e8a8580342af224', '693253cc0e8a8580342af220', '693253cc0e8a8580342af226', '693253cc0e8a8580342af222']], 'embeddings': None, 'documents': [['Soulful longing and loneliness.', 'The loneliness of being too much.', 'Deeply personal and moving grief.', 'Quiet, haunting melancholy.', 'Ideally sad and comforting.', 'Desperation and helplessness.', 'A somber look at the world.', 'Rock ballad of loss.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'album': 'In The Lonely Hour (Drowning Shadows Edition)', 'mood': 'sad', 'title': 'Stay With Me', 'artist': 'Sam Smith'}, {'mood': 'sad', 'title': 'Liability', 'album': 'Melodrama', 'artist': 'Lorde'}, {'album': 'Unplugged (Live)', 'artist': 'Eric Clapton', 'mood': 'sad', 'title': 'Tears in Heaven (Acoustic Live)'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'artist': 'Billie Eilish', 'mood': 'sad', 'title': "when the party's over"}, {'album': 'Surfacing', 'artist': 'Sarah McLachlan', 'mood': 'sad', 'title': 'Angel'}, {'mood': 'sad', 'artist': 'The Fray', 'title': 'How to Save a Life', 'album': 'How To Save A Life'}, {'title': 'Mad World', 'artist': 'Michael Andrews', 'mood': 'sad', 'album': 'Donnie Darko (Original Motion Picture Soundtrack)'}, {'artist': 'Green Day', 'title': 'Wake Me up When September Ends', 'mood': 'sad', 'album': 'American Idiot (Deluxe)'}]], 'distances': [[1.1405231952667236, 1.237744927406311, 1.4031310081481934, 1.4128592014312744, 1.4798718690872192, 1.49152672290802, 1.4958150386810303, 1.549816608428955]]}
-🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217']...
-📏 Similarity distances: [1.1405231952667236, 1.237744927406311, 1.4031310081481934]...
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af228', '693253cc0e8a8580342af211', '693253cc0e8a8580342af218', '693253cc0e8a8580342af220', '693253cc0e8a8580342af214', '693253cc0e8a8580342af217', '693253cc0e8a8580342af21c', '693253cc0e8a8580342af215']], 'embeddings': None, 'documents': [['The loneliness of being too much.', 'Soulful longing and loneliness.', 'A powerful reflection on life and regret.', 'Desperation and helplessness.', 'Quiet, haunting melancholy.', 'Deeply personal and moving grief.', 'The struggles of love laid bare.', 'Regret and love in a piano loop.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'album': 'Melodrama', 'artist': 'Lorde', 'title': 'Liability', 'mood': 'sad'}, {'artist': 'Sam Smith', 'mood': 'sad', 'title': 'Stay With Me', 'album': 'In The Lonely Hour (Drowning Shadows Edition)'}, {'artist': 'Johnny Cash', 'album': 'American IV: The Man Comes Around', 'mood': 'sad', 'title': 'Hurt'}, {'mood': 'sad', 'title': 'How to Save a Life', 'artist': 'The Fray', 'album': 'How To Save A Life'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'mood': 'sad', 'title': "when the party's over", 'artist': 'Billie Eilish'}, {'title': 'Tears in Heaven (Acoustic Live)', 'album': 'Unplugged (Live)', 'mood': 'sad', 'artist': 'Eric Clapton'}, {'mood': 'sad', 'artist': 'John Legend', 'album': 'Get Lifted', 'title': 'Ordinary People'}, {'album': 'A Rush of Blood to the Head', 'artist': 'Coldplay', 'mood': 'sad', 'title': 'The Scientist'}]], 'distances': [[1.2541104555130005, 1.292264461517334, 1.2997028827667236, 1.4394328594207764, 1.4611847400665283, 1.4692392349243164, 1.518849492073059, 1.52324378490448]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af228', '693253cc0e8a8580342af211', '693253cc0e8a8580342af218']...
+📏 Similarity distances: [1.2541104555130005, 1.292264461517334, 1.2997028827667236]...
 🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af224'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af226'), ObjectId('693253cc0e8a8580342af222')]}}
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af218')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af218'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af21c'), ObjectId('693253cc0e8a8580342af215')]}}
 🔍 Text classified as: sad
-Recommendation requested for text: 'Im feel so depressed and lonel...' -> Detected Mood: sad
-🔍 Querying ChromaDB for songs with mood=sad and text='Im feel so depressed and lonely today...'
+Recommendation requested for text: 'i hate life...' -> Detected Mood: sad
+🔍 Querying ChromaDB for songs with mood=sad and text='i hate life...'
 🔍 ChromaDB query_songs called with:
-   - query_text: 'Im feel so depressed and lonely today...'
+   - query_text: 'i hate life...'
    - mood: sad
    - n_results: 8
    - where_clause: {'mood': 'sad'}
 ✅ ChromaDB returned: 8 results
-📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217', '693253cc0e8a8580342af214', '693253cc0e8a8580342af224', '693253cc0e8a8580342af220', '693253cc0e8a8580342af226', '693253cc0e8a8580342af222']], 'embeddings': None, 'documents': [['Soulful longing and loneliness.', 'The loneliness of being too much.', 'Deeply personal and moving grief.', 'Quiet, haunting melancholy.', 'Ideally sad and comforting.', 'Desperation and helplessness.', 'A somber look at the world.', 'Rock ballad of loss.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'title': 'Stay With Me', 'artist': 'Sam Smith', 'album': 'In The Lonely Hour (Drowning Shadows Edition)', 'mood': 'sad'}, {'title': 'Liability', 'mood': 'sad', 'artist': 'Lorde', 'album': 'Melodrama'}, {'artist': 'Eric Clapton', 'title': 'Tears in Heaven (Acoustic Live)', 'mood': 'sad', 'album': 'Unplugged (Live)'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'artist': 'Billie Eilish', 'title': "when the party's over", 'mood': 'sad'}, {'title': 'Angel', 'mood': 'sad', 'album': 'Surfacing', 'artist': 'Sarah McLachlan'}, {'album': 'How To Save A Life', 'artist': 'The Fray', 'title': 'How to Save a Life', 'mood': 'sad'}, {'mood': 'sad', 'title': 'Mad World', 'artist': 'Michael Andrews', 'album': 'Donnie Darko (Original Motion Picture Soundtrack)'}, {'artist': 'Green Day', 'title': 'Wake Me up When September Ends', 'album': 'American Idiot (Deluxe)', 'mood': 'sad'}]], 'distances': [[1.1405231952667236, 1.237744927406311, 1.4031310081481934, 1.4128592014312744, 1.4798718690872192, 1.49152672290802, 1.4958150386810303, 1.549816608428955]]}
-🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af211', '693253cc0e8a8580342af228', '693253cc0e8a8580342af217']...
-📏 Similarity distances: [1.1405231952667236, 1.237744927406311, 1.4031310081481934]...
+📊 ChromaDB Results: {'ids': [['693253cc0e8a8580342af228', '693253cc0e8a8580342af211', '693253cc0e8a8580342af218', '693253cc0e8a8580342af220', '693253cc0e8a8580342af214', '693253cc0e8a8580342af217', '693253cc0e8a8580342af21c', '693253cc0e8a8580342af215']], 'embeddings': None, 'documents': [['The loneliness of being too much.', 'Soulful longing and loneliness.', 'A powerful reflection on life and regret.', 'Desperation and helplessness.', 'Quiet, haunting melancholy.', 'Deeply personal and moving grief.', 'The struggles of love laid bare.', 'Regret and love in a piano loop.']], 'uris': None, 'included': ['metadatas', 'documents', 'distances'], 'data': None, 'metadatas': [[{'album': 'Melodrama', 'artist': 'Lorde', 'mood': 'sad', 'title': 'Liability'}, {'artist': 'Sam Smith', 'mood': 'sad', 'album': 'In The Lonely Hour (Drowning Shadows Edition)', 'title': 'Stay With Me'}, {'artist': 'Johnny Cash', 'title': 'Hurt', 'album': 'American IV: The Man Comes Around', 'mood': 'sad'}, {'artist': 'The Fray', 'album': 'How To Save A Life', 'mood': 'sad', 'title': 'How to Save a Life'}, {'album': 'WHEN WE ALL FALL ASLEEP, WHERE DO WE GO?', 'mood': 'sad', 'title': "when the party's over", 'artist': 'Billie Eilish'}, {'mood': 'sad', 'title': 'Tears in Heaven (Acoustic Live)', 'artist': 'Eric Clapton', 'album': 'Unplugged (Live)'}, {'mood': 'sad', 'title': 'Ordinary People', 'artist': 'John Legend', 'album': 'Get Lifted'}, {'artist': 'Coldplay', 'album': 'A Rush of Blood to the Head', 'title': 'The Scientist', 'mood': 'sad'}]], 'distances': [[1.2541104555130005, 1.292264461517334, 1.2997028827667236, 1.4394328594207764, 1.4611847400665283, 1.4692392349243164, 1.518849492073059, 1.52324378490448]]}
+🎵 Found 8 song IDs from ChromaDB: ['693253cc0e8a8580342af228', '693253cc0e8a8580342af211', '693253cc0e8a8580342af218']...
+📏 Similarity distances: [1.2541104555130005, 1.292264461517334, 1.2997028827667236]...
 🔍 Converting song IDs to ObjectId format...
-✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217')]
-🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af224'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af226'), ObjectId('693253cc0e8a8580342af222')]}}
+✅ Converted 8 IDs. First few: [ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af218')]
+🔍 MongoDB query: {'_id': {'$in': [ObjectId('693253cc0e8a8580342af228'), ObjectId('693253cc0e8a8580342af211'), ObjectId('693253cc0e8a8580342af218'), ObjectId('693253cc0e8a8580342af220'), ObjectId('693253cc0e8a8580342af214'), ObjectId('693253cc0e8a8580342af217'), ObjectId('693253cc0e8a8580342af21c'), ObjectId('693253cc0e8a8580342af215')]}}
 📦 MongoDB returned 8 songs
 ✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:32806 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50826 - "POST /songs/recommend HTTP/1.1" 200 OK
 📦 MongoDB returned 8 songs
 ✅ Returning 8 semantically matched songs
-INFO:     127.0.0.1:32800 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54622 - "OPTIONS /auth/register HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54622 - "POST /auth/register HTTP/1.1" 201 Created
-INFO:     127.0.0.1:54622 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-[Cassandra] INFO - Logged journal text for user=69325f7b2c61ed81c1f75e6a, entry=69325f7b2c61ed81c1f75e6b
-DEBUG: Entry 69325f7b2c61ed81c1f75e6b -> User 69325f7b2c61ed81c1f75e6a resolved to UID 0x4e62
-INFO:     127.0.0.1:54638 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54640 - "OPTIONS /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54640 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-[Cassandra] INFO - Logged song selection for user=69325f7b2c61ed81c1f75e6a, song=693253cc0e8a8580342af228
-INFO:     127.0.0.1:54622 - "POST /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54638 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54638 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47194 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47200 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47194 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47198 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47198 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47200 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47194 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47198 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47194 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47200 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47198 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47200 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47194 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45152 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45140 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45148 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45154 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45162 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45162 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45154 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45164 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45154 - "PUT /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45162 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50980 - "OPTIONS /users/69325f7b2c61ed81c1f75e6a/data HTTP/1.1" 200 OK
-[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 69325f7b2c61ed81c1f75e6a
-Error deleting Cassandra data: Error from server: code=2200 [Invalid query] message="SELECT DISTINCT queries must request all the partition key columns (missing user_id)"
-✅ Deleted ChromaDB entries for user 69325f7b2c61ed81c1f75e6a
-INFO:     127.0.0.1:50980 - "DELETE /users/69325f7b2c61ed81c1f75e6a/data HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56170 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56184 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56170 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56184 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56170 - "GET /entries/?userId=69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56184 - "GET /users/69325f7b2c61ed81c1f75e6a/stats HTTP/1.1" 200 OK
-[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 69325f7b2c61ed81c1f75e6a
-Error deleting Cassandra data: Error from server: code=2200 [Invalid query] message="SELECT DISTINCT queries must request all the partition key columns (missing user_id)"
-✅ Deleted ChromaDB entries for user 69325f7b2c61ed81c1f75e6a
-Error deleting Dgraph user: 'DgraphClient' object has no attribute 'delete_user'
-INFO:     127.0.0.1:47498 - "DELETE /users/69325f7b2c61ed81c1f75e6a HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50838 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36374 - "POST /auth/register HTTP/1.1" 201 Created
+[Cassandra] INFO - Logged journal text for user=693262ae747b99e27e317586, entry=693262ae747b99e27e317587
+DEBUG: Entry 693262ae747b99e27e317587 -> User 693262ae747b99e27e317586 resolved to UID 0x4e68
+INFO:     127.0.0.1:36388 - "OPTIONS /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36404 - "OPTIONS /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged song selection for user=693262ae747b99e27e317586, song=693253cc0e8a8580342af217
+INFO:     127.0.0.1:36374 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36404 - "GET /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36388 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36388 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33088 - "OPTIONS /users/693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33102 - "GET /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33096 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33088 - "PUT /users/693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33102 - "GET /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33088 - "PUT /users/693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33096 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33102 - "GET /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33096 - "PUT /users/693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33088 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60334 - "OPTIONS /users/693262ae747b99e27e317586/data HTTP/1.1" 200 OK
+[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 693262ae747b99e27e317586
+[Cassandra] WARNING - [DELETE] Completed removal for user 693262ae747b99e27e317586
+✅ Deleted ChromaDB entries for user 693262ae747b99e27e317586
+INFO:     127.0.0.1:60334 - "DELETE /users/693262ae747b99e27e317586/data HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60334 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38022 - "OPTIONS /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60334 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38022 - "GET /auth/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60334 - "GET /entries/?userId=693262ae747b99e27e317586 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38022 - "GET /users/693262ae747b99e27e317586/stats HTTP/1.1" 200 OK
+[Cassandra] WARNING - [DELETE] Removing ALL Cassandra data for user 693262ae747b99e27e317586
+[Cassandra] WARNING - [DELETE] Completed removal for user 693262ae747b99e27e317586
+✅ Deleted ChromaDB entries for user 693262ae747b99e27e317586
+INFO:     127.0.0.1:50430 - "DELETE /users/693262ae747b99e27e317586 HTTP/1.1" 200 OK
