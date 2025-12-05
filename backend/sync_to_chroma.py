@@ -73,6 +73,41 @@ async def sync_chroma():
         except Exception as e:
             print(f"   ❌ Error syncing entry {entry_id}: {e}")
 
+    # Sync Songs
+    print("\n🎵 Syncing Songs...")
+    songs_collection = db.songs
+    songs = await songs_collection.find({}).to_list(length=None)
+    print(f"Found {len(songs)} songs to sync.")
+
+    for song in songs:
+        song_id = str(song["_id"])
+        title = song.get("title", "Unknown Title")
+        description = song.get("description", "")
+        mood = song.get("mood", "neutral")
+        
+        # If no description, use title + artist + mood as fallback
+        if not description:
+            artist = song.get("artist", "Unknown Artist")
+            description = f"{title} by {artist}. A {mood} song."
+            
+        print(f"   Syncing Song: {title} ({mood})")
+        
+        try:
+            metadata = {
+                "title": title,
+                "artist": song.get("artist", ""),
+                "mood": mood,
+                "album": song.get("album", "")
+            }
+            
+            await chromadb_client.add_song(
+                song_id=song_id,
+                description=description,
+                metadata=metadata
+            )
+        except Exception as e:
+            print(f"   ❌ Error syncing song {song_id}: {e}")
+
     print("✅ Sync Complete!")
     await chromadb_client.disconnect()
 

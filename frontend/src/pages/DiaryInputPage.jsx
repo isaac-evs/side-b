@@ -219,7 +219,7 @@ const DiaryInputPage = () => {
         {getCurrentDate()}
       </div>
 
-      <div className="max-w-4xl mx-auto pt-24 space-y-8 relative z-20">
+      <div className="max-w-4xl mx-auto pt-40 space-y-8 relative z-20">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 

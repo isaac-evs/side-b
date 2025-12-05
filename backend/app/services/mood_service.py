@@ -35,21 +35,28 @@ MOOD_ANCHORS = {
         "Need to release this rage",
         "Overwhelmed and anxious",
         "Furious and annoyed",
-        "High pressure and tension"
+        "High pressure and tension",
+        "My mind won't stop racing",
+        "I feel panic and anxiety",
+        "My stomach is in knots",
+        "I can't sleep because I'm worried",
+        "Nervous about the upcoming event",
+        "I am freaking out"
     ]
 }
 
 class MoodService:
     async def initialize_anchors(self):
+        # Always reset mood anchors to ensure we have the latest definitions
+        try:
+            chromadb_client.client.delete_collection("moods")
+            print("✓ Deleted existing 'moods' collection for update.")
+        except Exception:
+            pass # Collection might not exist
+
         collection = chromadb_client.get_collection("moods")
         if not collection:
             print("⚠️ ChromaDB 'moods' collection not available.")
-            return
-
-        # Check if already seeded
-        count = collection.count()
-        if count > 0:
-            print(f"✓ Mood anchors already present ({count} anchors).")
             return
 
         print("Seeding mood anchors into ChromaDB...")

@@ -141,7 +141,8 @@ const SongSelectorPage = () => {
     };
 
     fetchSongs();
-  }, [currentEntry.mood, currentEntry.text, navigate, setEntryMood]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentEntry.text, navigate, setEntryMood]);
 
   const handleShuffle = () => {
     // Shuffle the current songs array

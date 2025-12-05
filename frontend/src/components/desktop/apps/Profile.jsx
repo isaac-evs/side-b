@@ -23,9 +23,6 @@ const Profile = () => {
                 {name?.charAt(0).toUpperCase() || 'U'}
              </div>
           </div>
-          <button className="absolute bottom-0 right-0 bg-gray-700 text-white p-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-            <Camera size={14} />
-          </button>
         </div>
 
         {isEditing ? (

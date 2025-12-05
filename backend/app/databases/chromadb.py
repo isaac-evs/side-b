@@ -28,6 +28,7 @@ class ChromaDBClient:
             # Using default embedding function (all-MiniLM-L6-v2)
             self.entries_collection = self.client.get_or_create_collection(name="entries")
             self.moods_collection = self.client.get_or_create_collection(name="moods")
+            self.songs_collection = self.client.get_or_create_collection(name="songs")
 
     async def add_entry(self, entry_id: str, text: str, metadata: dict):
         if not self.entries_collection:
@@ -40,6 +41,16 @@ class ChromaDBClient:
             ids=[entry_id]
         )
 
+    async def add_song(self, song_id: str, description: str, metadata: dict):
+        if not self.songs_collection:
+            await self.initialize()
+        
+        self.songs_collection.add(
+            documents=[description],
+            metadatas=[metadata],
+            ids=[song_id]
+        )
+
     async def query_entries(self, query_text: str, n_results: int = 5):
         if not self.entries_collection:
             await self.initialize()
@@ -47,6 +58,21 @@ class ChromaDBClient:
         results = self.entries_collection.query(
             query_texts=[query_text],
             n_results=n_results
+        )
+        return results
+
+    async def query_songs(self, query_text: str, mood: str = None, n_results: int = 8):
+        if not self.songs_collection:
+            await self.initialize()
+            
+        where_clause = {}
+        if mood:
+            where_clause["mood"] = mood
+            
+        results = self.songs_collection.query(
+            query_texts=[query_text],
+            n_results=n_results,
+            where=where_clause
         )
         return results
 

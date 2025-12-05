@@ -18,7 +18,8 @@ import {
   Moon,
   Sun,
   Activity,
-  Bot
+  Bot,
+  Monitor
 } from 'lucide-react';
 import useAppStore from '../../store/appStore';
 import { filesAPI, entriesAPI } from '../../services/api';

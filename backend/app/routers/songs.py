@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from app.models import Song, SongModel
 from app.database import song_collection
 from app.services.mood_service import mood_service
+from app.databases.chromadb import chromadb_client
 from .entries import serialize_mongo_obj
 
 router = APIRouter()
@@ -21,7 +22,47 @@ async def recommend_songs(request: RecommendationRequest):
     mood = await mood_service.classify_mood(request.text)
     print(f"Recommendation requested for text: '{request.text[:30]}...' -> Detected Mood: {mood}")
     
-    # Reuse the logic to fetch songs by mood
+    # Semantic search for songs with matching mood
+    try:
+        results = await chromadb_client.query_songs(
+            query_text=request.text,
+            mood=mood,
+            n_results=8
+        )
+        
+        song_ids = []
+        if results and results['ids'] and len(results['ids']) > 0:
+            song_ids = results['ids'][0]
+            
+        if song_ids:
+            # Fetch songs from MongoDB
+            object_ids = [ObjectId(sid) for sid in song_ids]
+            songs = await song_collection.find({"_id": {"$in": object_ids}}).to_list(8)
+            
+            # Sort songs based on the order returned by ChromaDB
+            songs_map = {str(s["_id"]): s for s in songs}
+            ordered_songs = []
+            for sid in song_ids:
+                if sid in songs_map:
+                    ordered_songs.append(songs_map[sid])
+            
+            # If we found fewer than 8 semantically similar songs, fill up with random songs of same mood
+            if len(ordered_songs) < 8:
+                existing_ids = {s["_id"] for s in ordered_songs}
+                needed = 8 - len(ordered_songs)
+                fallback_query = {
+                    "mood": mood, 
+                    "_id": {"$nin": list(existing_ids)}
+                }
+                fallback_songs = await song_collection.find(fallback_query).limit(needed).to_list(needed)
+                ordered_songs.extend(fallback_songs)
+                
+            return [serialize_mongo_obj(song) for song in ordered_songs]
+            
+    except Exception as e:
+        print(f"Error in semantic search: {e}. Falling back to simple mood filter.")
+    
+    # Fallback: simple mood filter
     query = {"mood": mood}
     # Requirement: "top 8 song that fit the diary entry"
     songs = await song_collection.find(query).limit(8).to_list(8)

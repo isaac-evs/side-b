@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useAppStore from '../store/appStore';
+import { useAuth } from '../contexts/AuthContext';
 import { ThemeToggle } from '../components/shared';
 import blueShape from '../assets/blue.svg';
 import pinkShape from '../assets/pink.svg';
@@ -16,7 +17,25 @@ import flashlightIcon from '../assets/flashlight_on.png';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const { theme, toggleTheme, login } = useAppStore();
+  const { theme, toggleTheme } = useAppStore();
+  const { isAuthenticated } = useAuth();
+  const [isFalling, setIsFalling] = useState(false);
+
+  const pillMessages = [
+    "Side-B is music", "Side-B is connection", "Side-B is memories", 
+    "Side-B is reflection", "Side-B is mood", "Side-B is rhythm",
+    "Side-B is yours", "Side-B is expression", "Side-B is art",
+    "Side-B is feeling", "Side-B is vibe", "Side-B is soul",
+    "Side-B is life", "Side-B is love", "Side-B is everything"
+  ];
+
+  const pills = useMemo(() => pillMessages.map((msg, i) => ({
+    id: i,
+    text: msg,
+    left: Math.random() * 80 + 10 + '%',
+    delay: i * 0.15,
+    duration: 4 + (i % 3) * 0.5
+  })), []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,9 +48,12 @@ const LandingPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navigate]);
 
-  const handleLogin = () => {
-    login('journaler');
-    navigate('/diary-input');
+  const handleLoginRedirect = () => {
+    if (isAuthenticated) {
+      navigate('/desktop');
+    } else {
+      navigate('/auth');
+    }
   };
 
   return (
@@ -205,14 +227,45 @@ const LandingPage = () => {
 
 
         {/* Brand Name */}
-        <h1 className="text-8xl md:text-9xl lg:text-[10rem] font-mea-culpa text-gray-800 dark:text-white mb-8" style={{ fontFamily: '"Mea Culpa", cursive' }}>
+        <motion.h1 
+          className="text-8xl md:text-9xl lg:text-[10rem] font-mea-culpa text-gray-800 dark:text-white mb-8" 
+          style={{ fontFamily: '"Mea Culpa", cursive' }}
+          animate={isFalling ? { y: '100vh', rotate: 5, opacity: 0 } : { y: 0, rotate: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeIn" }}
+        >
           SIDE-B
-        </h1>
+        </motion.h1>
+
+        {/* Pills Animation */}
+        {isFalling && (
+          <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+            {pills.map((pill) => (
+              <motion.div
+                key={pill.id}
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: '110vh', opacity: 1 }}
+                transition={{ 
+                  duration: pill.duration, 
+                  delay: pill.delay, 
+                  ease: "linear",
+                }}
+                className="absolute bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 px-6 py-3 rounded-full shadow-lg text-gray-800 dark:text-white font-medium text-lg whitespace-nowrap"
+                style={{ left: pill.left }}
+              >
+                {pill.text}
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* Motto in Glassmorphism Button */}
-        <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md border border-white/50 dark:border-gray-700/50 text-gray-800 dark:text-white rounded-full px-8 py-3 font-light text-lg tracking-wide shadow-lg mb-8">
+        <motion.div 
+          className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md border border-white/50 dark:border-gray-700/50 text-gray-800 dark:text-white rounded-full px-8 py-3 font-light text-lg tracking-wide shadow-lg mb-8"
+          animate={isFalling ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           Your day, one Song
-        </div>
+        </motion.div>
 
         {/* Scroll Indicator - chevron below motto */}
         <div className="animate-bounce">
@@ -234,17 +287,17 @@ const LandingPage = () => {
         {/* Action Buttons - positioned on first screen */}
         <div className="absolute bottom-8 right-8 flex items-center space-x-6 z-50">
           {/* Social Link */}
-          <a
-            href="#"
+          <button
+            onClick={() => setIsFalling(!isFalling)}
             className="hover:scale-110 transition-all"
             aria-label="Social"
           >
             <img src={atIcon} alt="Social" className="hover:scale-110 transition-all" style={{ width: '88px', height: '88px' }} />
-          </a>
+          </button>
 
           {/* Login Button */}
           <button
-            onClick={handleLogin}
+            onClick={handleLoginRedirect}
             className="hover:scale-110 transition-all"
             aria-label="Login"
           >

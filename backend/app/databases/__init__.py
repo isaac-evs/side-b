@@ -1,12 +1,6 @@
 """
 Database module for Side-B application.
 Supports multiple database systems: MongoDB, Cassandra, Dgraph, and ChromaDB.
-
-Database Responsibilities:
-- MongoDB: Primary database for users, entries, files, and songs
-- Cassandra: Time-series data and logging (future)
-- Dgraph: Graph relationships and recommendations (future)
-- ChromaDB: Semantic search and vector embeddings (future)
 """
 
 from .base import (

@@ -1,29 +1,11 @@
 INFO:     Will watch for changes in these directories: ['/home/isaac/Documents/code/side-b/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [100529] using WatchFiles
+INFO:     Started reloader process [152541] using WatchFiles
 /home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
 * 'allow_population_by_field_name' has been renamed to 'validate_by_name'
 * 'schema_extra' has been renamed to 'json_schema_extra'
   warnings.warn(message, UserWarning)
-INFO:     Started server process [100545]
-INFO:     Waiting for application startup.
-[Cassandra] INFO - Connecting to Cassandra cluster...
-[Cassandra] INFO - Connected and keyspace set to 'sideb'
-[Cassandra] INFO - Ensuring Cassandra schema...
-[Cassandra] INFO - Cassandra schema ensured.
-INFO:     Application startup complete.
-WARNING:  WatchFiles detected changes in 'sync_to_chroma.py', 'app/routers/ai.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-[Cassandra] INFO - Shutting down Cassandra cluster connection...
-[Cassandra] INFO - Cassandra connection closed.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [100545]
-/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
-* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
-* 'schema_extra' has been renamed to 'json_schema_extra'
-  warnings.warn(message, UserWarning)
-INFO:     Started server process [100938]
+INFO:     Started server process [152557]
 INFO:     Waiting for application startup.
 [Cassandra] INFO - Connecting to Cassandra cluster...
 [Cassandra] INFO - Connected and keyspace set to 'sideb'
@@ -41,28 +23,104 @@ INFO:     Application startup complete.
 ✓ Cassandra tables initialized
 ✓ Mood anchors already present (28 anchors).
 ✓ ChromaDB initialized
-INFO:     127.0.0.1:58556 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58570 - "OPTIONS /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58556 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58570 - "GET /auth/me HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58570 - "OPTIONS /users/6931fef8faff07629adc57a6/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58556 - "OPTIONS /entries/?userId=6931fef8faff07629adc57a6 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58556 - "GET /entries/?userId=6931fef8faff07629adc57a6 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58570 - "GET /users/6931fef8faff07629adc57a6/stats HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48460 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48468 - "OPTIONS /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so good tonight, i want...' -> Detected Mood: joy
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so good tonight, i want...' -> Detected Mood: joy
+INFO:     127.0.0.1:45360 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45368 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45368 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'Im happy, calm and i see the s...' -> Detected Mood: joy
+🔍 Text classified as: joy
+Recommendation requested for text: 'Im happy, calm and i see the s...' -> Detected Mood: joy
+INFO:     127.0.0.1:51874 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51882 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34132 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47242 - "GET /songs/mood/joy HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so good tonight, i want...' -> Detected Mood: joy
+🔍 Text classified as: joy
+Recommendation requested for text: 'I feel so good tonight, i want...' -> Detected Mood: joy
+INFO:     127.0.0.1:54710 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54712 - "POST /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: joy
+Recommendation requested for text: 'im happy, relaxed while i see ...' -> Detected Mood: joy
+🔍 Text classified as: joy
+Recommendation requested for text: 'im happy, relaxed while i see ...' -> Detected Mood: joy
+INFO:     127.0.0.1:34370 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34378 - "POST /songs/recommend HTTP/1.1" 200 OK
+🔍 Text classified as: calm
+Recommendation requested for text: 'Can't sleep. Tomorrow's the fi...' -> Detected Mood: calm
+🔍 Text classified as: calm
+Recommendation requested for text: 'Can't sleep. Tomorrow's the fi...' -> Detected Mood: calm
+INFO:     127.0.0.1:50996 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51012 - "POST /songs/recommend HTTP/1.1" 200 OK
 🔍 Text classified as: sad
-Recommendation requested for text: 'The Globe rises still, timber ...' -> Detected Mood: sad
+Recommendation requested for text: 'Dad's gone. The words don't fe...' -> Detected Mood: sad
 🔍 Text classified as: sad
-Recommendation requested for text: 'The Globe rises still, timber ...' -> Detected Mood: sad
-INFO:     127.0.0.1:48460 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48468 - "POST /songs/recommend HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48468 - "OPTIONS /songs/mood/sad HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48468 - "GET /songs/mood/sad HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "OPTIONS /entries/ HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55496 - "POST /entries/ HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:38098 - "OPTIONS /ai/chat HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38098 - "POST /ai/chat HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60672 - "POST /ai/chat HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35342 - "POST /ai/chat HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49818 - "POST /ai/chat HTTP/1.1" 200 OK
+Recommendation requested for text: 'Dad's gone. The words don't fe...' -> Detected Mood: sad
+INFO:     127.0.0.1:59116 - "POST /songs/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59120 - "POST /songs/recommend HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app/services/mood_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [152557]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [156150]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/services/mood_service.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+[Cassandra] INFO - Shutting down Cassandra cluster connection...
+[Cassandra] INFO - Cassandra connection closed.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [156150]
+/home/isaac/Documents/code/side-b/backend/venv/lib/python3.10/site-packages/pydantic/_internal/_config.py:383: UserWarning: Valid config keys have changed in V2:
+* 'allow_population_by_field_name' has been renamed to 'validate_by_name'
+* 'schema_extra' has been renamed to 'json_schema_extra'
+  warnings.warn(message, UserWarning)
+INFO:     Started server process [156407]
+INFO:     Waiting for application startup.
+[Cassandra] INFO - Connecting to Cassandra cluster...
+[Cassandra] INFO - Connected and keyspace set to 'sideb'
+[Cassandra] INFO - Ensuring Cassandra schema...
+[Cassandra] INFO - Cassandra schema ensured.
+INFO:     Application startup complete.
+✓ Connected to mongodb
+✓ Connected to cassandra
+✓ Connected to Dgraph
+✓ Connected to dgraph
+✓ Database initialized
+✓ Initialized mongodb
+✗ Failed to initialize cassandra: 'CassandraClient' object has no attribute 'initialize'
+✓ Initialized dgraph
+✓ Cassandra tables initialized
+✓ Deleted existing 'moods' collection for update.
+Seeding mood anchors into ChromaDB...
+✓ Mood anchors seeded successfully.
+✓ ChromaDB initialized
+INFO:     127.0.0.1:37720 - "OPTIONS /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37720 - "POST /auth/register HTTP/1.1" 201 Created
+INFO:     127.0.0.1:37720 - "OPTIONS /entries/ HTTP/1.1" 200 OK
+DEBUG: Entry 693220d59cb675b6a7fb0f45 -> User 693220d59cb675b6a7fb0f44 resolved to UID 0x4e45
+INFO:     127.0.0.1:37722 - "OPTIONS /users/693220d59cb675b6a7fb0f44/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37736 - "OPTIONS /entries/?userId=693220d59cb675b6a7fb0f44 HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged journal text for user=693220d59cb675b6a7fb0f44, entry=693220d59cb675b6a7fb0f45
+INFO:     127.0.0.1:37722 - "GET /entries/?userId=693220d59cb675b6a7fb0f44 HTTP/1.1" 200 OK
+[Cassandra] INFO - Logged song selection for user=693220d59cb675b6a7fb0f44, song=69321c904d484f40c1dd4990
+INFO:     127.0.0.1:37720 - "POST /entries/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37736 - "GET /users/693220d59cb675b6a7fb0f44/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37736 - "GET /users/693220d59cb675b6a7fb0f44/stats HTTP/1.1" 200 OK

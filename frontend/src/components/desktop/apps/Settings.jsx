@@ -21,6 +21,7 @@ const Settings = () => {
     <div className="h-full bg-[#ececec] flex flex-col">
       {/* Header */}
       <div className="h-12 border-b border-[#d1d1d1] flex items-center justify-center bg-[#f6f6f6] shadow-sm z-10">
+        <Monitor className="w-5 h-5 mr-2 text-gray-600" />
         <span className="font-semibold text-gray-700" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>System Preferences</span>
       </div>
 
@@ -56,10 +57,16 @@ const Settings = () => {
                  </div>
                  
                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Accent Color:</span>
+                    <span className="text-sm text-gray-600" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Background Color:</span>
                     <div className="flex gap-1.5">
                        {['#007aff', '#a650c2', '#ff2d55', '#ff9500', '#ffcc00', '#4cd964'].map(c => (
-                          <div key={c} className="w-4 h-4 rounded-full shadow-sm cursor-pointer border border-black/5" style={{ backgroundColor: c }} />
+                          <div 
+                            key={c} 
+                            className="w-4 h-4 rounded-full shadow-sm cursor-pointer border border-black/5 hover:scale-110 transition-transform" 
+                            style={{ backgroundColor: c }} 
+                            onClick={() => alert('Future update')}
+                            title="Future update"
+                          />
                        ))}
                     </div>
                  </div>
@@ -67,15 +74,15 @@ const Settings = () => {
            </div>
 
            {/* Notifications Pane */}
-           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm opacity-75">
               <div className="flex items-center gap-3 mb-4">
                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-red-500 shadow-inner">
                     <Bell size={20} />
                  </div>
-                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Notifications</span>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Notifications (Future Update)</span>
               </div>
               
-              <div className="pl-2">
+              <div className="pl-2 pointer-events-none">
                  <Checkbox label="Allow Notifications" checked={true} onChange={() => {}} />
                  <Checkbox label="Play sound for notifications" checked={true} onChange={() => {}} />
                  <Checkbox label="Show previews" checked={true} onChange={() => {}} />
@@ -84,15 +91,15 @@ const Settings = () => {
            </div>
 
            {/* Sound Pane */}
-           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm">
+           <div className="bg-white/50 border border-gray-300 rounded p-4 shadow-sm opacity-75">
               <div className="flex items-center gap-3 mb-4">
                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 shadow-inner">
                     <Volume2 size={20} />
                  </div>
-                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Sound</span>
+                 <span className="font-medium text-gray-800" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Sound (Future Update)</span>
               </div>
               
-              <div className="pl-2 space-y-3">
+              <div className="pl-2 space-y-3 pointer-events-none">
                  <div>
                     <span className="text-xs text-gray-500 block mb-1" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>Output Volume</span>
                     <input type="range" className="w-full h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-gray-500" />
