@@ -48,20 +48,18 @@ async def create_entry(entry: CreateEntry = Body(...)):
     
     entry_dict = entry.model_dump()
     entry_dict["userId"] = ObjectId(entry_dict["userId"])
-    # Handle song and files conversion if needed, but Pydantic might handle it if defined correctly
-    # For now assuming song is passed as dict and files as list of strings
     
     new_entry = await entry_collection.insert_one(entry_dict)
     created_entry = await entry_collection.find_one({"_id": new_entry.inserted_id})
     
-    # Dgraph logging (resilient)
+    # Dgraph logging 
     try:
         from app.databases.dgraph import dgraph_client
         await dgraph_client.create_entry_from_mongo(created_entry)
     except Exception as e:
         print(f"Warning: Failed to sync entry to Dgraph: {e}")
     
-    # Cassandra logging (resilient)
+    # Cassandra logging
     # Log journal text
     if entry_dict.get("text"):
         await cassandra_client.log_journal_text(
