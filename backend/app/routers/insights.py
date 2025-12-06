@@ -12,7 +12,7 @@ async def get_user_insights(user_id: str) -> Dict[str, Any]:
     data = await dgraph_client.get_user_insights(user_id)
     
     if not data:
-        # Return empty structure if no data found, rather than 404
+        # Return empty structure if no data found,
         return {
             "username": "Unknown",
             "stats": {
@@ -53,7 +53,6 @@ async def get_user_insights(user_id: str) -> Dict[str, Any]:
     top_artists.sort(key=lambda x: x["value"], reverse=True)
     
     # 3. Graph Data (Songs connected by Mood)
-    # We'll create a simple graph where nodes are Songs and Moods
     nodes = []
     links = []
     node_ids = set()
@@ -99,5 +98,5 @@ async def get_user_insights(user_id: str) -> Dict[str, Any]:
             "nodes": nodes,
             "links": links
         },
-        "raw_entries": entries # Send raw entries for timeline if needed
+        "raw_entries": entries 
     }

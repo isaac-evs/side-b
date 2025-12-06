@@ -44,7 +44,7 @@ class UserSettings(BaseModel):
 class User(MongoBaseModel):
     username: str
     email: EmailStr
-    password: str  # Hashed password
+    password: str  
     name: str
     profilePhoto: Optional[str] = None
     settings: UserSettings
@@ -54,7 +54,7 @@ class User(MongoBaseModel):
 class CreateUser(BaseModel):
     username: str
     email: EmailStr
-    password: str  # Plain password, will be hashed
+    password: str 
     name: str
     profilePhoto: Optional[str] = None
     settings: Optional[UserSettings] = None
@@ -100,12 +100,12 @@ class Song(MongoBaseModel):
     album: Optional[str] = None
     mood: str
     albumArt: Optional[str] = None
-    duration: str # Keeping as string as per requirement, though int might be better for calculation
+    duration: str 
     soundFile: str
     createdAt: datetime = Field(default_factory=datetime.utcnow)
 
 class EmbeddedSong(BaseModel):
-    id: str = Field(alias="_id")  # Changed to str to support ObjectId
+    id: str = Field(alias="_id")  
     title: str
     artist: str
     album: Optional[str] = None
@@ -113,7 +113,7 @@ class EmbeddedSong(BaseModel):
     albumArt: Optional[str] = None
     coverUrl: Optional[str] = None
     previewUrl: Optional[str] = None
-    duration: int # Requirement says int here in Entries Collection
+    duration: int 
     createdAt: datetime
 
     model_config = ConfigDict(
@@ -134,17 +134,16 @@ class Entry(MongoBaseModel):
     updatedAt: datetime = Field(default_factory=datetime.utcnow)
 
 class CreateEntry(BaseModel):
-    userId: str # Input as string, converted to ObjectId
+    userId: str #
     date: datetime
     text: str
     mood: str
-    song: Optional[Dict[str, Any]] = None # Will need processing
+    song: Optional[Dict[str, Any]] = None 
     files: List[str] = []
 
 # --- File Models ---
 
 class FileMetadata(BaseModel):
-    # Common fields or specific ones based on type
     imageUrl: Optional[str] = None
     extension: Optional[str] = None
     author: Optional[str] = None

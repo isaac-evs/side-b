@@ -120,9 +120,7 @@ async def list_songs(mood: str = None, search: str = None, limit: int = 100):
     if search:
         query["$text"] = {"$search": search}
     
-    # If mood is specified, requirement says "fetch 8 songs per mood category"
-    # But I'll make limit configurable, default to 8 if mood is present?
-    if mood and limit == 100: # If limit wasn't explicitly changed from default
+    if mood and limit == 100: 
         limit = 8
 
     songs = await song_collection.find(query).limit(limit).to_list(limit)

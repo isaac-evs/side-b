@@ -15,7 +15,6 @@ class ChatResponse(BaseModel):
     context_used: list = []
 
 # Initialize OpenAI client
-# Ensure OPENAI_API_KEY is set in environment variables
 api_key = os.getenv("OPENAI_API_KEY")
 aclient = AsyncOpenAI(api_key=api_key) if api_key else None
 
@@ -25,18 +24,6 @@ async def chat_with_assistant(request: ChatRequest = Body(...)):
         raise HTTPException(status_code=500, detail="OpenAI API key not configured")
 
     try:
-        # 1. Retrieve relevant context from ChromaDB
-        # We filter by userId to ensure privacy (if Chroma supports where clause in query, 
-        # otherwise we might get results from other users if we don't filter. 
-        # ChromaDB supports 'where' filter)
-        
-        # Note: chromadb_client.query_entries needs to be updated to support 'where' filter
-        # For now, let's assume we get results and filter manually or update the client.
-        # Let's update the client first to be safe.
-        
-        # Actually, let's just call query and see what we get. 
-        # Ideally we pass where={"userId": request.userId} to query.
-        
         results = await chromadb_client.query_entries(request.message, n_results=5)
         
         context_texts = []

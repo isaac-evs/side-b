@@ -12,9 +12,7 @@ load_dotenv()
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 DB_NAME = "side_b_db"
 
-# ---------------------------------------------------------
-# 1. THE DATA (100 Songs with Moods & Descriptions)
-# ---------------------------------------------------------
+
 SONGS_DATA = [
     # --- JOY ---
     {"query": "Pharrell Williams - Happy", "mood": "joy", "description": "An infectious anthem of pure positivity."},
@@ -105,7 +103,7 @@ SONGS_DATA = [
     {"query": "Harry Styles - Falling", "mood": "sad", "description": "Vulnerable and emotional."},
     {"query": "Lorde - Liability", "mood": "sad", "description": "The loneliness of being too much."},
 
-    # --- STRESS (High Energy / Release) ---
+    # --- STRESS ---
     {"query": "Eminem - Lose Yourself", "mood": "stress", "description": "Intense focus and determination."},
     {"query": "Linkin Park - In the End", "mood": "stress", "description": "Nu-metal angst release."},
     {"query": "Nirvana - Smells Like Teen Spirit", "mood": "stress", "description": "Grunge anthem for frustration."},
@@ -133,9 +131,6 @@ SONGS_DATA = [
     {"query": "Panic! At The Disco - I Write Sins Not Tragedies", "mood": "stress", "description": "Theatrical rock drama."}
 ]
 
-# ---------------------------------------------------------
-# 2. FETCH AND SEED LOGIC
-# ---------------------------------------------------------
 async def fetch_and_seed():
     print(f"🚀 Starting Fast Seed for {len(SONGS_DATA)} songs...")
     
@@ -151,7 +146,6 @@ async def fetch_and_seed():
             data = response.json()
             
             if data and "data" in data and len(data["data"]) > 0:
-                # Find the first track with a valid preview
                 found_track = None
                 for candidate in data["data"]:
                     if candidate.get("preview"):
@@ -174,40 +168,34 @@ async def fetch_and_seed():
                         "duration": track["duration"]
                     }
                     final_songs.append(song_doc)
-                    print(f"   ✅ Found with preview: {song_doc['title']} by {song_doc['artist']}")
+                    print(f"   Found with preview: {song_doc['title']} by {song_doc['artist']}")
                 else:
-                    print(f"   ⚠️ Found results but NO PREVIEW for: {query}")
+                    print(f"   Found results but NO PREVIEW for: {query}")
             else:
-                print(f"   ❌ No results found for {query}")
+                print(f"   No results found for {query}")
                 
-            # Rate limiting (Deezer is strict)
             time.sleep(0.3)
             
         except Exception as e:
-            print(f"   ⚠️ Error fetching {query}: {e}")
+            print(f"   Error fetching {query}: {e}")
 
-    # ---------------------------------------------------------
-    # 3. INSERT INTO MONGODB
-    # ---------------------------------------------------------
     if not final_songs:
-        print("❌ No songs fetched. Exiting.")
+        print("No songs fetched. Exiting.")
         return
 
-    print("\n🌱 Connecting to MongoDB...")
+    print("\nConnecting to MongoDB...")
     client = AsyncIOMotorClient(MONGO_URL)
     db = client[DB_NAME]
     
-    print("🗑️  Clearing existing songs...")
+    print("Clearing existing songs...")
     await db["songs"].delete_many({})
     
-    print(f"💿 Inserting {len(final_songs)} songs into database...")
+    print(f"💿Inserting {len(final_songs)} songs into database...")
     result = await db["songs"].insert_many(final_songs)
     
     print("\n✅ SUCCESS! Database seeded with 100 songs.")
     
-    # ---------------------------------------------------------
-    # 4. SYNC TO CHROMADB IMMEDIATELY
-    # ---------------------------------------------------------
+
     print("\n🔄 Syncing to ChromaDB...")
     from app.databases.chromadb import chromadb_client
     
@@ -217,14 +205,12 @@ async def fetch_and_seed():
         await chromadb_client.initialize()
         print("[ChromaDB] INFO - Connected.")
         
-        # Clear existing songs collection to avoid duplicates
         try:
             chromadb_client.client.delete_collection(name="songs")
             print("✓ Deleted existing 'songs' collection.")
         except Exception as e:
             print(f"Note: Could not delete songs collection: {e}")
         
-        # Reinitialize to create fresh collection
         await chromadb_client.initialize()
         
         print(f"🎵 Syncing {len(final_songs)} songs to ChromaDB...")
@@ -257,16 +243,16 @@ async def fetch_and_seed():
                 metadata=metadata
             )
         
-        print("✅ ChromaDB sync complete!")
+        print("ChromaDB sync complete!")
         await chromadb_client.disconnect()
         
     except Exception as e:
-        print(f"❌ ChromaDB sync failed: {e}")
+        print(f"ChromaDB sync failed: {e}")
         import traceback
         traceback.print_exc()
     
     client.close()
-    print("\n🎉 All done! Songs are in MongoDB and ChromaDB.")
+    print("\nAll done! Songs are in MongoDB and ChromaDB.")
 
 if __name__ == "__main__":
     asyncio.run(fetch_and_seed())

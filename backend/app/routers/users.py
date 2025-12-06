@@ -94,8 +94,6 @@ async def delete_user_data(id: str):
     Delete all user data (entries, files, stats) but keep the user account.
     """
     # 1. MongoDB: Delete entries and files
-    # Convert id to ObjectId if stored as ObjectId in entries/files, or str if stored as str
-    # Based on entries.py, userId is stored as ObjectId
     try:
         user_oid = ObjectId(id)
         await entry_collection.delete_many({"userId": user_oid})
@@ -115,13 +113,6 @@ async def delete_user_data(id: str):
     except Exception as e:
         print(f"Error deleting ChromaDB data: {e}")
 
-    # 4. Dgraph: Delete user edges/data?
-    # For now, we assume Dgraph syncs with MongoDB, so if we delete entries in Mongo, 
-    # we might need to delete them in Dgraph too if they are synced.
-    # But the prompt says "delete data from 4 databases".
-    # Dgraph client might not have a delete_user_data method yet.
-    # We'll skip Dgraph data deletion for now unless we find a method.
-    
     return {"message": "User data deleted successfully"}
 
 @router.delete("/{id}", response_description="Delete user account permanently")

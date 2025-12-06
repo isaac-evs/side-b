@@ -5,7 +5,7 @@
 
 set -e  # Exit on error
 
-echo "🚀 Starting Side-B..."
+echo " Starting Side-B..."
 
 # Color codes for output
 GREEN='\033[0;32m'
@@ -18,7 +18,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 # Start Databases using Docker Compose
-echo -e "${BLUE}📦 Starting Databases (MongoDB, Dgraph, Cassandra)...${NC}"
+echo -e "${BLUE} Starting Databases (MongoDB, Dgraph, Cassandra)...${NC}"
 
 # Check for potential port conflicts from non-compose containers
 if docker ps --format '{{.Names}}' | grep -q "^cassandra$"; then
@@ -51,7 +51,7 @@ $DOCKER_COMPOSE_CMD up -d
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Databases started${NC}"
 else
-    echo -e "${YELLOW}⚠️  Docker Compose reported an issue. Please check if ports are available.${NC}"
+    echo -e "${YELLOW}  Docker Compose reported an issue. Please check if ports are available.${NC}"
     exit 1
 fi
 
@@ -59,7 +59,7 @@ fi
 sleep 5
 
 # Start Backend
-echo -e "${BLUE}🐍 Starting Backend...${NC}"
+echo -e "${BLUE} Starting Backend...${NC}"
 cd backend
 
 # Check if virtual environment exists
@@ -89,7 +89,7 @@ echo -e "${GREEN}✓ Backend started (PID: $BACKEND_PID)${NC}"
 cd "$SCRIPT_DIR"
 
 # Start Frontend
-echo -e "${BLUE}⚛️  Starting Frontend...${NC}"
+echo -e "${BLUE}  Starting Frontend...${NC}"
 cd frontend
 
 # Check if node_modules exists
@@ -108,9 +108,9 @@ echo -e "${GREEN}✓ Frontend started (PID: $FRONTEND_PID)${NC}"
 cd "$SCRIPT_DIR"
 
 echo ""
-echo -e "${GREEN}✨ Side-B is now running!${NC}"
+echo -e "${GREEN} Side-B is now running!${NC}"
 echo ""
-echo "📝 Services:"
+echo "Services:"
 echo "  • MongoDB:   running on port 27017"
 echo "  • Dgraph:    running on ports 8080, 9080"
 echo "  • Cassandra: running on port 9042"
@@ -118,9 +118,9 @@ echo "  • Backend:   http://127.0.0.1:8000"
 echo "  • API Docs: http://127.0.0.1:8000/docs"
 echo "  • Frontend: http://localhost:5173"
 echo ""
-echo "📋 Logs:"
+echo "Logs:"
 echo "  • Backend:  tail -f backend.log"
 echo "  • Frontend: tail -f frontend.log"
 echo ""
-echo "🛑 To stop all services, run: ./stop.sh"
+echo "To stop all services, run: ./stop.sh"
 echo ""

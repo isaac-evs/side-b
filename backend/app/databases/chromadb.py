@@ -25,7 +25,6 @@ class ChromaDBClient:
     async def initialize(self):
         if self.client:
             # Create default collections
-            # Using default embedding function (all-MiniLM-L6-v2)
             self.entries_collection = self.client.get_or_create_collection(name="entries")
             self.moods_collection = self.client.get_or_create_collection(name="moods")
             self.songs_collection = self.client.get_or_create_collection(name="songs")

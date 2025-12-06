@@ -203,7 +203,6 @@ class CassandraClient:
             logger.info(f"Logged song selection for user={user_id}, song={song_id}")
         except Exception as e:
             logger.error(f"Failed to log song selection: {e}")
-            # Don't raise, just log error to avoid blocking main flow
 
     async def log_media_attachment(self, user_id: str, entry_id: str, file_id: str, file_type: str, url: str = None):
         try:
@@ -308,8 +307,7 @@ class CassandraClient:
             this_week_count = 0
             
             if dates:
-                # Sort dates descending (should be already sorted by clustering key, but ensure)
-                # dates are datetime objects
+                # Sort dates descending
                 sorted_dates = sorted(dates, reverse=True)
                 
                 # Streak Logic
@@ -339,11 +337,7 @@ class CassandraClient:
                         start_idx = 1
                         check_date = today - timedelta(days=1)
                     elif unique_dates[0] == (today - timedelta(days=1)):
-                        streak = 1 # Yesterday counts if today is missing? 
-                        # Usually streak includes today if done, or up to yesterday.
-                        # Let's say streak is consecutive days up to today.
-                        # If today is missing, but yesterday exists, streak is active?
-                        # Usually yes.
+                        streak = 1 
                         streak = 1
                         start_idx = 1
                         check_date = today - timedelta(days=2)

@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-echo -e "${YELLOW}🛑 Stopping Side-B...${NC}"
+echo -e "${YELLOW} Stopping Side-B...${NC}"
 
 # Stop Backend - kill all uvicorn processes
 echo "Stopping Backend..."
@@ -25,8 +25,7 @@ echo "Stopping Frontend..."
 pkill -f "vite" && echo -e "${GREEN}✓ Frontend stopped${NC}" || echo "Frontend process not found"
 [ -f "frontend.pid" ] && rm frontend.pid
 
-# Stop Databases (optional - commented out by default to preserve data)
-# Uncomment the following lines if you want to stop the databases as well
+# Stop Databases
 # echo "Stopping Databases..."
 # if docker compose version >/dev/null 2>&1; then
 #     docker compose stop
@@ -36,8 +35,8 @@ pkill -f "vite" && echo -e "${GREEN}✓ Frontend stopped${NC}" || echo "Frontend
 # echo -e "${GREEN}✓ Databases stopped${NC}"
 
 echo ""
-echo -e "${GREEN}✨ Side-B has been stopped${NC}"
+echo -e "${GREEN} Side-B has been stopped${NC}"
 echo ""
-echo "💡 Databases are still running to preserve your data."
+echo " Databases are still running to preserve your data."
 echo "   To stop them: docker compose stop (or docker-compose stop)"
 echo ""

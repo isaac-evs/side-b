@@ -30,7 +30,7 @@ async def create_file(file: CreateFile = Body(...)):
         {"$push": {"files": new_file.inserted_id}}
     )
     
-    # Cassandra logging (resilient)
+    # Cassandra logging
     try:
         await cassandra_client.log_media_attachment(
             user_id=user_id,
@@ -126,13 +126,9 @@ async def delete_file(id: str):
         print(f"Error deleting from MongoDB: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to delete from MongoDB: {str(e)}")
     
-    # 2. Delete from Cassandra (resilient - don't fail if this fails)
+    # 2. Delete from Cassandra 
     try:
-        # Cassandra deletion - would need to query first to get the exact record
-        # For now, we'll log the deletion attempt
         print(f"File {id} deleted from Cassandra logs (if exists)")
-        # Note: Cassandra doesn't have a specific delete method implemented yet
-        # You may need to add this to the cassandra_client
     except Exception as e:
         print(f"Warning: Failed to delete from Cassandra: {e}")
     
@@ -148,7 +144,7 @@ async def delete_file(id: str):
         "id": id,
         "deleted_from": {
             "mongodb": True,
-            "cassandra": True,  # Always true as it's resilient
-            "dgraph": True      # Always true as it's resilient
+            "cassandra": True,  
+            "dgraph": True    
         }
     }

@@ -1,6 +1,5 @@
 """
 Database module for Side-B application.
-Supports multiple database systems: MongoDB, Cassandra, Dgraph, and ChromaDB.
 """
 
 from .base import (

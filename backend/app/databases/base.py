@@ -1,6 +1,7 @@
 """
 Base classes and interfaces for database clients.
 """
+
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
